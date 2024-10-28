@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yannqing.template.common.Code;
 import com.yannqing.template.domain.LoginVo;
 import com.yannqing.template.domain.SecurityUser;
+import com.yannqing.template.domain.User;
 import com.yannqing.template.utils.JwtUtils;
 import com.yannqing.template.utils.RedisCache;
 import com.yannqing.template.utils.ResultUtils;
@@ -49,7 +50,7 @@ public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
         String userInfo = objectMapper.writeValueAsString(user);
 
         List<Integer> authList = new ArrayList<>();
-        authList.add(user.getRole());
+        authList.add(1);
        //生成token
         String token = JwtUtils.token(userInfo, authList);
         //将token存入redis中，并设置token过期时间：3小时

@@ -17,7 +17,7 @@ public class LoginVo {
     private List<Integer> authList;
 
     public LoginVo(User user, String token, List<Integer> authList) {
-        this.userId = user.getId();
+        this.userId = user.getUserId();
         this.userName = user.getUsername();
         this.token = token;
         this.authList = authList;

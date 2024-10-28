@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yannqing.template.common.Code;
 import com.yannqing.template.common.Constant;
+import com.yannqing.template.domain.User;
 import com.yannqing.template.utils.JwtUtils;
 import com.yannqing.template.utils.RedisCache;
 import com.yannqing.template.utils.ResultUtils;
