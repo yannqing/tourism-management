@@ -1,4 +1,4 @@
-package com.yannqing.template.service;
+package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yannqing.template.domain.SecurityUser;

@@ -30,7 +30,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         //允许一些请求匿名访问，其他的均需要认证
         http.authorizeHttpRequests((authorize)->authorize
-                .requestMatchers(Constant.anonymous).permitAll()
+                .requestMatchers(Constant.anonymousConstant)
+                .permitAll()
+                .requestMatchers(Constant.anonymousMatch)
+                .permitAll()
                 .anyRequest()
                 .authenticated()
         );

@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //匿名地址，直接放行
         String requestURI = request.getRequestURI();
-        if (Tools.contains(requestURI, Constant.anonymous)) {
+        if (Tools.contains(requestURI, Constant.anonymousConstant) || Constant.isMatch(requestURI)) {
             filterChain.doFilter(request,response);
             return;
         }
