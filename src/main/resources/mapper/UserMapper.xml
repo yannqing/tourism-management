@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yannqing.qcx.mapper.UserMapper">
+<mapper namespace="com.qcx.property.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="com.yannqing.qcx.domain.entity.User">
+    <resultMap id="BaseResultMap" type="com.qcx.property.domain.entity.User">
             <id property="userId" column="userId" jdbcType="INTEGER"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
