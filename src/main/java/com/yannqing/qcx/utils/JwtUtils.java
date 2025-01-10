@@ -1,10 +1,11 @@
-package com.yannqing.template.utils;
+package com.yannqing.qcx.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.yannqing.qcx.domain.entity.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,15 +29,15 @@ public class JwtUtils {
     /**
      * 根据用户详细信息，权限信息  生成token
      * @param userInfo 用户详细信息，密码为空
-     * @param authList 用户权限信息
+     * @param roles 用户角色
      * @return
      */
 
-    public static String token(String userInfo, List<Integer> authList){
+    public static String token(String userInfo, String roles){
         return JWT.create()
                 .withExpiresAt(new Date(System.currentTimeMillis()+ 1000L * 60 * 60 * 3))  //设置过期时间:单位毫秒
                 .withClaim("userInfo",userInfo)
-                .withClaim("authList",authList)
+                .withClaim("roles",roles)
                 .sign(Algorithm.HMAC256(secret));
     }
 
@@ -62,12 +63,6 @@ public class JwtUtils {
         jwtVerifier.verify(token);//没报错说明验证成功
 
         log.info("token校验成功！");
-
-//        JWT.decode(token).getExpiresAt();
-//        String json = JWT.decode(token).getAudience().get(0);
-//        JwtAuthentication jwtAuthentication = JSON.parseObject(json, JwtAuthentication.class);
-
-//        SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);
     }
 
     /**

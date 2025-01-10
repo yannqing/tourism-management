@@ -1,8 +1,8 @@
-package com.yannqing.template.security.handler;
+package com.yannqing.qcx.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.yannqing.template.common.Code;
-import com.yannqing.template.utils.ResultUtils;
+import com.yannqing.qcx.common.Code;
+import com.yannqing.qcx.utils.ResultUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

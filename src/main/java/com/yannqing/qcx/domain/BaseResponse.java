@@ -1,4 +1,4 @@
-package com.yannqing.template.domain;
+package com.yannqing.qcx.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

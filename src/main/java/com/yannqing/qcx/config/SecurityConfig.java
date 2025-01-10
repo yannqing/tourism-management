@@ -1,11 +1,11 @@
-package com.yannqing.template.config;
+package com.yannqing.qcx.config;
 
-import com.yannqing.template.common.Constant;
-import com.yannqing.template.security.filter.JwtAuthenticationTokenFilter;
-import com.yannqing.template.security.handler.MyLoginFailureHandler;
-import com.yannqing.template.security.handler.MyLoginSuccessHandler;
-import com.yannqing.template.security.handler.MyLogoutSuccessHandler;
-import com.yannqing.template.utils.RedisCache;
+import com.yannqing.qcx.common.Constant;
+import com.yannqing.qcx.security.filter.JwtAuthenticationTokenFilter;
+import com.yannqing.qcx.security.handler.MyLoginFailureHandler;
+import com.yannqing.qcx.security.handler.MyLoginSuccessHandler;
+import com.yannqing.qcx.security.handler.MyLogoutSuccessHandler;
+import com.yannqing.qcx.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +48,7 @@ public class SecurityConfig {
         //登录可以选择form表单登录，也可选择发送请求，写到controller中
         //form表单登录
         http.formLogin((login)->login.
-                loginProcessingUrl("/login")
+                loginProcessingUrl("/auth/login")
                 .successHandler(new MyLoginSuccessHandler(redisCache))
                 .failureHandler(new MyLoginFailureHandler())
         );
@@ -56,7 +56,7 @@ public class SecurityConfig {
 
         //设置退出logout过滤器
         http.logout((logout)->logout
-                .logoutUrl("/logout")
+                .logoutUrl("/auth/logout")
                 .logoutSuccessHandler(new MyLogoutSuccessHandler(redisCache))
         );
 

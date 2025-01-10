@@ -1,4 +1,4 @@
-package com.yannqing.qcx;
+package com.yannqing.qcx.auth;
 
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -7,17 +7,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.AntPathMatcher;
 
 @SpringBootTest
-class PropertyManagementApplicationTests {
+class AuthTests {
 
     @Resource
     private PasswordEncoder passwordEncoder;
 
     @Test
-    void contextLoads() {
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
-        System.out.println(antPathMatcher.match("/path/*", "/path/asda/asdasd"));
-        System.out.println(antPathMatcher.match("/path/*", "/path"));
-        System.out.println(antPathMatcher.match("/path/*", "/path/asda"));
+    void testPassword() {
+        String encodePassword = passwordEncoder.encode("123456");
+        System.out.println(encodePassword);
     }
 
 }

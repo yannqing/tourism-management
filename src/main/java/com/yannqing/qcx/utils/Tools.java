@@ -1,4 +1,4 @@
-package com.yannqing.template.utils;
+package com.yannqing.qcx.utils;
 
 public class Tools {
     public static boolean contains(String str,String ...args){

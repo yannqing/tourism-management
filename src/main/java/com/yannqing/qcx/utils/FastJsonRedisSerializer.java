@@ -1,4 +1,4 @@
-package com.yannqing.template.utils;
+package com.yannqing.qcx.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

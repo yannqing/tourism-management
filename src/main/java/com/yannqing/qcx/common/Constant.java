@@ -1,4 +1,4 @@
-package com.yannqing.template.common;
+package com.yannqing.qcx.common;
 
 import lombok.Data;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +6,6 @@ import org.springframework.util.AntPathMatcher;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 常量类
@@ -16,13 +15,11 @@ import java.util.stream.Collectors;
 public class Constant {
 
     public static String[] anonymousConstant = {
-            "/register",
-            "/login",
-            "/logout",
             "/favicon.ico",
     };
 
     public static String[] anonymousMatch = {
+            "/auth/**",
        "/doc.html/**",
        "/webjars/**",
             "/v3/**",

@@ -1,6 +1,9 @@
-package com.yannqing.template.domain;
+package com.yannqing.qcx.domain;
 
+import com.yannqing.qcx.domain.entity.Role;
+import com.yannqing.qcx.domain.entity.User;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +14,10 @@ import java.util.List;
 public class SecurityUser implements UserDetails {
 
     private List<SimpleGrantedAuthority> simpleGrantedAuthorities;
+
+    @Getter
+    @Setter
+    private List<Role> role;
 
     @Getter
     private final User user;

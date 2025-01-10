@@ -1,14 +1,14 @@
-package com.yannqing.template.security.filter;
+package com.yannqing.qcx.security.filter;
 
 import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yannqing.template.common.Code;
-import com.yannqing.template.common.Constant;
-import com.yannqing.template.domain.User;
-import com.yannqing.template.utils.JwtUtils;
-import com.yannqing.template.utils.RedisCache;
-import com.yannqing.template.utils.ResultUtils;
-import com.yannqing.template.utils.Tools;
+import com.yannqing.qcx.common.Code;
+import com.yannqing.qcx.common.Constant;
+import com.yannqing.qcx.domain.entity.User;
+import com.yannqing.qcx.utils.JwtUtils;
+import com.yannqing.qcx.utils.RedisCache;
+import com.yannqing.qcx.utils.ResultUtils;
+import com.yannqing.qcx.utils.Tools;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
