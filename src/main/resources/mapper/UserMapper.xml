@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yannqing.qcx.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.yannqing.qcx.domain.entity.User">
+            <id property="userId" column="userId" jdbcType="INTEGER"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="signature" column="signature" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="nickName" column="nickName" jdbcType="VARCHAR"/>
+            <result property="enabled" column="enabled" jdbcType="INTEGER"/>
+            <result property="accountNoExpired" column="accountNoExpired" jdbcType="INTEGER"/>
+            <result property="credentialsNoExpired" column="credentialsNoExpired" jdbcType="INTEGER"/>
+            <result property="accountNoLocked" column="accountNoLocked" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userId,username,password,
+        address,phone,email,
+        age,signature,sex,
+        avatar,nickName,enabled,
+        accountNoExpired,credentialsNoExpired,accountNoLocked,
+        createTime,updateTime,isDelete,
+        description
+    </sql>
+</mapper>
