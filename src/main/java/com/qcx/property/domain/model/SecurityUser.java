@@ -1,4 +1,4 @@
-package com.qcx.property.domain;
+package com.qcx.property.domain.model;
 
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.User;

@@ -2,12 +2,15 @@ package com.qcx.property.utils;
 
 
 import com.qcx.property.common.Code;
-import com.qcx.property.domain.BaseResponse;
+import com.qcx.property.domain.model.BaseResponse;
 
 public class ResultUtils {
 
     public static <T> BaseResponse<T> success(){
         return new BaseResponse<>(Code.SUCCESS, null);
+    }
+    public static <T> BaseResponse<T> success(String msg){
+        return new BaseResponse<>(Code.SUCCESS, null, msg);
     }
 
     public static <T> BaseResponse<T> success(Integer code, T data){

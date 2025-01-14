@@ -1,4 +1,4 @@
-package com.qcx.property.domain;
+package com.qcx.property.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

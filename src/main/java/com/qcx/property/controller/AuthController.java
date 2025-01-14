@@ -1,8 +1,14 @@
 package com.qcx.property.controller;
 
-import com.qcx.property.domain.BaseResponse;
+import com.qcx.property.domain.dto.RegisterDto;
+import com.qcx.property.domain.model.BaseResponse;
+import com.qcx.property.service.AuthService;
+import com.qcx.property.utils.ResultUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
+    @Resource
+    private AuthService authService;
+
+    @Operation(summary = "注册")
     @PostMapping("/register")
-    public BaseResponse<?> register() {
-        return null;
+    public BaseResponse<?> register(@RequestBody RegisterDto registerDto) {
+        boolean result = authService.register(registerDto);
+        if (result) {
+            return ResultUtils.success("注册成功");
+        } else {
+            return ResultUtils.failure("注册失败");
+        }
     }
 }

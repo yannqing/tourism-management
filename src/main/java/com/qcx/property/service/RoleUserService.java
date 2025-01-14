@@ -2,6 +2,7 @@ package com.qcx.property.service;
 
 import com.qcx.property.domain.entity.RoleUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qcx.property.enums.RoleType;
 
 /**
 * @author 67121
@@ -10,4 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RoleUserService extends IService<RoleUser> {
 
+    void addRole(String username, RoleType roleType);
+
+    void addRole(int userId, RoleType roleType);
 }

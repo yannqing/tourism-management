@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qcx.property.common.Code;
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.vo.LoginVo;
-import com.qcx.property.domain.SecurityUser;
+import com.qcx.property.domain.model.SecurityUser;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.utils.JwtUtils;
 import com.qcx.property.utils.RedisCache;
@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

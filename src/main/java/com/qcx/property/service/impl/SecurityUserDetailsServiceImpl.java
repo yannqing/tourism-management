@@ -1,7 +1,7 @@
 package com.qcx.property.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qcx.property.domain.SecurityUser;
+import com.qcx.property.domain.model.SecurityUser;
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.RoleUser;
 import com.qcx.property.domain.entity.User;
