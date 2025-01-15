@@ -12,10 +12,10 @@ public enum ErrorType implements BaseExceptionInterface {
 
     // 认证异常
     USERNAME_ALREADY_EXIST(60001, "用户名已存在，请重试！"),
-    USERNAME_LENGTH_ERROR(60002, "用户名长度错误，请重试！"),
-    PASSWORD_LENGTH_ERROR(60003, "密码长度错误，请重试！"),
+    USERNAME_LENGTH_ERROR(60002, "用户名必须大于 6 个字符，小于等于 15 个字符，请重试！"),
+    PASSWORD_LENGTH_ERROR(60003, "密码必须大于等于 8 位，小于 15 位，请重试！"),
     USER_NOT_EXIST(60004, "用户不存在，请重试！"),
-    ADD_ROLE_USER_NOT_EXIST(60004, "给用户添加角色失败，用户不存在，请重试！"),
+    ADD_ROLE_ERROR(60004, "给用户添加角色失败"),
     ;
     // 异常码
     private final int errorCode;

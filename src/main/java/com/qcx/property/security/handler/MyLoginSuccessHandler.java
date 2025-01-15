@@ -59,6 +59,6 @@ public class MyLoginSuccessHandler implements AuthenticationSuccessHandler {
         LoginVo userInfoVo = new LoginVo(user, token, roles);
 
         response.getWriter().write(JSON.toJSONString(ResultUtils.success(Code.LOGIN_SUCCESS, userInfoVo, "登录成功")));
-        log.info("登录成功！");
+        log.info("用户{}登录成功！", user.getUsername());
     }
 }

@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User registerUser = RegisterDto.dtoToUser(registerDto);
-        registerUser.setPassword(passwordEncoder.encode("password"));
+        registerUser.setPassword(passwordEncoder.encode(password));
 
         // 插入新注册用户
         int result = usermapper.insert(registerUser);

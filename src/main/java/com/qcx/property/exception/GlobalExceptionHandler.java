@@ -70,14 +70,14 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 拦截未知的运行时异常
+     * 拦截自定义异常 BusinessException
      */
-    @ExceptionHandler(RuntimeException.class)
-    public BaseResponse<Object> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+    @ExceptionHandler(BusinessException.class)
+    public BaseResponse<Object> handleRuntimeException(BusinessException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址 {},异常: {}", requestURI, e);
+        log.error("请求地址 {},异常: {}", requestURI, e.getMessage());
 
-        return ResultUtils.failure(e.getMessage());
+        return ResultUtils.failure(e.getCode(), null, e.getMessage());
     }
 
     /**

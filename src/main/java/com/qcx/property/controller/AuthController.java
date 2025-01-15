@@ -28,7 +28,7 @@ public class AuthController {
 
     @Operation(summary = "注册")
     @PostMapping("/register")
-    public BaseResponse<?> register(@RequestBody RegisterDto registerDto) {
+    public BaseResponse<?> register(RegisterDto registerDto) {
         boolean result = authService.register(registerDto);
         if (result) {
             return ResultUtils.success("注册成功");

@@ -37,7 +37,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     public void addRole(String username, RoleType roleType) {
         User addRoleUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
         if (addRoleUser == null) {
-            throw new BusinessException(ErrorType.ADD_ROLE_USER_NOT_EXIST);
+            throw new BusinessException(ErrorType.ADD_ROLE_ERROR);
         }
 
         RoleUser roleUser = new RoleUser();
@@ -56,7 +56,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     public void addRole(int userId, RoleType roleType) {
         User addRoleUser = userMapper.selectById(userId);
         if (addRoleUser == null) {
-            throw new BusinessException(ErrorType.ADD_ROLE_USER_NOT_EXIST);
+            throw new BusinessException(ErrorType.ADD_ROLE_ERROR);
         }
 
         RoleUser roleUser = new RoleUser();
