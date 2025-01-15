@@ -1,35 +1,31 @@
-package com.qcx.property.domain.dto;
+package com.qcx.property.domain.vo.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.entity.User;
 import lombok.Data;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description:
+ * @description: 用户 vo
  * @author: yannqing
- * @create: 2025-01-14 16:35
+ * @create: 2025-01-15 14:42
  * @from: <更多资料：yannqing.com>
  **/
 @Data
-public class RegisterDto implements Serializable {
+public class UserVo implements Serializable {
+    /**
+     * 用户id
+     */
+    private Integer userId;
 
     /**
      * 用户名
      */
     private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 地址
@@ -72,19 +68,35 @@ public class RegisterDto implements Serializable {
     private String nickName;
 
     /**
+     * 账户是否可用
+     */
+    private Integer enabled;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
      * 备注
      */
     private String description;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    public static User dtoToUser(RegisterDto registerDto) {
-        if (registerDto == null) {
+    public static UserVo objToVo(User user) {
+        if (user == null) {
             return null;
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(registerDto, user);
-        return user;
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(user, userVo);
+        return userVo;
     }
 }

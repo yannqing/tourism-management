@@ -1,9 +1,7 @@
 package com.qcx.property.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import lombok.Data;
 
@@ -47,6 +45,7 @@ public class Permissions implements Serializable {
     /**
      * 0代表未删除，1代表已删除
      */
+    @TableLogic
     @TableField(value = "isDelete")
     private Integer isDelete;
 

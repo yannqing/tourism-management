@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qcx.property.common.Code;
 import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.vo.LoginVo;
+import com.qcx.property.domain.vo.auth.LoginVo;
 import com.qcx.property.domain.model.SecurityUser;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.utils.JwtUtils;

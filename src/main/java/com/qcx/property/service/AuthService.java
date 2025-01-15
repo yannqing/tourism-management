@@ -1,6 +1,6 @@
 package com.qcx.property.service;
 
-import com.qcx.property.domain.dto.RegisterDto;
+import com.qcx.property.domain.dto.auth.RegisterDto;
 
 /**
  * @description: 认证接口

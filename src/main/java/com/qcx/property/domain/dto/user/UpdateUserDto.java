@@ -1,4 +1,4 @@
-package com.qcx.property.domain.dto;
+package com.qcx.property.domain.dto.user;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.qcx.property.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qcx.property.domain.dto.RegisterDto;
+import com.qcx.property.domain.dto.auth.RegisterDto;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.enums.RoleType;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     @Resource
-    private UserMapper usermapper;
+    private UserMapper userMapper;
 
     @Resource
     private RoleUserService roleUserService;
@@ -41,24 +41,21 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public boolean register(RegisterDto registerDto) {
-        String username = registerDto.getUsername();
-        String password = registerDto.getPassword();
-        String nickName = registerDto.getNickName();
-
-        // 判空
-        if (username == null || password == null || nickName == null) {
-            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
-        }
-        // 判空字符串
-        if (username.isEmpty() || password.isEmpty() || nickName.isEmpty()) {
-            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
-        }
+        String username = Optional.ofNullable(registerDto.getUsername())
+                .filter(s -> !s.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+        String password = Optional.ofNullable(registerDto.getPassword())
+                .filter(s -> !s.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+        String nickName = Optional.ofNullable(registerDto.getNickName())
+                .filter(s -> !s.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         // username 必须不能重复，且大于 6 个字符，小于等于 15 个字符
         if (username.length() <= 6 || username.length() > 15) {
             throw new BusinessException(ErrorType.USERNAME_LENGTH_ERROR);
         }
-        boolean isUsernameExist = usermapper.exists(new QueryWrapper<User>().eq("username", username));
+        boolean isUsernameExist = userMapper.exists(new QueryWrapper<User>().eq("username", username));
         if (isUsernameExist) {
             throw new BusinessException(ErrorType.USERNAME_ALREADY_EXIST);
         }
@@ -72,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         registerUser.setPassword(passwordEncoder.encode(password));
 
         // 插入新注册用户
-        int result = usermapper.insert(registerUser);
+        int result = userMapper.insert(registerUser);
         log.info("用户user{}注册成功", registerUser.getUsername());
 
         // 给用户添加角色

@@ -1,4 +1,4 @@
-package com.qcx.property.domain.vo;
+package com.qcx.property.domain.vo.auth;
 
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.User;
