@@ -1,11 +1,15 @@
 package com.qcx.property.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserRequest;
+import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
+import com.qcx.property.domain.dto.user.UpdateUserDto;
 import com.qcx.property.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qcx.property.domain.vo.user.UserVo;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -18,11 +22,18 @@ public interface UserService extends IService<User> {
 
     boolean addUser(AddUserDto addUserDto);
 
-    boolean deleteUserById(Long id);
+    boolean deleteUserById(Integer id);
 
     int deleteBatchUser(Integer... userIds);
 
-    UserVo getUserById(Long id);
+    UserVo getUserById(Integer id);
 
     Page<User> getAll(QueryUserRequest queryUserRequest);
+
+    boolean updateUserByAdmin(UpdateUserDto updateUserDto);
+
+    boolean updateMyInfo(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException;
+
+    User verifyUserId(Integer userId);
+
 }

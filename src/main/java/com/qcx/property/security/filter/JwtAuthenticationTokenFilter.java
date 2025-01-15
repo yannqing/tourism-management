@@ -60,9 +60,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 //验证token的合法性，不抛异常则合法
                 JwtUtils.tokenVerify(token);
                 //从token中获取到用户的信息，以及对应用户的权限信息
-                String userInfo = JwtUtils.getUserInfoFromToken(token);
-                ObjectMapper objectMapper = new ObjectMapper();
-                User user = objectMapper.readValue(userInfo, User.class);
+                User user = JwtUtils.getUserFromToken(token);
                 List<String> userAuthorization = JwtUtils.getUserAuthorizationFromToken(token);
                 List<SimpleGrantedAuthority> authorities = userAuthorization.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                 //放行后面的用户名密码过滤器

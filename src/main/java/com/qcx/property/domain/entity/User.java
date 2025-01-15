@@ -2,6 +2,7 @@ package com.qcx.property.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -65,7 +66,7 @@ public class User implements Serializable {
      * 性别
      */
     @TableField(value = "sex")
-    private String sex;
+    private Integer sex;
 
     /**
      * 头像
@@ -128,6 +129,7 @@ public class User implements Serializable {
     @TableField(value = "description")
     private String description;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

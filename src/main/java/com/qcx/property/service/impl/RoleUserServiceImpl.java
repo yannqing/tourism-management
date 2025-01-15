@@ -2,14 +2,18 @@ package com.qcx.property.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.RoleUser;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.enums.RoleType;
 import com.qcx.property.exception.BusinessException;
+import com.qcx.property.mapper.RoleMapper;
 import com.qcx.property.mapper.UserMapper;
+import com.qcx.property.service.RoleService;
 import com.qcx.property.service.RoleUserService;
 import com.qcx.property.mapper.RoleUserMapper;
+import com.qcx.property.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +30,13 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     private RoleUserMapper roleUserMapper;
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
+
+    @Resource
+    private RoleService roleService;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     /**
      * 根据用户名添加角色
@@ -35,14 +45,34 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
      */
     @Override
     public void addRole(String username, RoleType roleType) {
-        User addRoleUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+        User addRoleUser = userService.getOne(new QueryWrapper<User>().eq("username", username));
         if (addRoleUser == null) {
             throw new BusinessException(ErrorType.ADD_ROLE_ERROR);
         }
+        roleService.verifyRole(roleType.getRoleId());
 
         RoleUser roleUser = new RoleUser();
         roleUser.setUid(addRoleUser.getUserId());
         roleUser.setRid(roleType.getRoleId());
+
+        this.baseMapper.insert(roleUser);
+    }
+
+    /**
+     * 根据用户 id 与 角色 id 给用户添加角色
+     * @param userId
+     * @param roleId
+     */
+    @Override
+    public void addRole(int userId, Integer roleId) {
+        // 参数有效性检验
+        userService.verifyUserId(userId);
+        roleService.verifyRole(roleId);
+
+        // 添加角色
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUid(userId);
+        roleUser.setRid(roleId);
 
         this.baseMapper.insert(roleUser);
     }
@@ -54,13 +84,12 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
      */
     @Override
     public void addRole(int userId, RoleType roleType) {
-        User addRoleUser = userMapper.selectById(userId);
-        if (addRoleUser == null) {
-            throw new BusinessException(ErrorType.ADD_ROLE_ERROR);
-        }
+        // 参数有效性检验
+        userService.verifyUserId(userId);
+        roleService.verifyRole(roleType.getRoleId());
 
         RoleUser roleUser = new RoleUser();
-        roleUser.setUid(addRoleUser.getUserId());
+        roleUser.setUid(userId);
         roleUser.setRid(roleType.getRoleId());
 
         this.baseMapper.insert(roleUser);

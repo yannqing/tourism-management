@@ -1,13 +1,11 @@
 package com.qcx.property.domain.dto.user;
 
-import com.qcx.property.domain.dto.auth.RegisterDto;
 import com.qcx.property.domain.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @description: 新增用户dto
@@ -55,7 +53,7 @@ public class AddUserDto implements Serializable {
     /**
      * 性别
      */
-    private String sex;
+    private Integer sex;
 
     /**
      * 头像

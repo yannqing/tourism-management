@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qcx.property.common.Code;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserRequest;
+import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.domain.model.BaseResponse;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
@@ -13,6 +14,7 @@ import com.qcx.property.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -45,7 +47,7 @@ public class UserController {
 
     @Operation(summary = "删除用户（管理员）")
     @GetMapping("/delete/{id}")
-    public BaseResponse<?> deleteUserById(@PathVariable Long id) {
+    public BaseResponse<?> deleteUserById(@PathVariable Integer id) {
         boolean result = userService.deleteUserById(id);
         if (result) {
             return ResultUtils.success(String.format("删除用户成功（id：%s）", id));
@@ -75,7 +77,7 @@ public class UserController {
 
     @Operation(summary = "查询单个用户")
     @GetMapping("/get/{id}")
-    public BaseResponse<?> getUserById(@PathVariable Long id) {
+    public BaseResponse<?> getUserById(@PathVariable Integer id) {
         UserVo userVo = userService.getUserById(id);
         return ResultUtils.success(Code.SUCCESS, userVo, "查询单个用户成功");
     }
@@ -89,14 +91,24 @@ public class UserController {
 
     @Operation(summary = "修改用户信息（管理员）")
     @PostMapping("/update/admin/{id}")
-    public BaseResponse<?> updateUserByAdmin(@PathVariable Long id) {
-        return null;
+    public BaseResponse<?> updateUserByAdmin(UpdateUserDto updateUserDto) {
+        boolean result = userService.updateUserByAdmin(updateUserDto);
+        if (result) {
+            return ResultUtils.success(String.format("修改用户信息成功（username：%s）", updateUserDto.getUsername()));
+        } else {
+            return ResultUtils.failure(String.format("修改用户信息失败（username：%s）", updateUserDto.getUsername()));
+        }
     }
 
     @Operation(summary = "修改个人信息")
     @PostMapping("/update")
-    public BaseResponse<?> updateUserById(@RequestBody UpdateUserDto updateUserDto) {
-        return null;
+    public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) {
+        boolean result = userService.updateMyInfo(updateMyInfoDto, request);
+        if (result) {
+            return ResultUtils.success(String.format("修改个人信息成功（username：%s）", updateMyInfoDto.getUsername()));
+        } else {
+            return ResultUtils.failure(String.format("修改个人信息失败（username：%s）", updateMyInfoDto.getUsername()));
+        }
     }
 
     @Operation(summary = "修改个人密码")

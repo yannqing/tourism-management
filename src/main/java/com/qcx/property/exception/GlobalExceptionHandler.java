@@ -1,5 +1,6 @@
 package com.qcx.property.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.domain.model.BaseResponse;
 import com.qcx.property.utils.ResultUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -78,6 +79,17 @@ public class GlobalExceptionHandler {
         log.error("请求地址 {},异常: {}", requestURI, e.getMessage());
 
         return ResultUtils.failure(e.getCode(), null, e.getMessage());
+    }
+
+    /**
+     * 拦截自定义异常 BusinessException
+     */
+    @ExceptionHandler(JsonProcessingException.class)
+    public BaseResponse<Object> handleJsonProcessingException(JsonProcessingException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址 {}, JSON 解析异常: {}", requestURI, e.getMessage());
+
+        return ResultUtils.failure(e.getMessage());
     }
 
     /**

@@ -1,16 +1,11 @@
 package com.qcx.property.domain.dto.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.qcx.property.domain.model.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @description: 查询用户请求封装
@@ -59,7 +54,7 @@ public class QueryUserRequest extends PageRequest implements Serializable {
     /**
      * 性别
      */
-    private String sex;
+    private Integer sex;
 
     /**
      * 昵称

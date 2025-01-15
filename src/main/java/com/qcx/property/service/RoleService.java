@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-01-10 15:47:20
 */
 public interface RoleService extends IService<Role> {
-
+    void verifyRole(int roleId);
 }

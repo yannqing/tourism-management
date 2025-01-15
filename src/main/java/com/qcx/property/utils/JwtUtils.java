@@ -5,7 +5,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qcx.property.domain.entity.Role;
+import com.qcx.property.domain.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -76,10 +79,12 @@ public class JwtUtils {
         return JwtUtils.token(authentication);
     }
 
-    public static String getUserInfoFromToken(String token){
+    public static User getUserFromToken(String token) throws JsonProcessingException {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
-        return decodedJWT.getClaim("userInfo").asString();
+        String userInfo =  decodedJWT.getClaim("userInfo").asString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(userInfo, User.class);
     }
 
     public static List<String> getUserAuthorizationFromToken(String token){

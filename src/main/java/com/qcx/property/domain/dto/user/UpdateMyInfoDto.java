@@ -6,33 +6,35 @@ import com.qcx.property.exception.BusinessException;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
- * @description: 修改用户信息的 dto（管理员）
+ * @description: 修改个人信息的 dto
  * @author: yannqing
  * @create: 2025-01-13 10:36
  * @from: <更多资料：yannqing.com>
  **/
 @Data
-public class UpdateUserDto {
+public class UpdateMyInfoDto {
     private Integer userId;
     private String username;
     private String nickName;
     private String address;
     private String phone;
     private String email;
+    private int age;
+    private int sex;
     private String avatar;
-    private List<Integer> roleIds;
-    private Integer enabled;
+    private String signature;
+    private String description;
 
-    public static User dtoToUser(UpdateUserDto updateUserDto) {
-        Optional.ofNullable(updateUserDto)
+    public static User dtoToUser(UpdateMyInfoDto updateMyInfoDto) {
+        Optional.ofNullable(updateMyInfoDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         User updpateUser = new User();
-        BeanUtils.copyProperties(updateUserDto, updpateUser);
+        BeanUtils.copyProperties(updateMyInfoDto, updpateUser);
         return updpateUser;
     }
+
 }

@@ -3,8 +3,11 @@ package com.qcx.property.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserRequest;
+import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
+import com.qcx.property.domain.dto.user.UpdateUserDto;
 import com.qcx.property.domain.entity.RoleUser;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.domain.vo.user.UserVo;
@@ -14,7 +17,9 @@ import com.qcx.property.exception.BusinessException;
 import com.qcx.property.service.RoleUserService;
 import com.qcx.property.service.UserService;
 import com.qcx.property.mapper.UserMapper;
+import com.qcx.property.utils.JwtUtils;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -91,16 +96,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return
      */
     @Override
-    public boolean deleteUserById(Long id) {
+    public boolean deleteUserById(Integer id) {
         // 判空处理
         Optional.ofNullable(id)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         // 查看用户是否存在
-        User deleteUser = this.baseMapper.selectById(id);
-        String username = Optional.ofNullable(deleteUser)
-                .map(User::getUsername)
-                .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_EXIST));
+        User deleteUser = verifyUserId(id);
+        String username = deleteUser.getUsername();
 
         // 删除用户
         int result = this.baseMapper.deleteById(id);
@@ -147,16 +150,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return
      */
     @Override
-    public UserVo getUserById(Long id) {
+    public UserVo getUserById(Integer id) {
         // 判空
         Optional.ofNullable(id)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         // 有效性检验
-        User getUser = this.baseMapper.selectById(id);
-        if (getUser == null) {
-            throw new BusinessException(ErrorType.USER_NOT_EXIST);
-        }
+        User getUser = verifyUserId(id);
 
         // 返回封装类 vo
         return UserVo.objToVo(getUser);
@@ -180,9 +180,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String email = queryUserRequest.getEmail();
         Integer age = queryUserRequest.getAge();
         String signature = queryUserRequest.getSignature();
-        String sex = queryUserRequest.getSex();
+        Integer sex = queryUserRequest.getSex();
         String nickName = queryUserRequest.getNickName();
         String description = queryUserRequest.getDescription();
+
+        // userId 有效性判断
+        verifyUserId(userId);
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(userId != null, "userId", userId);
@@ -193,11 +196,58 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.like(StringUtils.isNotBlank(email), "email", email);
         queryWrapper.eq(age!= null, "age", age);
         queryWrapper.like(StringUtils.isNotBlank(signature), "signature", signature);
-        queryWrapper.eq(StringUtils.isNotBlank(sex), "sex", sex);
+        queryWrapper.eq(sex != null, "sex", sex);
         queryWrapper.like(StringUtils.isNotBlank(nickName), "nickName", nickName);
         return this.page(new Page<>(queryUserRequest.getCurrent(), queryUserRequest.getPageSize()), queryWrapper);
     }
 
+    @Override
+    public boolean updateUserByAdmin(UpdateUserDto updateUserDto) {
+        // 参数判空
+        Optional.ofNullable(updateUserDto)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        // 获取参数
+        Integer userId = updateUserDto.getUserId();
+        List<Integer> roleIds = updateUserDto.getRoleIds();
+
+        // 参数有效性判断
+        verifyUserId(userId);
+
+        // TODO 打断点调试，查看内容
+        // 更新用户信息
+        User updateUser = UpdateUserDto.dtoToUser(updateUserDto);
+        boolean updateResult = this.updateById(updateUser);
+        log.info("更新用户（id：{}）信息", userId);
+
+        // 修改用户角色
+        roleUserService.remove(new QueryWrapper<RoleUser>().eq("uid", userId));
+        roleIds.forEach(roleId -> {
+            roleUserService.addRole(userId, roleId);
+        });
+        log.info("更新用户（id：{}）的角色信息{}", userId, roleIds.stream().map(String::valueOf));
+
+        return updateResult;
+    }
+
+    @Override
+    public boolean updateMyInfo(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
+        String token = request.getHeader("token");
+        if (StringUtils.isBlank(token)) {
+            throw new BusinessException(ErrorType.TOKEN_NOT_EXIST);
+        }
+        User loginUser = JwtUtils.getUserFromToken(token);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorType.TOKEN_INVALID);
+        }
+
+        // 更新用户信息
+        User updateUserInfo = UpdateMyInfoDto.dtoToUser(updateMyInfoDto);
+        boolean updateResult = this.updateById(updateUserInfo);
+        log.info("更新个人信息（userId:{}）", loginUser.getUserId());
+
+        return updateResult;
+    }
 
     // 辅助方法：批量删除用户，日志记录
     private void logDeletedUsers(List<User> users) {
@@ -213,6 +263,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .map(User::getUsername)
                 .collect(Collectors.joining(", "));
         log.info("批量删除用户的角色: {}", usernames);
+    }
+
+    /**
+     * 验证用户 id 的有效性
+     * @param userId
+     * @return
+     */
+    public User verifyUserId(Integer userId) {
+        User verifyUser = this.getById(userId);
+        Optional.ofNullable(verifyUser)
+                .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_EXIST));
+        return verifyUser;
     }
 }
 
