@@ -12,7 +12,9 @@ import com.qcx.property.domain.dto.user.UpdateUserDto;
 import com.qcx.property.domain.vo.user.UserVo;
 import com.qcx.property.service.UserService;
 import com.qcx.property.utils.ResultUtils;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,13 +92,13 @@ public class UserController {
     }
 
     @Operation(summary = "修改用户信息（管理员）")
-    @PostMapping("/update/admin/{id}")
+    @PostMapping("/update/admin")
     public BaseResponse<?> updateUserByAdmin(UpdateUserDto updateUserDto) {
         boolean result = userService.updateUserByAdmin(updateUserDto);
         if (result) {
-            return ResultUtils.success(String.format("修改用户信息成功（username：%s）", updateUserDto.getUsername()));
+            return ResultUtils.success(String.format("修改用户信息成功（userId：%s）", updateUserDto.getUserId()));
         } else {
-            return ResultUtils.failure(String.format("修改用户信息失败（username：%s）", updateUserDto.getUsername()));
+            return ResultUtils.failure(String.format("修改用户信息失败（userId：%s）", updateUserDto.getUserId()));
         }
     }
 
@@ -105,9 +107,9 @@ public class UserController {
     public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
         boolean result = userService.updateMyInfo(updateMyInfoDto, request);
         if (result) {
-            return ResultUtils.success(String.format("修改个人信息成功（username：%s）", updateMyInfoDto.getUsername()));
+            return ResultUtils.success(String.format("修改个人信息成功（userId：%s）", updateMyInfoDto.getUserId()));
         } else {
-            return ResultUtils.failure(String.format("修改个人信息失败（username：%s）", updateMyInfoDto.getUsername()));
+            return ResultUtils.failure(String.format("修改个人信息失败（userId：%s）", updateMyInfoDto.getUserId()));
         }
     }
 

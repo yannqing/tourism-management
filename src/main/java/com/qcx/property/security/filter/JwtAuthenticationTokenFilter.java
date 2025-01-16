@@ -48,10 +48,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String redisToken = redisCache.getCacheObject("token:" + token);
 
         if (redisToken==null) {
-            response.setStatus(200);
+            response.setStatus(500);
             response.setContentType("application/json;charset=utf-8");
             response.getWriter().write(JSON.toJSONString(ResultUtils.failure(Code.TOKEN_EXPIRE, null, "您已退出，请重新登录")));
-            log.info("您已退出，请重新登录");
+            log.error("您已退出，请重新登录");
             return;
         }
 
@@ -61,16 +61,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 JwtUtils.tokenVerify(token);
                 //从token中获取到用户的信息，以及对应用户的权限信息
                 User user = JwtUtils.getUserFromToken(token);
-                List<String> userAuthorization = JwtUtils.getUserAuthorizationFromToken(token);
-                List<SimpleGrantedAuthority> authorities = userAuthorization.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+//                List<String> userAuthorization = JwtUtils.getUserAuthorizationFromToken(token);
+//                List<SimpleGrantedAuthority> authorities = userAuthorization.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                 //放行后面的用户名密码过滤器
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user,null,authorities);
+//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user,null,authorities);
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user,null,null);
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }catch (Exception e){
                 response.setStatus(200);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(JSON.toJSONString(ResultUtils.failure(Code.TOKEN_AUTHENTICATE_FAILURE,null,"非法token")));
-                log.error("非法token");
+                log.error("非法token({})", token);
                 return;
             }
         }

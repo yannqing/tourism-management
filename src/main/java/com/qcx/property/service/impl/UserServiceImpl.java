@@ -20,6 +20,7 @@ import com.qcx.property.service.RoleUserService;
 import com.qcx.property.service.UserService;
 import com.qcx.property.mapper.UserMapper;
 import com.qcx.property.utils.JwtUtils;
+import com.qcx.property.utils.RedisCache;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private RoleUserService roleUserService;
+
+    @Resource
+    private RedisCache redisCache;
 
     /**
      * 管理员新增用户
@@ -186,9 +190,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String nickName = queryUserDto.getNickName();
         String description = queryUserDto.getDescription();
 
-        // userId 有效性判断
-        verifyUserId(userId);
-
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(userId != null, "userId", userId);
         queryWrapper.like(StringUtils.isNotBlank(username), "username", username);
@@ -200,6 +201,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.like(StringUtils.isNotBlank(signature), "signature", signature);
         queryWrapper.eq(sex != null, "sex", sex);
         queryWrapper.like(StringUtils.isNotBlank(nickName), "nickName", nickName);
+
+        log.info("管理员查询所有的用户");
+        // TODO 这里查询出来的数据，total 为0
         return this.page(new Page<>(queryUserDto.getCurrent(), queryUserDto.getPageSize()), queryWrapper);
     }
 
@@ -228,11 +232,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         log.info("更新用户（id：{}）信息", userId);
 
         // 修改用户角色
-        roleUserService.remove(new QueryWrapper<RoleUser>().eq("uid", userId));
-        roleIds.forEach(roleId -> {
-            roleUserService.addRole(userId, roleId);
-        });
-        log.info("更新用户（id：{}）的角色信息{}", userId, roleIds.stream().map(String::valueOf));
+        if (updateUserDto.getRoleIds() != null && !updateUserDto.getRoleIds().isEmpty()) {
+            roleUserService.remove(new QueryWrapper<RoleUser>().eq("uid", userId));
+            roleIds.forEach(roleId -> {
+                roleUserService.addRole(userId, roleId);
+            });
+            log.info("更新用户（id：{}）的角色信息{}", userId, roleIds.stream().map(String::valueOf));
+        }
 
         return updateResult;
     }
@@ -250,6 +256,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         // 更新用户信息
         User updateUserInfo = UpdateMyInfoDto.dtoToUser(updateMyInfoDto);
+        updateUserInfo.setUserId(loginUser.getUserId());
         boolean updateResult = this.updateById(updateUserInfo);
         log.info("更新个人信息（userId:{}）", loginUser.getUserId());
 
@@ -267,6 +274,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public boolean updatePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException {
         User loginUser = verifyToken(request);
+
+        // 判空
+        Optional.ofNullable(originPassword)
+                .filter(op -> !op.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+        Optional.ofNullable(newPassword)
+                .filter(op -> !op.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+        Optional.ofNullable(againPassword)
+                .filter(op -> !op.isEmpty())
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         // 有效性检验
         if (newPassword.length() < 8 || newPassword.length() >= 15) {
@@ -289,6 +307,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                         .set("password", passwordEncoder.encode(newPassword))
         );
         log.info("修改个人密码（username:{}）", loginUser.getUsername());
+
+        // 退出登录
+        redisCache.deleteObject("token:"+request.getHeader("token"));
+        log.info("用户退出，需重新登录");
 
         return updateResult;
     }

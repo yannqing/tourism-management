@@ -3,7 +3,9 @@ package com.qcx.property.domain.dto.user;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.exception.BusinessException;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -16,7 +18,10 @@ import java.util.Optional;
  * @from: <更多资料：yannqing.com>
  **/
 @Data
+@Schema(name = "UpdateUserDto", description = "修改用户信息对象")
 public class UpdateUserDto {
+    @Schema(description = "用户id", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NonNull
     private Integer userId;
     private String username;
     private String nickName;

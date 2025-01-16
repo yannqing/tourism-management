@@ -8,6 +8,7 @@ import com.qcx.property.enums.ErrorType;
 import com.qcx.property.enums.RoleType;
 import com.qcx.property.exception.BusinessException;
 import com.qcx.property.mapper.RoleMapper;
+import com.qcx.property.mapper.UserMapper;
 import com.qcx.property.service.RoleService;
 import com.qcx.property.service.RoleUserService;
 import com.qcx.property.mapper.RoleUserMapper;
@@ -27,7 +28,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     implements RoleUserService{
 
     @Resource
-    private UserService userService;
+    private UserMapper userMapper;
 
     @Resource
     private RoleService roleService;
@@ -39,7 +40,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
      */
     @Override
     public void addRole(String username, RoleType roleType) {
-        User addRoleUser = userService.getOne(new QueryWrapper<User>().eq("username", username));
+        User addRoleUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
         Optional.ofNullable(addRoleUser)
                         .orElseThrow(() -> new BusinessException(ErrorType.ROLE_ADD_ERROR));
 
@@ -60,7 +61,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     @Override
     public void addRole(int userId, Integer roleId) {
         // 参数有效性检验
-        userService.verifyUserId(userId);
+        verifyUserId(userId);
         roleService.verifyRole(roleId, ErrorType.ROLE_ADD_ERROR);
 
         // 添加角色
@@ -79,7 +80,7 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     @Override
     public void addRole(int userId, RoleType roleType) {
         // 参数有效性检验
-        userService.verifyUserId(userId);
+        verifyUserId(userId);
         roleService.verifyRole(roleType.getRoleId(), ErrorType.ROLE_ADD_ERROR);
 
         RoleUser roleUser = new RoleUser();
@@ -87,6 +88,18 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
         roleUser.setRid(roleType.getRoleId());
 
         this.baseMapper.insert(roleUser);
+    }
+
+    /**
+     * 验证用户 id 的有效性
+     * @param userId
+     * @return
+     */
+    public User verifyUserId(Integer userId) {
+        User verifyUser = userMapper.selectById(userId);
+        Optional.ofNullable(verifyUser)
+                .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_EXIST));
+        return verifyUser;
     }
 }
 
