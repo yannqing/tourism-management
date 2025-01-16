@@ -1,9 +1,11 @@
 package com.qcx.property.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.qcx.property.common.CommonConstant;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserRequest;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
@@ -201,6 +203,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return this.page(new Page<>(queryUserRequest.getCurrent(), queryUserRequest.getPageSize()), queryWrapper);
     }
 
+    /**
+     * 管理员修改用户信息
+     * @param updateUserDto
+     * @return
+     */
     @Override
     public boolean updateUserByAdmin(UpdateUserDto updateUserDto) {
         // 参数判空
@@ -230,22 +237,81 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return updateResult;
     }
 
+    /**
+     * 更新个人信息
+     * @param updateMyInfoDto
+     * @param request
+     * @return
+     * @throws JsonProcessingException
+     */
     @Override
     public boolean updateMyInfo(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
-        String token = request.getHeader("token");
-        if (StringUtils.isBlank(token)) {
-            throw new BusinessException(ErrorType.TOKEN_NOT_EXIST);
-        }
-        User loginUser = JwtUtils.getUserFromToken(token);
-        if (loginUser == null) {
-            throw new BusinessException(ErrorType.TOKEN_INVALID);
-        }
+        User loginUser = verifyToken(request);
 
         // 更新用户信息
         User updateUserInfo = UpdateMyInfoDto.dtoToUser(updateMyInfoDto);
         boolean updateResult = this.updateById(updateUserInfo);
         log.info("更新个人信息（userId:{}）", loginUser.getUserId());
 
+        return updateResult;
+    }
+
+    /**
+     * 修改个人密码
+     * @param originPassword
+     * @param newPassword
+     * @param againPassword
+     * @param request
+     * @return
+     */
+    @Override
+    public boolean updatePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException {
+        User loginUser = verifyToken(request);
+
+        // 有效性检验
+        if (newPassword.length() < 8 || newPassword.length() >= 15) {
+            throw new BusinessException(ErrorType.PASSWORD_LENGTH_ERROR);
+        }
+        if (!newPassword.equals(againPassword)) {
+            throw new BusinessException(ErrorType.PASSWORD_NOT_EQUALS);
+        }
+
+        // 原始密码验证（先获取到登录用户的全部信息）
+        User loginUserAllInfo = this.getById(loginUser.getUserId());
+        if (!passwordEncoder.matches(originPassword, loginUserAllInfo.getPassword())) {
+            throw new BusinessException(ErrorType.PASSWORD_NOT_MATCH);
+        }
+
+        // 修改密码
+        boolean updateResult = this.update(
+                new UpdateWrapper<User>()
+                        .eq("userId", loginUser.getUserId())
+                        .set("password", passwordEncoder.encode(newPassword))
+        );
+        log.info("修改个人密码（username:{}）", loginUser.getUsername());
+
+        return updateResult;
+    }
+
+    /**
+     * 管理员重置用户密码
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean resetUserPassword(Integer id) {
+        // 判空
+        Optional.ofNullable(id)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        // 有效性检验
+        User resetPasswordUser = verifyUserId(id);
+
+        // 重置密码
+        resetPasswordUser.setPassword(passwordEncoder.encode(CommonConstant.RESET_PASSWORD));
+        boolean updateResult = this.updateById(resetPasswordUser);
+
+        log.info("管理员重置用户(username: {})密码", resetPasswordUser.getUsername());
         return updateResult;
     }
 
@@ -275,6 +341,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         Optional.ofNullable(verifyUser)
                 .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_EXIST));
         return verifyUser;
+    }
+
+    /**
+     * 验证 token
+     * @param request
+     * @return
+     * @throws JsonProcessingException
+     */
+    public User verifyToken(HttpServletRequest request) throws JsonProcessingException {
+        String token = request.getHeader("token");
+        if (StringUtils.isBlank(token)) {
+            throw new BusinessException(ErrorType.TOKEN_NOT_EXIST);
+        }
+        User loginUser = JwtUtils.getUserFromToken(token);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorType.TOKEN_INVALID);
+        }
+        return loginUser;
     }
 }
 

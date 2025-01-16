@@ -36,4 +36,7 @@ public interface UserService extends IService<User> {
 
     User verifyUserId(Integer userId);
 
+    boolean updatePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException;
+
+    boolean resetUserPassword(Integer id);
 }

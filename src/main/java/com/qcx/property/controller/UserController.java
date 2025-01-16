@@ -1,6 +1,7 @@
 package com.qcx.property.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.common.Code;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserRequest;
@@ -102,7 +103,7 @@ public class UserController {
 
     @Operation(summary = "修改个人信息")
     @PostMapping("/update")
-    public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) {
+    public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
         boolean result = userService.updateMyInfo(updateMyInfoDto, request);
         if (result) {
             return ResultUtils.success(String.format("修改个人信息成功（username：%s）", updateMyInfoDto.getUsername()));
@@ -112,20 +113,30 @@ public class UserController {
     }
 
     @Operation(summary = "修改个人密码")
-    @GetMapping("/changePassword/{id}")
-    public BaseResponse<?> changePassword(@PathVariable Long id) {
-        return null;
+    @GetMapping("/changePassword")
+    public BaseResponse<?> changePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException {
+        boolean result = userService.updatePassword(originPassword, newPassword, againPassword, request);
+        if (result) {
+            return ResultUtils.success(String.format("修改个人密码成功（新密码：%s）", newPassword));
+        } else {
+            return ResultUtils.failure(String.format("修改个人密码失败（新密码：%s）", newPassword));
+        }
     }
 
     @Operation(summary = "重置用户密码（管理员）")
     @PostMapping("/reset/{id}")
-    public BaseResponse<?> resetUserPassword(@PathVariable Long id) {
-        return null;
+    public BaseResponse<?> resetUserPassword(@PathVariable Integer id) {
+        boolean result = userService.resetUserPassword(id);
+        if (result) {
+            return ResultUtils.success(String.format("重置用户密码成功（userId：%s）", id));
+        } else {
+            return ResultUtils.failure(String.format("重置用户密码失败（userId：%s）", id));
+        }
     }
 
     @Operation(summary = "导出所有用户信息（管理员）")
     @PostMapping("/export")
     public BaseResponse<?> exportUser() {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 }

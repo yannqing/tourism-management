@@ -1,6 +1,7 @@
 package com.qcx.property.controller;
 
 import com.qcx.property.domain.model.BaseResponse;
+import com.qcx.property.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -19,37 +20,37 @@ public class PermissionController {
     @Operation(summary = "新增权限")
     @PostMapping("/add")
     public BaseResponse<?> add(@RequestBody String data) {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
     @Operation(summary = "根据id删除权限")
     @PostMapping("/delete/{id}")
     public BaseResponse<?> delete(@PathVariable String id) {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
     @Operation(summary = "批量删除权限")
     @DeleteMapping("/delete/list")
     public BaseResponse<?> deleteBatch(Integer[] permissionIds) {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
     @Operation(summary = "查询所有权限")
     @GetMapping("/getAll")
     public BaseResponse<?> getAll() {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
     @Operation(summary = "根据角色id查询所有权限")
     @GetMapping("/list/{id}")
     public BaseResponse<?> getAllByRole(@PathVariable Integer id) {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
     @Operation(summary = "编辑权限")
     @PutMapping("/edit/{id}")
     public BaseResponse<?> edit(@PathVariable String id, @RequestBody String data) {
-        return null;
+        return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
 }

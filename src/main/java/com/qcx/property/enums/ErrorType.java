@@ -16,6 +16,8 @@ public enum ErrorType implements BaseExceptionInterface {
     PASSWORD_LENGTH_ERROR(60003, "密码必须大于等于 8 位，小于 15 位，请重试！"),
     USER_NOT_EXIST(60004, "用户不存在，请重试！"),
     ADD_ROLE_ERROR(60005, "给用户添加角色失败"),
+    PASSWORD_NOT_MATCH(60006, "输入的密码与原来密码不一致，请重试"),
+    PASSWORD_NOT_EQUALS(60006, "两次输入的密码不一致，请重试"),
 
     //token 异常
     TOKEN_NOT_EXIST(60101, "token 不存在"),
