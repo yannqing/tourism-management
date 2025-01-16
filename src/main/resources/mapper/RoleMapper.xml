@@ -8,11 +8,13 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="roleName" column="roleName" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,roleName,remark,
+        id,roleName,remark,createTime,updateTime,
         isDelete
     </sql>
 </mapper>

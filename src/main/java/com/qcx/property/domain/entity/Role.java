@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -27,6 +31,18 @@ public class Role implements Serializable {
     private String roleName;
 
     /**
+     * 创建时间
+     */
+    @TableField(value = "createTime")
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField(value = "updateTime")
+    private Date updateTime;
+
+    /**
      * 角色含义
      */
     @TableField(value = "remark")
@@ -39,6 +55,7 @@ public class Role implements Serializable {
     @TableField(value = "isDelete")
     private Integer isDelete;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -57,6 +74,8 @@ public class Role implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getIsDelete() == null ? other.getIsDelete() == null : this.getIsDelete().equals(other.getIsDelete()));
     }
 
@@ -67,6 +86,8 @@ public class Role implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getIsDelete() == null) ? 0 : getIsDelete().hashCode());
         return result;
     }
@@ -80,6 +101,8 @@ public class Role implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", roleName=").append(roleName);
         sb.append(", remark=").append(remark);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", isDelete=").append(isDelete);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

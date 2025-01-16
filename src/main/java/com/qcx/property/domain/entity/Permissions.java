@@ -2,7 +2,10 @@ package com.qcx.property.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -43,12 +46,25 @@ public class Permissions implements Serializable {
     private Integer type;
 
     /**
+     * 创建时间
+     */
+    @TableField(value = "createTime")
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField(value = "updateTime")
+    private Date updateTime;
+
+    /**
      * 0代表未删除，1代表已删除
      */
     @TableLogic
     @TableField(value = "isDelete")
     private Integer isDelete;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -69,6 +85,8 @@ public class Permissions implements Serializable {
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getIsDelete() == null ? other.getIsDelete() == null : this.getIsDelete().equals(other.getIsDelete()));
     }
 
@@ -81,6 +99,8 @@ public class Permissions implements Serializable {
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getIsDelete() == null) ? 0 : getIsDelete().hashCode());
         return result;
     }
@@ -96,6 +116,8 @@ public class Permissions implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", code=").append(code);
         sb.append(", type=").append(type);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", isDelete=").append(isDelete);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

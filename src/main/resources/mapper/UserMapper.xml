@@ -13,7 +13,7 @@
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="age" column="age" jdbcType="INTEGER"/>
             <result property="signature" column="signature" jdbcType="VARCHAR"/>
-            <result property="sex" column="sex" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="TINYINT"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
             <result property="nickName" column="nickName" jdbcType="VARCHAR"/>
             <result property="enabled" column="enabled" jdbcType="INTEGER"/>

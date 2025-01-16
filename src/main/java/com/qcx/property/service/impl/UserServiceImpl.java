@@ -141,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         // 删除此用户所有的角色，并记录日志
         roleUserService.remove(new QueryWrapper<RoleUser>().in("uid", userIdList));
-        logDeletedRoles(users);
+        log.info("批量删除用户的角色");
 
         return result;
     }
@@ -321,14 +321,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .map(User::getUsername)
                 .collect(Collectors.joining(", "));
         log.info("批量删除用户: {}", usernames);
-    }
-
-    // 辅助方法：记录已删除用户的角色
-    private void logDeletedRoles(List<User> users) {
-        String usernames = users.stream()
-                .map(User::getUsername)
-                .collect(Collectors.joining(", "));
-        log.info("批量删除用户的角色: {}", usernames);
     }
 
     /**

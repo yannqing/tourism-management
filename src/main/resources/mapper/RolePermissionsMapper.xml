@@ -7,9 +7,12 @@
     <resultMap id="BaseResultMap" type="com.qcx.property.domain.entity.RolePermissions">
             <result property="rid" column="rid" jdbcType="INTEGER"/>
             <result property="pid" column="pid" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        rid,pid
+        rid,pid,createTime,updateTime,isDelete
     </sql>
 </mapper>
