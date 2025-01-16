@@ -1,0 +1,42 @@
+package com.qcx.property.domain.dto.permissions;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.qcx.property.domain.model.PageRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @description: 管理员查询所有权限 dto
+ * @author: yannqing
+ * @create: 2025-01-16 15:44
+ * @from: <更多资料：yannqing.com>
+ **/
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class QueryPermissionsDto extends PageRequest implements Serializable {
+    /**
+     *
+     */
+    private Integer id;
+
+    /**
+     * 名称
+     */
+    private String name;
+
+    /**
+     * 权限编码
+     */
+    private String code;
+
+    /**
+     * 0代表菜单1权限
+     */
+    private Integer type;
+}

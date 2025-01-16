@@ -14,7 +14,7 @@ import com.qcx.property.enums.ErrorType;
 * @createDate 2025-01-10 15:47:20
 */
 public interface RoleService extends IService<Role> {
-    Role verifyRole(int roleId, ErrorType errorType);
+    Role verifyRole(Integer roleId, ErrorType errorType);
 
     boolean addRole(AddRoleDto addRoleDto);
 

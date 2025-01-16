@@ -15,7 +15,7 @@ import java.io.Serializable;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class QueryUserRequest extends PageRequest implements Serializable {
+public class QueryUserDto extends PageRequest implements Serializable {
     /**
      * 用户id
      */

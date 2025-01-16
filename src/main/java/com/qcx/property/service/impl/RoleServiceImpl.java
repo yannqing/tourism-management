@@ -73,10 +73,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
      */
     @Override
     public boolean deleteRole(Integer id) {
-        // 判空
-        Optional.ofNullable(id)
-                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
-
         // 有效性判断
         Role removeRole = verifyRole(id, ErrorType.ROLE_NOT_EXIST);
 
@@ -163,7 +159,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
      * @param roleId 角色 id
      * @param errorType 错误类型
      */
-    public Role verifyRole(int roleId, ErrorType errorType) {
+    public Role verifyRole(Integer roleId, ErrorType errorType) {
+        Optional.ofNullable(roleId)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
         Role addRole = this.getById(roleId);
         if (addRole == null) {
             throw new BusinessException(errorType);

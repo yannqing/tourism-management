@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.common.Code;
 import com.qcx.property.domain.dto.user.AddUserDto;
-import com.qcx.property.domain.dto.user.QueryUserRequest;
+import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.domain.model.BaseResponse;
@@ -84,8 +84,8 @@ public class UserController {
 
     @Operation(summary = "查询所有用户（管理员）")
     @GetMapping("/list")
-    public BaseResponse<?> getAll(QueryUserRequest queryUserRequest) {
-        Page<User> userPages = userService.getAll(queryUserRequest);
+    public BaseResponse<?> getAll(QueryUserDto queryUserDto) {
+        Page<User> userPages = userService.getAll(queryUserDto);
         return ResultUtils.success(Code.SUCCESS, userPages, "查询所有用户成功");
     }
 

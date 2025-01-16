@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qcx.property.common.CommonConstant;
 import com.qcx.property.domain.dto.user.AddUserDto;
-import com.qcx.property.domain.dto.user.QueryUserRequest;
+import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
 import com.qcx.property.domain.entity.RoleUser;
@@ -166,25 +166,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     /**
      * 查询所有用户
-     * @param queryUserRequest
+     * @param queryUserDto
      * @return
      */
     @Override
-    public Page<User> getAll(QueryUserRequest queryUserRequest) {
+    public Page<User> getAll(QueryUserDto queryUserDto) {
         // 判空
-        Optional.ofNullable(queryUserRequest)
+        Optional.ofNullable(queryUserDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
-        Integer userId = queryUserRequest.getUserId();
-        String username = queryUserRequest.getUsername();
-        String address = queryUserRequest.getAddress();
-        String phone = queryUserRequest.getPhone();
-        String email = queryUserRequest.getEmail();
-        Integer age = queryUserRequest.getAge();
-        String signature = queryUserRequest.getSignature();
-        Integer sex = queryUserRequest.getSex();
-        String nickName = queryUserRequest.getNickName();
-        String description = queryUserRequest.getDescription();
+        Integer userId = queryUserDto.getUserId();
+        String username = queryUserDto.getUsername();
+        String address = queryUserDto.getAddress();
+        String phone = queryUserDto.getPhone();
+        String email = queryUserDto.getEmail();
+        Integer age = queryUserDto.getAge();
+        String signature = queryUserDto.getSignature();
+        Integer sex = queryUserDto.getSex();
+        String nickName = queryUserDto.getNickName();
+        String description = queryUserDto.getDescription();
 
         // userId 有效性判断
         verifyUserId(userId);
@@ -200,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.like(StringUtils.isNotBlank(signature), "signature", signature);
         queryWrapper.eq(sex != null, "sex", sex);
         queryWrapper.like(StringUtils.isNotBlank(nickName), "nickName", nickName);
-        return this.page(new Page<>(queryUserRequest.getCurrent(), queryUserRequest.getPageSize()), queryWrapper);
+        return this.page(new Page<>(queryUserDto.getCurrent(), queryUserDto.getPageSize()), queryWrapper);
     }
 
     /**

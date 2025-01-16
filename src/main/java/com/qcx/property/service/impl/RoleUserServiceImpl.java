@@ -15,6 +15,8 @@ import com.qcx.property.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
 * @author 67121
 * @description 针对表【role_user】的数据库操作Service实现
@@ -25,16 +27,10 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     implements RoleUserService{
 
     @Resource
-    private RoleUserMapper roleUserMapper;
-
-    @Resource
     private UserService userService;
 
     @Resource
     private RoleService roleService;
-
-    @Resource
-    private RoleMapper roleMapper;
 
     /**
      * 根据用户名添加角色
@@ -44,9 +40,9 @@ public class RoleUserServiceImpl extends ServiceImpl<RoleUserMapper, RoleUser>
     @Override
     public void addRole(String username, RoleType roleType) {
         User addRoleUser = userService.getOne(new QueryWrapper<User>().eq("username", username));
-        if (addRoleUser == null) {
-            throw new BusinessException(ErrorType.ROLE_ADD_ERROR);
-        }
+        Optional.ofNullable(addRoleUser)
+                        .orElseThrow(() -> new BusinessException(ErrorType.ROLE_ADD_ERROR));
+
         roleService.verifyRole(roleType.getRoleId(), ErrorType.ROLE_ADD_ERROR);
 
         RoleUser roleUser = new RoleUser();

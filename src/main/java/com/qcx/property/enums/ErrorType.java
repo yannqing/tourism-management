@@ -20,6 +20,7 @@ public enum ErrorType implements BaseExceptionInterface {
     ROLE_NOT_EXIST(60008, "角色不存在"),
     PASSWORD_NOT_MATCH(60006, "输入的密码与原来密码不一致，请重试"),
     PASSWORD_NOT_EQUALS(60007, "两次输入的密码不一致，请重试"),
+    PERMISSION_NOT_EXIST(60009, "权限不存在"),
 
     //token 异常
     TOKEN_NOT_EXIST(60101, "token 不存在"),
