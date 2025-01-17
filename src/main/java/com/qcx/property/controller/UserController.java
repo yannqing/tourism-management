@@ -6,6 +6,7 @@ import com.qcx.property.common.Code;
 import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
+import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.domain.model.BaseResponse;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @description: 用户管理
@@ -37,7 +39,7 @@ public class UserController {
     private UserService userService;
 
     @Operation(summary = "新增用户（管理员）")
-    @GetMapping("/add")
+    @PostMapping
     public BaseResponse<?> addUser(AddUserDto addUserDto) {
         boolean result = userService.addUser(addUserDto);
         if (result) {
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     @Operation(summary = "删除用户（管理员）")
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public BaseResponse<?> deleteUserById(@PathVariable Integer id) {
         boolean result = userService.deleteUserById(id);
         if (result) {
@@ -59,7 +61,7 @@ public class UserController {
     }
 
     @Operation(summary = "批量删除用户（管理员）")
-    @GetMapping("/delete/batch")
+    @DeleteMapping("/batch")
     public BaseResponse<?> deleteBatchUser(Integer... userIds) {
         int result = userService.deleteBatchUser(userIds);
         if (result > 0) {
@@ -78,21 +80,21 @@ public class UserController {
     }
 
     @Operation(summary = "查询单个用户")
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public BaseResponse<?> getUserById(@PathVariable Integer id) {
         UserVo userVo = userService.getUserById(id);
         return ResultUtils.success(Code.SUCCESS, userVo, "查询单个用户成功");
     }
 
     @Operation(summary = "查询所有用户（管理员）")
-    @GetMapping("/list")
+    @GetMapping
     public BaseResponse<?> getAll(QueryUserDto queryUserDto) {
         Page<User> userPages = userService.getAll(queryUserDto);
         return ResultUtils.success(Code.SUCCESS, userPages, "查询所有用户成功");
     }
 
     @Operation(summary = "修改用户信息（管理员）")
-    @PostMapping("/update/admin")
+    @PutMapping("/update")
     public BaseResponse<?> updateUserByAdmin(UpdateUserDto updateUserDto) {
         boolean result = userService.updateUserByAdmin(updateUserDto);
         if (result) {
@@ -103,7 +105,7 @@ public class UserController {
     }
 
     @Operation(summary = "修改个人信息")
-    @PostMapping("/update")
+    @PutMapping
     public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
         boolean result = userService.updateMyInfo(updateMyInfoDto, request);
         if (result) {
@@ -114,7 +116,7 @@ public class UserController {
     }
 
     @Operation(summary = "修改个人密码")
-    @GetMapping("/changePassword")
+    @PutMapping("/changePassword")
     public BaseResponse<?> changePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException {
         boolean result = userService.updatePassword(originPassword, newPassword, againPassword, request);
         if (result) {
@@ -125,7 +127,7 @@ public class UserController {
     }
 
     @Operation(summary = "重置用户密码（管理员）")
-    @PostMapping("/reset/{id}")
+    @PostMapping("/resetPassword/{id}")
     public BaseResponse<?> resetUserPassword(@PathVariable Integer id) {
         boolean result = userService.resetUserPassword(id);
         if (result) {
@@ -139,5 +141,23 @@ public class UserController {
     @PostMapping("/export")
     public BaseResponse<?> exportUser() {
         return ResultUtils.failure("接口正在完善，请尝试其他接口");
+    }
+
+    @Operation(summary = "给用户添加角色")
+    @PostMapping("/addRoleToUser")
+    public BaseResponse<?> addRoleToUser(Integer userId,Integer... roleIds) {
+        boolean result = userService.addRoleToUser(userId, roleIds);
+        if (result) {
+            return ResultUtils.success(String.format("给用户新增角色成功（userId：%s）", userId));
+        } else {
+            return ResultUtils.failure(String.format("给用户新增角色失败（userId：%s）", userId));
+        }
+    }
+
+    @Operation(summary = "查询用户的角色")
+    @GetMapping("/getRoleByUser")
+    public BaseResponse<?> getRoleByUser(Integer userId) {
+        List<Role> result = userService.getRoleByUser(userId);
+        return ResultUtils.success(Code.SUCCESS, result, "查询用户角色成功");
     }
 }

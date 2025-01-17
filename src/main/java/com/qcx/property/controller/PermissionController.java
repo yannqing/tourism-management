@@ -32,7 +32,7 @@ public class PermissionController {
     private PermissionsService permissionsService;
 
     @Operation(summary = "新增权限")
-    @PostMapping("/add")
+    @PostMapping
     public BaseResponse<?> addPermission(AddPermissionDto addPermissionDto) {
         boolean result = permissionsService.addPermission(addPermissionDto);
         if (result) {
@@ -43,7 +43,7 @@ public class PermissionController {
     }
 
     @Operation(summary = "根据id删除权限")
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public BaseResponse<?> delete(@PathVariable Integer id) {
         boolean result = permissionsService.deletePermission(id);
         if (result) {
@@ -54,7 +54,7 @@ public class PermissionController {
     }
 
     @Operation(summary = "批量删除权限")
-    @DeleteMapping("/delete/list")
+    @DeleteMapping("/batch")
     public BaseResponse<?> deleteBatch(Integer... permissionIds) {
         int result = permissionsService.deleteBatchPermissions(permissionIds);
         if (result > 0) {
@@ -73,21 +73,14 @@ public class PermissionController {
     }
 
     @Operation(summary = "查询所有权限")
-    @GetMapping("/getAll")
+    @GetMapping
     public BaseResponse<?> getAll(QueryPermissionsDto queryPermissionsDto) {
         Page<Permissions> result = permissionsService.getAllPermissions(queryPermissionsDto);
         return ResultUtils.success(Code.SUCCESS, result, "查询所有权限成功");
     }
 
-    @Operation(summary = "根据角色id查询所有权限")
-    @GetMapping("/list/{id}")
-    public BaseResponse<?> getAllPermissionsByRoleId(@PathVariable Integer id) {
-        List<Permissions> permissionsList = permissionsService.getAllPermissionsByRoleId(id);
-        return ResultUtils.success(Code.SUCCESS, permissionsList, String.format("查询角色（id：%s）下的所有权限成功", id));
-    }
-
     @Operation(summary = "编辑权限")
-    @PutMapping("/edit")
+    @PutMapping
     public BaseResponse<?> edit(UpdatePermissionsDto updatePermissionsDto) {
         boolean result = permissionsService.updatePermissions(updatePermissionsDto);
         if (result) {

@@ -151,22 +151,6 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         return this.page(new Page<>(current, pageSize), queryWrapper);
     }
 
-    @Override
-    public List<Permissions> getAllPermissionsByRoleId(Integer id) {
-        roleService.verifyRole(id, ErrorType.ROLE_NOT_EXIST);
-
-        List<RolePermissions> rolePermissions = rolePermissionsMapper.selectList(new QueryWrapper<RolePermissions>().eq("rid", id));
-        if (rolePermissions == null || rolePermissions.isEmpty()) {
-            return null;
-        }
-        List<Integer> permissionIds = rolePermissions.stream().map(RolePermissions::getPid).toList();
-
-        List<Permissions> permissions = this.baseMapper.selectBatchIds(permissionIds);
-
-        log.info("查询角色（id：{}）下的所有权限", id);
-        return permissions;
-    }
-
     /**
      * 更新权限信息
      * @param updatePermissionsDto 更新请求 dto

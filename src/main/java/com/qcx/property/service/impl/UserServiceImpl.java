@@ -10,12 +10,14 @@ import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
+import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.RoleUser;
 import com.qcx.property.domain.entity.User;
 import com.qcx.property.domain.vo.user.UserVo;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.enums.RoleType;
 import com.qcx.property.exception.BusinessException;
+import com.qcx.property.mapper.RoleMapper;
 import com.qcx.property.service.RoleUserService;
 import com.qcx.property.service.UserService;
 import com.qcx.property.mapper.UserMapper;
@@ -25,6 +27,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +54,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private RedisCache redisCache;
+    @Autowired
+    private RoleMapper roleMapper;
 
     /**
      * 管理员新增用户
@@ -103,10 +108,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public boolean deleteUserById(Integer id) {
-        // 判空处理
-        Optional.ofNullable(id)
-                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
-
         // 查看用户是否存在
         User deleteUser = verifyUserId(id);
         String username = deleteUser.getUsername();
@@ -157,10 +158,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public UserVo getUserById(Integer id) {
-        // 判空
-        Optional.ofNullable(id)
-                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
-
         // 有效性检验
         User getUser = verifyUserId(id);
 
@@ -322,10 +319,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public boolean resetUserPassword(Integer id) {
-        // 判空
-        Optional.ofNullable(id)
-                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
-
         // 有效性检验
         User resetPasswordUser = verifyUserId(id);
 
@@ -335,6 +328,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         log.info("管理员重置用户(username: {})密码", resetPasswordUser.getUsername());
         return updateResult;
+    }
+
+    /**
+     * 给用户添加角色
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    @Override
+    public boolean addRoleToUser(Integer userId, Integer... roleIds) {
+        verifyUserId(userId);
+        Optional.ofNullable(roleIds)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        // roleIds 有效性判断
+        List<Role> addRoles = roleMapper.selectBatchIds(Arrays.asList(roleIds));
+        if (addRoles == null || addRoles.isEmpty() || addRoles.size() < roleIds.length) {
+            throw new BusinessException(ErrorType.ROLE_NOT_EXIST);
+        }
+
+        // 添加角色
+        addRoles.forEach(role -> {
+            RoleUser addRoleUser = roleUserService.getOne(new QueryWrapper<RoleUser>().eq("uid", userId).eq("rid", role.getId()));
+            if (addRoleUser == null) {
+                RoleUser roleUser = new RoleUser();
+                roleUser.setUid(userId);
+                roleUser.setRid(role.getId());
+                roleUserService.save(roleUser);
+            }
+        });
+        log.info("给用户{}添加角色{}", userId, addRoles);
+
+        return true;
+    }
+
+    /**
+     * 查询用户角色
+     * @param userId 要查询的用户id
+     * @return
+     */
+    @Override
+    public List<Role> getRoleByUser(Integer userId) {
+        verifyUserId(userId);
+
+        List<RoleUser> getRoleUserList = roleUserService.list(new QueryWrapper<RoleUser>().eq("uid", userId));
+
+        if (getRoleUserList == null) {
+            return null;
+        }
+
+        List<Integer> roleList = getRoleUserList.stream().map(RoleUser::getRid).toList();
+        List<Role> roles = roleMapper.selectBatchIds(roleList);
+        log.info("查询用户（id：{}）的角色（{}）", userId, roles);
+
+        return roles;
     }
 
     // 辅助方法：批量删除用户，日志记录
@@ -351,6 +399,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return
      */
     public User verifyUserId(Integer userId) {
+        Optional.ofNullable(userId)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
         User verifyUser = this.getById(userId);
         Optional.ofNullable(verifyUser)
                 .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_EXIST));

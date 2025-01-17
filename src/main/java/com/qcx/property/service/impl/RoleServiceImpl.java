@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qcx.property.domain.dto.role.AddRoleDto;
 import com.qcx.property.domain.dto.role.QueryRoleDto;
 import com.qcx.property.domain.dto.role.UpdateRoleDto;
+import com.qcx.property.domain.entity.Permissions;
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.RolePermissions;
 import com.qcx.property.domain.entity.RoleUser;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.exception.BusinessException;
+import com.qcx.property.mapper.PermissionsMapper;
 import com.qcx.property.mapper.RolePermissionsMapper;
 import com.qcx.property.mapper.RoleUserMapper;
 import com.qcx.property.service.RoleService;
@@ -18,8 +20,10 @@ import com.qcx.property.mapper.RoleMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +44,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
 
     @Resource
     private RoleUserMapper roleUserMapper;
+    @Autowired
+    private PermissionsMapper permissionsMapper;
 
 
     /**
@@ -171,6 +177,70 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         log.info("管理员更新角色（id：{}）信息", updateRoleDto.getId());
 
         return updateResult;
+    }
+
+    @Override
+    public List<Permissions> getAllPermissionsByRoleId(Integer id) {
+        verifyRole(id, ErrorType.ROLE_NOT_EXIST);
+
+        List<RolePermissions> rolePermissions = rolePermissionsMapper.selectList(new QueryWrapper<RolePermissions>().eq("rid", id));
+        if (rolePermissions == null || rolePermissions.isEmpty()) {
+            return null;
+        }
+        List<Integer> permissionIds = rolePermissions.stream().map(RolePermissions::getPid).toList();
+
+        List<Permissions> permissions = permissionsMapper.selectBatchIds(permissionIds);
+
+        log.info("查询角色（id：{}）下的所有权限", id);
+        return permissions;
+    }
+
+    /**
+     * 给角色新增权限
+     * @param roleId 要添加权限的角色
+     * @param permissionIds 要添加的权限
+     * @return
+     */
+    @Override
+    public boolean addPermissionToRole(Integer roleId, Integer... permissionIds) {
+        // 判空
+        Optional.ofNullable(roleId)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        Optional.ofNullable(permissionIds)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        // 有效性判断
+        verifyRole(roleId, ErrorType.ROLE_NOT_EXIST);
+
+        // 权限是否存在
+        List<Permissions> permissions = permissionsMapper.selectBatchIds(Arrays.asList(permissionIds));
+        if (permissions == null || permissions.isEmpty() || permissions.size() < permissionIds.length) {
+            throw new BusinessException(ErrorType.PERMISSION_NOT_EXIST);
+        }
+
+        // 查出此角色原来的权限id有哪些
+        List<RolePermissions> rolePermissions = rolePermissionsMapper.selectList(new QueryWrapper<RolePermissions>().eq("rid", roleId));
+        List<Integer> oldPermissionIds = rolePermissions.stream().map(RolePermissions::getPid).toList();
+
+        // 找出需要添加的权限id有哪些（过滤掉以前有的权限id）
+        List<Integer> addPermissionsId = Arrays.stream(permissionIds).filter(permissionId -> !oldPermissionIds.contains(permissionId)).toList();
+
+        // 如果没有需要添加的权限，返回 true
+        if (addPermissionsId.isEmpty()) {
+            return true;
+        }
+
+        // 添加权限
+        addPermissionsId.forEach(permissionId -> {
+            RolePermissions rolePermission = new RolePermissions();
+            rolePermission.setRid(roleId);
+            rolePermission.setPid(permissionId);
+            rolePermissionsMapper.insert(rolePermission);
+        });
+
+        log.info("给角色（id：{}）添加权限：{}", roleId, String.join(",", addPermissionsId.stream().map(String::valueOf).toArray(String[]::new)));
+        return true;
     }
 
     /**

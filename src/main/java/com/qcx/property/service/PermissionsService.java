@@ -25,7 +25,5 @@ public interface PermissionsService extends IService<Permissions> {
 
     Page<Permissions> getAllPermissions(QueryPermissionsDto queryPermissionsDto);
 
-    List<Permissions> getAllPermissionsByRoleId(Integer id);
-
     boolean updatePermissions(UpdatePermissionsDto updatePermissionsDto);
 }
