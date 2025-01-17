@@ -18,9 +18,12 @@ public enum ErrorType implements BaseExceptionInterface {
     USER_NOT_EXIST(60004, "用户不存在，请重试！"),
     ROLE_ADD_ERROR(60005, "给用户添加角色失败"),
     ROLE_NOT_EXIST(60008, "角色不存在"),
+    ROLE_ADMIN_CANNOT_DELETE(60008, "存在角色无法删除"),
+    ROLE_ALREADY_EXIST(60010, "角色已经存在，无法添加"),
     PASSWORD_NOT_MATCH(60006, "输入的密码与原来密码不一致，请重试"),
     PASSWORD_NOT_EQUALS(60007, "两次输入的密码不一致，请重试"),
     PERMISSION_NOT_EXIST(60009, "权限不存在"),
+    PERMISSION_ALREADY_EXIST(60011, "权限已存在，无法添加"),
 
     //token 异常
     TOKEN_NOT_EXIST(60101, "token 不存在"),

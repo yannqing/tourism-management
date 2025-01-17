@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,7 +49,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
      */
     @Override
     public boolean addRole(AddRoleDto addRoleDto) {
-        Optional.ofNullable(addRoleDto.getRoleName())
+        // 判空
+        String roleName = Optional.ofNullable(addRoleDto.getRoleName())
                 .filter(r -> !r.isEmpty())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
@@ -58,6 +58,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
                 .filter(r -> !r.isEmpty())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
+        // 不能插入重复的数据
+        boolean isExists = this.baseMapper.exists(new QueryWrapper<Role>().eq("roleName", roleName));
+        if (isExists) {
+            throw new BusinessException(ErrorType.ROLE_ALREADY_EXIST);
+        }
+
+        // 插入角色
         Role addRole = AddRoleDto.dtoToObj(addRoleDto);
 
         boolean saveResult = this.save(addRole);
@@ -76,6 +83,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         // 有效性判断
         Role removeRole = verifyRole(id, ErrorType.ROLE_NOT_EXIST);
 
+        // 不能删除管理员
+        if (id == 2) {
+            throw new BusinessException(ErrorType.ROLE_ADMIN_CANNOT_DELETE);
+        }
+
+        // 删除
         boolean removeResult = this.removeById(id);
 
         log.info("管理员删除角色：{}", removeRole);
@@ -94,15 +107,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
             throw new BusinessException(ErrorType.ARGS_NOT_NULL);
         }
 
-        // 判断参数是否有效
+        // 判断参数是否有效（移出管理员角色）
         List<Integer> roleIdList = Arrays.asList(roleIds);
-        List<Role> roles = this.baseMapper.selectBatchIds(roleIdList);
-        if (roles == null || roles.size() < roleIdList.size()) {
+        List<Integer> collectRoleIdList = roleIdList.stream().filter(roleId -> !roleId.equals(2)).toList();
+        if (collectRoleIdList.isEmpty()) {
+            throw new BusinessException(ErrorType.ROLE_ADMIN_CANNOT_DELETE);
+        }
+        List<Role> roles = this.baseMapper.selectBatchIds(collectRoleIdList);
+        if (roles == null || roles.size() < collectRoleIdList.size()) {
             throw new BusinessException(ErrorType.USER_NOT_EXIST);
         }
 
         // 删除角色，并记录日志
-        int result = this.baseMapper.deleteBatchIds(roleIdList);
+        int result = this.baseMapper.deleteBatchIds(collectRoleIdList);
         logDeletedRoles(roles);
 
         // 删除此角色所有关联的用户关系，并记录日志
@@ -135,6 +152,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role>
         queryWrapper.like(StringUtils.isNotBlank(roleName), "roleName", roleName);
         queryWrapper.like(StringUtils.isNotBlank(remark), "remark", remark);
 
+        log.info("管理员查询所有角色");
+        // TODO 这里返回的结果 total 一样为0.和用户管理出现了一样的问题
         return this.page(new Page<>(current, pageSize), queryWrapper);
     }
 

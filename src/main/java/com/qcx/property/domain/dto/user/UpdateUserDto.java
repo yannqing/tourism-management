@@ -21,15 +21,22 @@ import java.util.Optional;
 @Schema(name = "UpdateUserDto", description = "修改用户信息对象")
 public class UpdateUserDto {
     @Schema(description = "用户id", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NonNull
     private Integer userId;
+    @Schema(description = "用户名", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String username;
+    @Schema(description = "昵称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String nickName;
+    @Schema(description = "地址", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String address;
+    @Schema(description = "电话", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String phone;
+    @Schema(description = "邮箱", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String email;
+    @Schema(description = "头像", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String avatar;
+    @Schema(description = "角色id数组", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<Integer> roleIds;
+    @Schema(description = "是否可用", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer enabled;
 
     public static User dtoToUser(UpdateUserDto updateUserDto) {

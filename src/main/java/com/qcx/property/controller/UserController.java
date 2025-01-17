@@ -107,9 +107,9 @@ public class UserController {
     public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
         boolean result = userService.updateMyInfo(updateMyInfoDto, request);
         if (result) {
-            return ResultUtils.success(String.format("修改个人信息成功（userId：%s）", updateMyInfoDto.getUserId()));
+            return ResultUtils.success("修改个人信息成功");
         } else {
-            return ResultUtils.failure(String.format("修改个人信息失败（userId：%s）", updateMyInfoDto.getUserId()));
+            return ResultUtils.failure("修改个人信息失败");
         }
     }
 

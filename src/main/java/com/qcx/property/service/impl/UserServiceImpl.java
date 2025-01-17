@@ -65,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String password = Optional.ofNullable(addUserDto.getPassword())
                 .filter(s -> !s.isEmpty())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
-        String nickName = Optional.ofNullable(addUserDto.getNickName())
+        Optional.ofNullable(addUserDto.getNickName())
                 .filter(s -> !s.isEmpty())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 

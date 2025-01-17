@@ -58,12 +58,18 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         Optional.ofNullable(addPermissionDto.getPid())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
-        Optional.ofNullable(addPermissionDto.getCode())
+        String code = Optional.ofNullable(addPermissionDto.getCode())
                 .filter(r -> !r.isEmpty())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         Optional.ofNullable(addPermissionDto.getType())
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        // 不能插入已有的权限
+        boolean isExists = this.baseMapper.exists(new QueryWrapper<Permissions>().eq("code", code));
+        if (isExists) {
+            throw new BusinessException(ErrorType.PERMISSION_ALREADY_EXIST);
+        }
 
         // 有效性判断
         Permissions addPermission = AddPermissionDto.dtoToObj(addPermissionDto);
