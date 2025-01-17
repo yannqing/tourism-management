@@ -6,6 +6,7 @@ import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
+import com.qcx.property.domain.entity.Permissions;
 import com.qcx.property.domain.entity.Role;
 import com.qcx.property.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -44,4 +45,6 @@ public interface UserService extends IService<User> {
     boolean addRoleToUser(Integer userId, Integer... roleIds);
 
     List<Role> getRoleByUser(Integer userId);
+
+    List<Permissions> getPermissionByUser(Integer userId);
 }

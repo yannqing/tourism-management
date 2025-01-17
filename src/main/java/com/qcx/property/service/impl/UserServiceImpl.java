@@ -10,14 +10,14 @@ import com.qcx.property.domain.dto.user.AddUserDto;
 import com.qcx.property.domain.dto.user.QueryUserDto;
 import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
 import com.qcx.property.domain.dto.user.UpdateUserDto;
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.entity.RoleUser;
-import com.qcx.property.domain.entity.User;
+import com.qcx.property.domain.entity.*;
 import com.qcx.property.domain.vo.user.UserVo;
 import com.qcx.property.enums.ErrorType;
 import com.qcx.property.enums.RoleType;
 import com.qcx.property.exception.BusinessException;
+import com.qcx.property.mapper.PermissionsMapper;
 import com.qcx.property.mapper.RoleMapper;
+import com.qcx.property.mapper.RolePermissionsMapper;
 import com.qcx.property.service.RoleUserService;
 import com.qcx.property.service.UserService;
 import com.qcx.property.mapper.UserMapper;
@@ -31,9 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,8 +52,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private RedisCache redisCache;
-    @Autowired
+
+    @Resource
     private RoleMapper roleMapper;
+
+    @Resource
+    private RolePermissionsMapper rolePermissionsMapper;
+
+    @Resource
+    private PermissionsMapper permissionsMapper;
 
     /**
      * 管理员新增用户
@@ -383,6 +388,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         log.info("查询用户（id：{}）的角色（{}）", userId, roles);
 
         return roles;
+    }
+
+    /**
+     * 查询用户的权限
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Permissions> getPermissionByUser(Integer userId) {
+        verifyUserId(userId);
+
+        List<Role> roles = getRoleByUser(userId);
+        if (roles == null) {
+            return null;
+        }
+
+        Set<Permissions> permissions = new HashSet<>();
+        roles.forEach(role -> {
+            List<RolePermissions> rolePermissions = rolePermissionsMapper.selectList(new QueryWrapper<RolePermissions>().eq("rid", role.getId()));
+            List<Integer> permissionIdList = rolePermissions.stream().map(RolePermissions::getPid).toList();
+            if (!permissionIdList.isEmpty()) {
+                List<Permissions> permissionsList = permissionsMapper.selectBatchIds(permissionIdList);
+                permissions.addAll(permissionsList);
+            }
+        });
+        List<Permissions> permissionsList = permissions.stream().toList();
+
+        log.info("查询用户（id：{}）的权限（{}）", userId, permissionsList);
+        return permissionsList;
     }
 
     // 辅助方法：批量删除用户，日志记录

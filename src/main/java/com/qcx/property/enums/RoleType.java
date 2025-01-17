@@ -1,7 +1,6 @@
 package com.qcx.property.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 /**

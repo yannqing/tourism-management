@@ -25,6 +25,8 @@ public enum ErrorType implements BaseExceptionInterface {
     PERMISSION_NOT_EXIST(60009, "权限不存在"),
     PERMISSION_ALREADY_EXIST(60011, "权限已存在，无法添加"),
 
+    NO_AUTH_ERROR(60201, "没有权限，请重试"),
+
     //token 异常
     TOKEN_NOT_EXIST(60101, "token 不存在"),
     TOKEN_INVALID(60102, "token 无效")

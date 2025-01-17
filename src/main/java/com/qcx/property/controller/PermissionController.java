@@ -1,11 +1,14 @@
 package com.qcx.property.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.qcx.property.annotation.AuthCheck;
 import com.qcx.property.common.Code;
+import com.qcx.property.common.PermissionConstant;
 import com.qcx.property.domain.dto.permissions.AddPermissionDto;
 import com.qcx.property.domain.dto.permissions.QueryPermissionsDto;
 import com.qcx.property.domain.dto.permissions.UpdatePermissionsDto;
 import com.qcx.property.domain.entity.Permissions;
+import com.qcx.property.enums.PermissionType;
 import com.qcx.property.domain.model.BaseResponse;
 import com.qcx.property.service.PermissionsService;
 import com.qcx.property.utils.ResultUtils;
@@ -31,6 +34,7 @@ public class PermissionController {
     @Resource
     private PermissionsService permissionsService;
 
+    @AuthCheck(code = PermissionConstant.PERMISSION_ADD)
     @Operation(summary = "新增权限")
     @PostMapping
     public BaseResponse<?> addPermission(AddPermissionDto addPermissionDto) {
@@ -42,6 +46,7 @@ public class PermissionController {
         }
     }
 
+    @AuthCheck(code = PermissionConstant.PERMISSION_DELETE_ONE)
     @Operation(summary = "根据id删除权限")
     @DeleteMapping("/{id}")
     public BaseResponse<?> delete(@PathVariable Integer id) {
@@ -53,6 +58,7 @@ public class PermissionController {
         }
     }
 
+    @AuthCheck(code = PermissionConstant.PERMISSION_DELETE_BATCH)
     @Operation(summary = "批量删除权限")
     @DeleteMapping("/batch")
     public BaseResponse<?> deleteBatch(Integer... permissionIds) {
@@ -72,6 +78,7 @@ public class PermissionController {
         }
     }
 
+    @AuthCheck(code = PermissionConstant.PERMISSION_GET_ALL)
     @Operation(summary = "查询所有权限")
     @GetMapping
     public BaseResponse<?> getAll(QueryPermissionsDto queryPermissionsDto) {
@@ -79,6 +86,7 @@ public class PermissionController {
         return ResultUtils.success(Code.SUCCESS, result, "查询所有权限成功");
     }
 
+    @AuthCheck(code = PermissionConstant.PERMISSION_UPDATE)
     @Operation(summary = "编辑权限")
     @PutMapping
     public BaseResponse<?> edit(UpdatePermissionsDto updatePermissionsDto) {

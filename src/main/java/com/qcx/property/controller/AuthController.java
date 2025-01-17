@@ -1,5 +1,7 @@
 package com.qcx.property.controller;
 
+import com.qcx.property.annotation.AuthCheck;
+import com.qcx.property.common.PermissionConstant;
 import com.qcx.property.domain.dto.auth.RegisterDto;
 import com.qcx.property.domain.model.BaseResponse;
 import com.qcx.property.service.AuthService;
@@ -25,6 +27,7 @@ public class AuthController {
     @Resource
     private AuthService authService;
 
+    @AuthCheck(code = PermissionConstant.AUTH_REGISTER)
     @Operation(summary = "注册")
     @PostMapping("/register")
     public BaseResponse<?> register(RegisterDto registerDto) {

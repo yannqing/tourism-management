@@ -76,7 +76,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public BaseResponse<Object> handleRuntimeException(BusinessException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址 {},异常: {}", requestURI, e.getMessage());
+        String method = request.getMethod();
+        log.error("请求地址 {}, 方法{}, 异常: {}", requestURI, method, e.getMessage());
 
         return ResultUtils.failure(e.getCode(), null, e.getMessage());
     }

@@ -148,6 +148,7 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         queryWrapper.like(StringUtils.isNotBlank(code), "code", code);
         queryWrapper.eq(type != null, "type", type);
 
+        log.info("查询所有权限");
         return this.page(new Page<>(current, pageSize), queryWrapper);
     }
 
