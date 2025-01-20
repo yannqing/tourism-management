@@ -1,11 +1,11 @@
-package com.qcx.property;
+package com.yannqing.template;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.qcx.property.mapper")
+@MapperScan("com.yannqing.template.mapper")
 public class PropertyManagementApplication {
 
     public static void main(String[] args) {
