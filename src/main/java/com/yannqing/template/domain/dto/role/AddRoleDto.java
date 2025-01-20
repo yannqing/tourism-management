@@ -1,8 +1,8 @@
-package com.qcx.property.domain.dto.role;
+package com.yannqing.template.domain.dto.role;
 
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.enums.ErrorType;
-import com.qcx.property.exception.BusinessException;
+import com.yannqing.template.domain.entity.Role;
+import com.yannqing.template.enums.ErrorType;
+import com.yannqing.template.exception.BusinessException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

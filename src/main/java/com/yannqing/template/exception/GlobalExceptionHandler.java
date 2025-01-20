@@ -1,8 +1,8 @@
-package com.qcx.property.exception;
+package com.yannqing.template.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.qcx.property.domain.model.BaseResponse;
-import com.qcx.property.utils.ResultUtils;
+import com.yannqing.template.domain.model.BaseResponse;
+import com.yannqing.template.utils.ResultUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
                                                             HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("用户过期，请重新登录：{}", e.getMessage());
-        return ResultUtils.failure(com.qcx.property.common.Code.FAILURE, null, e.getMessage());
+        return ResultUtils.failure(com.yannqing.template.common.Code.FAILURE, null, e.getMessage());
     }
     /**
      * 参数错误

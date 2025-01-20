@@ -1,4 +1,4 @@
-package com.qcx.property.auth;
+package com.yannqing.template.auth;
 
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;

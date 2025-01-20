@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.yannqing.template.mapper")
-public class PropertyManagementApplication {
+public class TemplateApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PropertyManagementApplication.class, args);
+        SpringApplication.run(TemplateApplication.class, args);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.qcx.property.exception;
+package com.yannqing.template.exception;
 
 /**
  * @description: 基本异常状态码

@@ -1,7 +1,7 @@
-package com.qcx.property.exception;
+package com.yannqing.template.exception;
 
-import com.qcx.property.common.Code;
-import com.qcx.property.enums.ErrorType;
+import com.yannqing.template.common.Code;
+import com.yannqing.template.enums.ErrorType;
 import lombok.Getter;
 
 /**

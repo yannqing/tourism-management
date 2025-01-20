@@ -1,4 +1,4 @@
-package com.qcx.property.common;
+package com.yannqing.template.common;
 
 import lombok.Data;
 import org.springframework.context.annotation.Configuration;

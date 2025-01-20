@@ -1,8 +1,8 @@
-package com.qcx.property.domain.dto.user;
+package com.yannqing.template.domain.dto.user;
 
-import com.qcx.property.domain.entity.User;
-import com.qcx.property.enums.ErrorType;
-import com.qcx.property.exception.BusinessException;
+import com.yannqing.template.domain.entity.User;
+import com.yannqing.template.enums.ErrorType;
+import com.yannqing.template.exception.BusinessException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NonNull;

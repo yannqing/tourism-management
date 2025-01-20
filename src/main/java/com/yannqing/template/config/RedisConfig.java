@@ -1,6 +1,6 @@
-package com.qcx.property.config;
+package com.yannqing.template.config;
 
-import com.qcx.property.utils.FastJsonRedisSerializer;
+import com.yannqing.template.utils.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

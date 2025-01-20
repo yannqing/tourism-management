@@ -1,7 +1,7 @@
-package com.qcx.property.domain.vo.auth;
+package com.yannqing.template.domain.vo.auth;
 
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.entity.Role;
+import com.yannqing.template.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

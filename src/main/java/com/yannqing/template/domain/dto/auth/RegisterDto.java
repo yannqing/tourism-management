@@ -1,6 +1,6 @@
-package com.qcx.property.domain.dto.auth;
+package com.yannqing.template.domain.dto.auth;
 
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

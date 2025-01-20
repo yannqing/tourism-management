@@ -1,4 +1,4 @@
-package com.qcx.property.enums;
+package com.yannqing.template.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

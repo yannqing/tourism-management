@@ -1,6 +1,6 @@
-package com.qcx.property.mapper;
+package com.yannqing.template.mapper;
 
-import com.qcx.property.domain.entity.Permissions;
+import com.yannqing.template.domain.entity.Permissions;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

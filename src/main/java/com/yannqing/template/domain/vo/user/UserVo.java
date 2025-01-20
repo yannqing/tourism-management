@@ -1,7 +1,7 @@
-package com.qcx.property.domain.vo.user;
+package com.yannqing.template.domain.vo.user;
 
-import com.qcx.property.domain.dto.user.AddUserDto;
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.dto.user.AddUserDto;
+import com.yannqing.template.domain.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

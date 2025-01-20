@@ -1,8 +1,8 @@
-package com.qcx.property.service;
+package com.yannqing.template.service;
 
-import com.qcx.property.domain.entity.RoleUser;
+import com.yannqing.template.domain.entity.RoleUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.qcx.property.enums.RoleType;
+import com.yannqing.template.enums.RoleType;
 
 /**
 * @author 67121

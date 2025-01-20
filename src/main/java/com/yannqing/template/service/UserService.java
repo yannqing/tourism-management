@@ -1,16 +1,16 @@
-package com.qcx.property.service;
+package com.yannqing.template.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.qcx.property.domain.dto.user.AddUserDto;
-import com.qcx.property.domain.dto.user.QueryUserDto;
-import com.qcx.property.domain.dto.user.UpdateMyInfoDto;
-import com.qcx.property.domain.dto.user.UpdateUserDto;
-import com.qcx.property.domain.entity.Permissions;
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.dto.user.AddUserDto;
+import com.yannqing.template.domain.dto.user.QueryUserDto;
+import com.yannqing.template.domain.dto.user.UpdateMyInfoDto;
+import com.yannqing.template.domain.dto.user.UpdateUserDto;
+import com.yannqing.template.domain.entity.Permissions;
+import com.yannqing.template.domain.entity.Role;
+import com.yannqing.template.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.qcx.property.domain.vo.user.UserVo;
+import com.yannqing.template.domain.vo.user.UserVo;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

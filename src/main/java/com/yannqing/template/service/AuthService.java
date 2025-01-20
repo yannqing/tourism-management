@@ -1,6 +1,6 @@
-package com.qcx.property.service;
+package com.yannqing.template.service;
 
-import com.qcx.property.domain.dto.auth.RegisterDto;
+import com.yannqing.template.domain.dto.auth.RegisterDto;
 
 /**
  * @description: 认证接口

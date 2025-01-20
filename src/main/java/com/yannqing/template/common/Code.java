@@ -1,4 +1,4 @@
-package com.qcx.property.common;
+package com.yannqing.template.common;
 
 public class Code {
 

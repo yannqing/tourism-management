@@ -1,11 +1,11 @@
-package com.qcx.property.controller;
+package com.yannqing.template.controller;
 
-import com.qcx.property.annotation.AuthCheck;
-import com.qcx.property.common.PermissionConstant;
-import com.qcx.property.domain.dto.auth.RegisterDto;
-import com.qcx.property.domain.model.BaseResponse;
-import com.qcx.property.service.AuthService;
-import com.qcx.property.utils.ResultUtils;
+import com.yannqing.template.annotation.AuthCheck;
+import com.yannqing.template.common.PermissionConstant;
+import com.yannqing.template.domain.dto.auth.RegisterDto;
+import com.yannqing.template.domain.model.BaseResponse;
+import com.yannqing.template.service.AuthService;
+import com.yannqing.template.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

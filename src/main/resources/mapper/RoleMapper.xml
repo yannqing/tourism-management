@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qcx.property.mapper.RoleMapper">
+<mapper namespace="com.yannqing.template.mapper.RoleMapper">
 
-    <resultMap id="BaseResultMap" type="com.qcx.property.domain.entity.Role">
+    <resultMap id="BaseResultMap" type="com.yannqing.template.domain.entity.Role">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="roleName" column="roleName" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>

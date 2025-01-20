@@ -1,4 +1,4 @@
-package com.qcx.property.aop;
+package com.yannqing.template.aop;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class LogInterceptor {
     /**
      * 执行拦截
      */
-    @Around("execution(* com.qcx.property.controller.*.*(..))")
+    @Around("execution(* com.yannqing.template.controller.*.*(..))")
     public Object doInterceptor(ProceedingJoinPoint point) throws Throwable {
         // 计时
         StopWatch stopWatch = new StopWatch();

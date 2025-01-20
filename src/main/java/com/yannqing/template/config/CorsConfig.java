@@ -1,4 +1,4 @@
-package com.qcx.property.config;
+package com.yannqing.template.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

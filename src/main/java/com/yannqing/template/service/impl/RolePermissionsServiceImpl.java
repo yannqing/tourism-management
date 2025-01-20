@@ -1,9 +1,9 @@
-package com.qcx.property.service.impl;
+package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qcx.property.domain.entity.RolePermissions;
-import com.qcx.property.service.RolePermissionsService;
-import com.qcx.property.mapper.RolePermissionsMapper;
+import com.yannqing.template.domain.entity.RolePermissions;
+import com.yannqing.template.service.RolePermissionsService;
+import com.yannqing.template.mapper.RolePermissionsMapper;
 import org.springframework.stereotype.Service;
 
 /**

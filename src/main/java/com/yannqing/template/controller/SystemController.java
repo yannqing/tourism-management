@@ -1,6 +1,6 @@
-package com.qcx.property.controller;
+package com.yannqing.template.controller;
 
-import com.qcx.property.utils.RedisCache;
+import com.yannqing.template.utils.RedisCache;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

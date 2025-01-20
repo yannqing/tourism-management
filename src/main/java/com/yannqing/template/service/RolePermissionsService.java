@@ -1,6 +1,6 @@
-package com.qcx.property.service;
+package com.yannqing.template.service;
 
-import com.qcx.property.domain.entity.RolePermissions;
+import com.yannqing.template.domain.entity.RolePermissions;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

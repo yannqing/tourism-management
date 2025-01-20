@@ -1,13 +1,13 @@
-package com.qcx.property.service.impl;
+package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qcx.property.domain.model.SecurityUser;
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.entity.RoleUser;
-import com.qcx.property.domain.entity.User;
-import com.qcx.property.mapper.RoleMapper;
-import com.qcx.property.mapper.RoleUserMapper;
-import com.qcx.property.mapper.UserMapper;
+import com.yannqing.template.domain.model.SecurityUser;
+import com.yannqing.template.domain.entity.Role;
+import com.yannqing.template.domain.entity.RoleUser;
+import com.yannqing.template.domain.entity.User;
+import com.yannqing.template.mapper.RoleMapper;
+import com.yannqing.template.mapper.RoleUserMapper;
+import com.yannqing.template.mapper.UserMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

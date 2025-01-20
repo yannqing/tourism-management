@@ -1,4 +1,4 @@
-package com.qcx.property.common;
+package com.yannqing.template.common;
 
 /**
  * @description: 权限相关常量

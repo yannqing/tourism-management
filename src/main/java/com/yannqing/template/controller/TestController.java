@@ -1,4 +1,4 @@
-package com.qcx.property.controller;
+package com.yannqing.template.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;

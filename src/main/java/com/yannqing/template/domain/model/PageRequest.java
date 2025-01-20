@@ -1,6 +1,6 @@
-package com.qcx.property.domain.model;
+package com.yannqing.template.domain.model;
 
-import com.qcx.property.common.CommonConstant;
+import com.yannqing.template.common.CommonConstant;
 import lombok.Data;
 
 /**

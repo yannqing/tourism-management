@@ -1,9 +1,9 @@
-package com.qcx.property.domain.dto.role;
+package com.yannqing.template.domain.dto.role;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.qcx.property.domain.model.PageRequest;
+import com.yannqing.template.domain.model.PageRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

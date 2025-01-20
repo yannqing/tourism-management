@@ -1,4 +1,4 @@
-package com.qcx.property.domain.entity;
+package com.yannqing.template.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 

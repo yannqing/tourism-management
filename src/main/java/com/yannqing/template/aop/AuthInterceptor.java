@@ -1,13 +1,13 @@
-package com.qcx.property.aop;
+package com.yannqing.template.aop;
 
-import com.qcx.property.annotation.AuthCheck;
-import com.qcx.property.domain.entity.Permissions;
-import com.qcx.property.domain.entity.User;
-import com.qcx.property.enums.PermissionType;
-import com.qcx.property.enums.ErrorType;
-import com.qcx.property.exception.BusinessException;
-import com.qcx.property.service.UserService;
-import com.qcx.property.utils.JwtUtils;
+import com.yannqing.template.annotation.AuthCheck;
+import com.yannqing.template.domain.entity.Permissions;
+import com.yannqing.template.domain.entity.User;
+import com.yannqing.template.enums.PermissionType;
+import com.yannqing.template.enums.ErrorType;
+import com.yannqing.template.exception.BusinessException;
+import com.yannqing.template.service.UserService;
+import com.yannqing.template.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;

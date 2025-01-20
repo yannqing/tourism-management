@@ -1,4 +1,4 @@
-package com.qcx.property.user;
+package com.yannqing.template.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

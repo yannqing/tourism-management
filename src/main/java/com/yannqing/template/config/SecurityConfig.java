@@ -1,11 +1,11 @@
-package com.qcx.property.config;
+package com.yannqing.template.config;
 
-import com.qcx.property.common.Constant;
-import com.qcx.property.security.filter.JwtAuthenticationTokenFilter;
-import com.qcx.property.security.handler.MyLoginFailureHandler;
-import com.qcx.property.security.handler.MyLoginSuccessHandler;
-import com.qcx.property.security.handler.MyLogoutSuccessHandler;
-import com.qcx.property.utils.RedisCache;
+import com.yannqing.template.common.Constant;
+import com.yannqing.template.security.filter.JwtAuthenticationTokenFilter;
+import com.yannqing.template.security.handler.MyLoginFailureHandler;
+import com.yannqing.template.security.handler.MyLoginSuccessHandler;
+import com.yannqing.template.security.handler.MyLogoutSuccessHandler;
+import com.yannqing.template.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

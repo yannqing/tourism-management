@@ -1,9 +1,9 @@
-package com.qcx.property.security.handler;
+package com.yannqing.template.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.qcx.property.common.Code;
-import com.qcx.property.utils.RedisCache;
-import com.qcx.property.utils.ResultUtils;
+import com.yannqing.template.common.Code;
+import com.yannqing.template.utils.RedisCache;
+import com.yannqing.template.utils.ResultUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

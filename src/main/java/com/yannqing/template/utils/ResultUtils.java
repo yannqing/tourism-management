@@ -1,8 +1,8 @@
-package com.qcx.property.utils;
+package com.yannqing.template.utils;
 
 
-import com.qcx.property.common.Code;
-import com.qcx.property.domain.model.BaseResponse;
+import com.yannqing.template.common.Code;
+import com.yannqing.template.domain.model.BaseResponse;
 
 public class ResultUtils {
 

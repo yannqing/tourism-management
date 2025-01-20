@@ -1,7 +1,7 @@
-package com.qcx.property.domain.model;
+package com.yannqing.template.domain.model;
 
-import com.qcx.property.domain.entity.Role;
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.entity.Role;
+import com.yannqing.template.domain.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

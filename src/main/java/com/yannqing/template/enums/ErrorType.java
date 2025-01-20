@@ -1,6 +1,6 @@
-package com.qcx.property.enums;
+package com.yannqing.template.enums;
 
-import com.qcx.property.exception.BaseExceptionInterface;
+import com.yannqing.template.exception.BaseExceptionInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

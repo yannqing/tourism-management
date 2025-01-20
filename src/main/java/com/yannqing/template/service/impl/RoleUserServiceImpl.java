@@ -1,18 +1,18 @@
-package com.qcx.property.service.impl;
+package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qcx.property.domain.entity.RoleUser;
-import com.qcx.property.domain.entity.User;
-import com.qcx.property.enums.ErrorType;
-import com.qcx.property.enums.RoleType;
-import com.qcx.property.exception.BusinessException;
-import com.qcx.property.mapper.RoleMapper;
-import com.qcx.property.mapper.UserMapper;
-import com.qcx.property.service.RoleService;
-import com.qcx.property.service.RoleUserService;
-import com.qcx.property.mapper.RoleUserMapper;
-import com.qcx.property.service.UserService;
+import com.yannqing.template.domain.entity.RoleUser;
+import com.yannqing.template.domain.entity.User;
+import com.yannqing.template.enums.ErrorType;
+import com.yannqing.template.enums.RoleType;
+import com.yannqing.template.exception.BusinessException;
+import com.yannqing.template.mapper.RoleMapper;
+import com.yannqing.template.mapper.UserMapper;
+import com.yannqing.template.service.RoleService;
+import com.yannqing.template.service.RoleUserService;
+import com.yannqing.template.mapper.RoleUserMapper;
+import com.yannqing.template.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

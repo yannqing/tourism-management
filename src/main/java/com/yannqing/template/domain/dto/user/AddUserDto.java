@@ -1,6 +1,6 @@
-package com.qcx.property.domain.dto.user;
+package com.yannqing.template.domain.dto.user;
 
-import com.qcx.property.domain.entity.User;
+import com.yannqing.template.domain.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

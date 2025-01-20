@@ -1,14 +1,14 @@
-package com.qcx.property.service.impl;
+package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qcx.property.domain.dto.auth.RegisterDto;
-import com.qcx.property.domain.entity.User;
-import com.qcx.property.enums.ErrorType;
-import com.qcx.property.enums.RoleType;
-import com.qcx.property.exception.BusinessException;
-import com.qcx.property.mapper.UserMapper;
-import com.qcx.property.service.AuthService;
-import com.qcx.property.service.RoleUserService;
+import com.yannqing.template.domain.dto.auth.RegisterDto;
+import com.yannqing.template.domain.entity.User;
+import com.yannqing.template.enums.ErrorType;
+import com.yannqing.template.enums.RoleType;
+import com.yannqing.template.exception.BusinessException;
+import com.yannqing.template.mapper.UserMapper;
+import com.yannqing.template.service.AuthService;
+import com.yannqing.template.service.RoleUserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

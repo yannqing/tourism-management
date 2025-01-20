@@ -1,4 +1,4 @@
-package com.qcx.property.annotation;
+package com.yannqing.template.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
