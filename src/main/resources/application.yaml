@@ -6,6 +6,20 @@ spring:
     url: jdbc:mysql://localhost:3306/property_management
     username: root
     password: 123456
+  data:
+    # redis
+    redis:
+      host: 127.0.0.1    # redis 主机
+      port: 6379        # redis 端口号
+      password:
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 1
+          max-idle: 8
+          min-idle: 0
+      timeout: 0
 server:
   port: 8080
 knife4j:

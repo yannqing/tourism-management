@@ -11,9 +11,9 @@
     <groupId>com.yannqing</groupId>
     <artifactId>template</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>template</name>
-    <description>template</description>
-    <url/>
+    <name>java-backend-template</name>
+    <description>java-backend-template</description>
+    <url>https://github.com/yannqing/java-backend-template</url>
     <licenses>
         <license/>
     </licenses>
@@ -24,10 +24,20 @@
         <connection/>
         <developerConnection/>
         <tag/>
-        <url/>
+        <url>https://github.com/yannqing/java-backend-template</url>
     </scm>
     <properties>
         <java.version>17</java.version>
+        <aop.version>3.3.3</aop.version>
+        <mysql.version>8.3.0</mysql.version>
+        <lombok.version>1.18.30</lombok.version>
+        <mybatis.version>3.0.3</mybatis.version>
+        <mybatis-test.version>3.0.3</mybatis-test.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <jwt.version>4.3.0</jwt.version>
+        <fastjson.version>2.0.32</fastjson.version>
+        <knife4j.version>4.4.0</knife4j.version>
+        <commons-langs.version>3.17.0</commons-langs.version>
     </properties>
     <dependencies>
 <!--        spring 启动依赖-->
@@ -50,13 +60,13 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.3</version>
+            <version>${mybatis.version}</version>
         </dependency>
     <!--        AOP-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>3.3.3</version>
+            <version>${aop.version}</version>
         </dependency>
 
 
@@ -65,13 +75,14 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.5</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
     <!--        MySQL-->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
+            <version>${mysql.version}</version>
         </dependency>
 
 <!--        认证依赖-->
@@ -79,7 +90,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>4.3.0</version>
+            <version>${jwt.version}</version>
         </dependency>
 
 <!--        工具依赖-->
@@ -88,30 +99,25 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>${lombok.version}</version>
         </dependency>
     <!--        fastjson2-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>2.0.32</version>
-        </dependency>
-    <!--        bouncy castle 加密-->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk18on</artifactId>
-            <version>1.78.1</version>
+            <version>${fastjson.version}</version>
         </dependency>
     <!--        knife4j-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.4.0</version>
+            <version>${knife4j.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
 
@@ -125,7 +131,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
-            <version>3.0.3</version>
+            <version>${mybatis-test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
