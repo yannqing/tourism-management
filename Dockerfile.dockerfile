@@ -15,11 +15,8 @@ VOLUME /yannqing/template/java-backend-template/logs
 # 复制应用程序
 COPY ./target/template-0.0.1-SNAPSHOT.jar /tmp/app.jar
 
-# 复制 application-dev.yml 文件
-COPY /yannqing/template/application-dev.yml /tmp/application-dev.yml
-
 # 暴露端口
 EXPOSE 8080
 
 # 启动命令
-CMD ["java", "-jar", "/tmp/app.jar", "--spring.profiles.active=dev", "--spring.config.location=/tmp/application-dev.yml"]
+CMD ["java", "-jar", "/tmp/app.jar", "--spring.profiles.active=dev"]
