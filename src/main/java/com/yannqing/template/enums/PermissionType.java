@@ -30,6 +30,7 @@ public enum PermissionType {
     USER_GET_ROLE_BY_USER("查询用户角色", "USER_GET_ROLE_BY_USER", 1),
     USER_DELETE_BATCH("批量删除用户", "USER_DELETE_BATCH", 1),
     USER_GET_PERMISSION_BY_USER("查询用户权限", "USER_GET_PERMISSION_BY_USER", 1),
+    USER_GET_MYSELF_INFO("获取个人信息", "USER_GET_MYSELF_INFO", 1),
 
     ROLE_GET_ALL("查询所有角色", "ROLE_GET_ALL", 1),
     ROLE_ADD("新增角色", "ROLE_ADD", 1),

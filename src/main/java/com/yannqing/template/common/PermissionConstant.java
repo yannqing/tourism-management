@@ -1,6 +1,6 @@
 package com.yannqing.template.common;
 
-/**
+/** TODO 需要优化：两个枚举不合适
  * @description: 权限相关常量
  * @author: yannqing
  * @create: 2025-01-17 17:20
