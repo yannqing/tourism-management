@@ -1,16 +1,11 @@
 package com.yannqing.template.domain.dto.permissions;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.yannqing.template.domain.model.PageRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @description: 管理员查询所有权限 dto
@@ -22,8 +17,16 @@ import java.util.Date;
 @Data
 @Schema(name = "QueryPermissionsDto", description = "查询所有权限请求参数")
 public class QueryPermissionsDto extends PageRequest implements Serializable {
+
+
     /**
-     *
+     * 父id
+     */
+    @Schema(description = "权限父id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pid;
+
+    /**
+     * id
      */
     @Schema(description = "权限id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer id;

@@ -11,6 +11,7 @@ import com.yannqing.template.domain.dto.user.QueryUserDto;
 import com.yannqing.template.domain.dto.user.UpdateMyInfoDto;
 import com.yannqing.template.domain.dto.user.UpdateUserDto;
 import com.yannqing.template.domain.entity.*;
+import com.yannqing.template.domain.vo.user.MySelfInfoVo;
 import com.yannqing.template.domain.vo.user.UserVo;
 import com.yannqing.template.enums.ErrorType;
 import com.yannqing.template.enums.RoleType;
@@ -417,6 +418,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         log.info("查询用户（id：{}）的权限（{}）", userId, permissionsList);
         return permissionsList;
+    }
+
+    @Override
+    public MySelfInfoVo getMyselfInfo(HttpServletRequest request) throws JsonProcessingException {
+        // verifyToken 函数中自带盘空
+        User loginUser = verifyToken(request);
+
+        // 转为封装类返回
+        MySelfInfoVo mySelfInfoVo = MySelfInfoVo.userToObj(loginUser);
+
+        log.info("获取个人信息成功！");
+        return mySelfInfoVo;
     }
 
     // 辅助方法：批量删除用户，日志记录

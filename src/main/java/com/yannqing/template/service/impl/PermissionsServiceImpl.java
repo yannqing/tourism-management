@@ -135,6 +135,7 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         Optional.ofNullable(queryPermissionsDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
+        Integer pid = queryPermissionsDto.getPid();
         Integer id = queryPermissionsDto.getId();
         String name = queryPermissionsDto.getName();
         String code = queryPermissionsDto.getCode();
@@ -143,6 +144,7 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         int pageSize = queryPermissionsDto.getPageSize();
 
         QueryWrapper<Permissions> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(pid != null, "pid", pid);
         queryWrapper.eq(id != null, "id", id);
         queryWrapper.like(StringUtils.isNotBlank(name), "name", name);
         queryWrapper.like(StringUtils.isNotBlank(code), "code", code);

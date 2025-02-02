@@ -13,12 +13,11 @@ import com.yannqing.template.domain.entity.Role;
 import com.yannqing.template.domain.entity.User;
 import com.yannqing.template.domain.model.BaseResponse;
 import com.yannqing.template.domain.dto.user.UpdateUserDto;
+import com.yannqing.template.domain.vo.user.MySelfInfoVo;
 import com.yannqing.template.domain.vo.user.UserVo;
 import com.yannqing.template.service.UserService;
 import com.yannqing.template.utils.ResultUtils;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -182,5 +181,13 @@ public class UserController {
     public BaseResponse<?> getPermissionByUser(Integer userId) {
         List<Permissions> result = userService.getPermissionByUser(userId);
         return ResultUtils.success(Code.SUCCESS, result, "查询用户权限成功");
+    }
+
+    @AuthCheck(code = PermissionConstant.USER_GET_MYSELF_INFO)
+    @Operation(summary = "获取个人信息")
+    @GetMapping("/getMyselfInfo")
+    public BaseResponse<?> getMyselfInfo(HttpServletRequest request) throws JsonProcessingException {
+        MySelfInfoVo result = userService.getMyselfInfo(request);
+        return ResultUtils.success(Code.SUCCESS, result, "获取个人信息成功");
     }
 }

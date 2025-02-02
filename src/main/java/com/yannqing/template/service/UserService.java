@@ -10,6 +10,7 @@ import com.yannqing.template.domain.entity.Permissions;
 import com.yannqing.template.domain.entity.Role;
 import com.yannqing.template.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yannqing.template.domain.vo.user.MySelfInfoVo;
 import com.yannqing.template.domain.vo.user.UserVo;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -47,4 +48,6 @@ public interface UserService extends IService<User> {
     List<Role> getRoleByUser(Integer userId);
 
     List<Permissions> getPermissionByUser(Integer userId);
+
+    MySelfInfoVo getMyselfInfo(HttpServletRequest request) throws JsonProcessingException;
 }
