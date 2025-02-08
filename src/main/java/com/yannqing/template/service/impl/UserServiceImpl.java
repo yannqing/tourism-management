@@ -425,8 +425,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // verifyToken 函数中自带盘空
         User loginUser = verifyToken(request);
 
+        User myselfUser = this.getById(loginUser.getUserId());
+
         // 转为封装类返回
-        MySelfInfoVo mySelfInfoVo = MySelfInfoVo.userToObj(loginUser);
+        MySelfInfoVo mySelfInfoVo = MySelfInfoVo.userToObj(myselfUser);
 
         log.info("获取个人信息成功！");
         return mySelfInfoVo;

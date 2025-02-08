@@ -5,7 +5,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/property_management
     username: root
-    password: wyjh030208..
+#    password: wyjh030208..    # mac
+    password: 123456    # win
   data:
     # redis
     redis:
