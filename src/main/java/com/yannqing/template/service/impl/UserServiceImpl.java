@@ -206,7 +206,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.like(StringUtils.isNotBlank(nickName), "nickName", nickName);
 
         log.info("管理员查询所有的用户");
-        // TODO 这里查询出来的数据，total 为0
         return this.page(new Page<>(queryUserDto.getCurrent(), queryUserDto.getPageSize()), queryWrapper);
     }
 
