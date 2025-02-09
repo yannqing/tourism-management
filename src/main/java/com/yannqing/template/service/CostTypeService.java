@@ -1,5 +1,9 @@
 package com.yannqing.template.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yannqing.template.domain.dto.cost.AddCostTypeDto;
+import com.yannqing.template.domain.dto.cost.QueryCostTypeDto;
+import com.yannqing.template.domain.dto.cost.UpdateCostTypeDto;
 import com.yannqing.template.domain.entity.CostType;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +14,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CostTypeService extends IService<CostType> {
 
+    Page<CostType> getAllCostTypes(QueryCostTypeDto queryCostTypeDto);
+
+    boolean updateCostType(UpdateCostTypeDto updateCostTypeDto);
+
+    boolean addCostType(AddCostTypeDto addCostTypeDto);
+
+    boolean deleteCostType(Integer id);
+
+    boolean deleteBatchCostType(Integer... costTypeIds);
 }

@@ -32,6 +32,12 @@ public class Announcement implements Serializable {
     private String noticeContent;
 
     /**
+     * 公告类型：通知/新闻/紧急公告
+     */
+    @TableField(value = "type")
+    private Integer type;
+
+    /**
      * 发布时间
      */
     @TableField(value = "publishTime")
@@ -99,6 +105,7 @@ public class Announcement implements Serializable {
             && (this.getNoticeTitle() == null ? other.getNoticeTitle() == null : this.getNoticeTitle().equals(other.getNoticeTitle()))
             && (this.getNoticeContent() == null ? other.getNoticeContent() == null : this.getNoticeContent().equals(other.getNoticeContent()))
             && (this.getPublishTime() == null ? other.getPublishTime() == null : this.getPublishTime().equals(other.getPublishTime()))
+            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getPublishUser() == null ? other.getPublishUser() == null : this.getPublishUser().equals(other.getPublishUser()))
             && (this.getIsTop() == null ? other.getIsTop() == null : this.getIsTop().equals(other.getIsTop()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -115,6 +122,7 @@ public class Announcement implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getNoticeTitle() == null) ? 0 : getNoticeTitle().hashCode());
         result = prime * result + ((getNoticeContent() == null) ? 0 : getNoticeContent().hashCode());
+        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getPublishTime() == null) ? 0 : getPublishTime().hashCode());
         result = prime * result + ((getPublishUser() == null) ? 0 : getPublishUser().hashCode());
         result = prime * result + ((getIsTop() == null) ? 0 : getIsTop().hashCode());
@@ -135,6 +143,7 @@ public class Announcement implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", noticeTitle=").append(noticeTitle);
         sb.append(", noticeContent=").append(noticeContent);
+        sb.append(", type=").append(type);
         sb.append(", publishTime=").append(publishTime);
         sb.append(", publishUser=").append(publishUser);
         sb.append(", isTop=").append(isTop);

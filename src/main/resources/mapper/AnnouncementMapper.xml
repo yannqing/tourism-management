@@ -8,6 +8,7 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="noticeTitle" column="noticeTitle" jdbcType="VARCHAR"/>
             <result property="noticeContent" column="noticeContent" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="TINYINT"/>
             <result property="publishTime" column="publishTime" jdbcType="TIMESTAMP"/>
             <result property="publishUser" column="publishUser" jdbcType="INTEGER"/>
             <result property="isTop" column="isTop" jdbcType="TINYINT"/>
@@ -19,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,noticeTitle,noticeContent,
+        id,noticeTitle,noticeContent,type,
         publishTime,publishUser,isTop,
         status,createTime,updateTime,
         isDelete,description

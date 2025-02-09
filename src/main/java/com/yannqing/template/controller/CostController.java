@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.*;
  * @create: 2025-02-08 17:14
  * @from: <更多资料：yannqing.com>
  **/
+@Tag(name = "费用管理")
 @RestController
 @RequestMapping("/cost")
-@Tag(name = "费用管理")
 public class CostController {
 
     @Resource
     private CostService costService;
 
-    @GetMapping
     @Operation(summary = "查询所有费用信息")
+    @GetMapping
     public BaseResponse<?> getAllCosts(QueryCostDto queryCostDto) {
         Page<Cost> costList = costService.getAllCosts(queryCostDto);
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
@@ -46,8 +46,8 @@ public class CostController {
         }
     }
 
-    @PostMapping
     @Operation(summary = "添加新费用")
+    @PostMapping
     public BaseResponse<?> addCost(AddCostDto addCostDto) {
         boolean result = costService.addCost(addCostDto);
         if (result) {
@@ -57,14 +57,25 @@ public class CostController {
         }
     }
 
-    @DeleteMapping
-    @Operation(summary = "删除费用信息")
-    public BaseResponse<?> deleteCost(Integer costId) {
-        boolean result = costService.deleteCost(costId);
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除单个费用信息")
+    public BaseResponse<?> deleteCost(@PathVariable Integer id) {
+        boolean result = costService.deleteCost(id);
         if (result) {
             return ResultUtils.success(Code.SUCCESS, null, "删除费用信息成功！");
         } else {
             return ResultUtils.failure(Code.FAILURE, null, "删除费用信息失败！");
+        }
+    }
+
+    @DeleteMapping("/batch")
+    @Operation(summary = "批量删除费用信息")
+    public BaseResponse<?> deleteBatchCost(Integer... costIds) {
+        boolean result = costService.deleteBatchCost(costIds);
+        if (result) {
+            return ResultUtils.success(Code.SUCCESS, null, "批量删除费用信息成功！");
+        } else {
+            return ResultUtils.failure(Code.FAILURE, null, "批量删除费用信息失败！");
         }
     }
 

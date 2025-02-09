@@ -26,6 +26,7 @@ public enum ErrorType implements BaseExceptionInterface {
     PERMISSION_ALREADY_EXIST(60011, "权限已存在，无法添加"),
 
     COST_NOT_EXIST(60012, "费用不存在，请重试"),
+    COST_TYPE_CODE_REPEAT(60013, "费用类型编码重复！"),
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 

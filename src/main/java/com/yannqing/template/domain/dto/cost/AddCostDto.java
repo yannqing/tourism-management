@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -71,6 +72,9 @@ public class AddCostDto implements Serializable {
      */
     @Schema(description = "备注", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public static Cost objToCost(AddCostDto addCostDto) {
         if (addCostDto == null) {

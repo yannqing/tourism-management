@@ -65,7 +65,7 @@ public class JwtUtils {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
         jwtVerifier.verify(token);//没报错说明验证成功
 
-        log.info("token校验成功！");
+//        log.info("token校验成功！");
     }
 
     /**

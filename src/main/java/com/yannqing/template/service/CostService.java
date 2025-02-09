@@ -7,8 +7,6 @@ import com.yannqing.template.domain.dto.cost.UpdateCostDto;
 import com.yannqing.template.domain.entity.Cost;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
 * @author 67121
 * @description 针对表【cost】的数据库操作Service
@@ -23,4 +21,6 @@ public interface CostService extends IService<Cost> {
     boolean addCost(AddCostDto addCostDto);
 
     boolean deleteCost(Integer costId);
+
+    boolean deleteBatchCost(Integer... costIds);
 }

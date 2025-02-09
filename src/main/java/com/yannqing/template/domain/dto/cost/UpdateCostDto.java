@@ -1,8 +1,5 @@
 package com.yannqing.template.domain.dto.cost;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.yannqing.template.domain.entity.Cost;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

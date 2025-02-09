@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -72,4 +73,7 @@ public class QueryCostDto extends PageRequest implements Serializable {
      */
     @Schema(description = "实际支付时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Date expenseTime;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 }

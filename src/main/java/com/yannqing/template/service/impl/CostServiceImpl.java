@@ -1,7 +1,6 @@
 package com.yannqing.template.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yannqing.template.domain.dto.cost.AddCostDto;
@@ -16,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -126,6 +126,26 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         log.info("删除费用信息");
 
         return deleteResult;
+    }
+
+    @Override
+    public boolean deleteBatchCost(Integer... costIds) {
+        // 判空
+        if (costIds == null || costIds.length == 0) {
+            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+        }
+
+       // 有效性判断
+        List<Cost> costList = this.listByIds(Arrays.asList(costIds));
+        if (costList.size()!= costIds.length) {
+            throw new BusinessException(ErrorType.COST_NOT_EXIST);
+        }
+
+        // 批量删除
+        int deleteResult = this.baseMapper.deleteBatchIds(Arrays.asList(costIds));
+        log.info("批量删除费用信息");
+
+        return deleteResult > 0;
     }
 }
 
