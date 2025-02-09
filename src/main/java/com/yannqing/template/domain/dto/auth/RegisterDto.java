@@ -4,6 +4,7 @@ import com.yannqing.template.domain.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -41,6 +42,11 @@ public class RegisterDto implements Serializable {
     private String email;
 
     /**
+     * 角色id
+     */
+    private Integer roleId;
+
+    /**
      * 年龄
      */
     private Integer age;
@@ -70,6 +76,7 @@ public class RegisterDto implements Serializable {
      */
     private String description;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public static User dtoToUser(RegisterDto registerDto) {
