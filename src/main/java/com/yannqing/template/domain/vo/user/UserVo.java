@@ -1,6 +1,7 @@
 package com.yannqing.template.domain.vo.user;
 
 import com.yannqing.template.domain.dto.user.AddUserDto;
+import com.yannqing.template.domain.entity.Role;
 import com.yannqing.template.domain.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 用户 vo
@@ -68,19 +70,24 @@ public class UserVo implements Serializable {
     private String nickName;
 
     /**
-     * 账户是否可用
+     * 角色
      */
-    private Integer enabled;
+    private List<Role> roles;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
+//    /**
+//     * 账户是否可用
+//     */
+//    private Integer enabled;
+//
+//    /**
+//     * 创建时间
+//     */
+//    private Date createTime;
+//
+//    /**
+//     * 更新时间
+//     */
+//    private Date updateTime;
 
     /**
      * 备注

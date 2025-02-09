@@ -16,19 +16,15 @@ import com.yannqing.template.domain.vo.user.UserVo;
 import com.yannqing.template.enums.ErrorType;
 import com.yannqing.template.enums.RoleType;
 import com.yannqing.template.exception.BusinessException;
-import com.yannqing.template.mapper.PermissionsMapper;
-import com.yannqing.template.mapper.RoleMapper;
-import com.yannqing.template.mapper.RolePermissionsMapper;
+import com.yannqing.template.mapper.*;
 import com.yannqing.template.service.RoleUserService;
 import com.yannqing.template.service.UserService;
-import com.yannqing.template.mapper.UserMapper;
 import com.yannqing.template.utils.JwtUtils;
 import com.yannqing.template.utils.RedisCache;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -168,7 +164,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User getUser = verifyUserId(id);
 
         // 返回封装类 vo
-        return UserVo.objToVo(getUser);
+        UserVo userVo = UserVo.objToVo(getUser);
+        userVo.setRoles(getRoleByUser(id));
+        return userVo;
     }
 
     /**
@@ -177,7 +175,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return
      */
     @Override
-    public Page<User> getAll(QueryUserDto queryUserDto) {
+    public Page<UserVo> getAll(QueryUserDto queryUserDto) {
         // 判空
         Optional.ofNullable(queryUserDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
@@ -205,8 +203,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq(sex != null, "sex", sex);
         queryWrapper.like(StringUtils.isNotBlank(nickName), "nickName", nickName);
 
+        // 将 user 转为 userVo
+        Page<User> page = this.page(new Page<>(queryUserDto.getCurrent(), queryUserDto.getPageSize()), queryWrapper);
+        List<UserVo> userVoList = page.getRecords().stream().map(user -> {
+            UserVo userVo = UserVo.objToVo(user);
+            userVo.setRoles(getRoleByUser(user.getUserId()));
+            return userVo;
+        }).toList();
+
         log.info("管理员查询所有的用户");
-        return this.page(new Page<>(queryUserDto.getCurrent(), queryUserDto.getPageSize()), queryWrapper);
+        return new Page<UserVo>(page.getCurrent(), page.getSize(), page.getTotal()).setRecords(userVoList);
     }
 
     /**
@@ -419,6 +425,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return permissionsList;
     }
 
+    /**
+     * 获取个人信息
+     * @param request
+     * @return
+     * @throws JsonProcessingException
+     */
     @Override
     public MySelfInfoVo getMyselfInfo(HttpServletRequest request) throws JsonProcessingException {
         // verifyToken 函数中自带盘空
@@ -428,6 +440,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         // 转为封装类返回
         MySelfInfoVo mySelfInfoVo = MySelfInfoVo.userToObj(myselfUser);
+        List<Role> loginUserRoles = getRoleByUser(loginUser.getUserId());
+        mySelfInfoVo.setRoles(loginUserRoles);
 
         log.info("获取个人信息成功！");
         return mySelfInfoVo;

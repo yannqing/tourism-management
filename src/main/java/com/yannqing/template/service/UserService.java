@@ -31,7 +31,7 @@ public interface UserService extends IService<User> {
 
     UserVo getUserById(Integer id);
 
-    Page<User> getAll(QueryUserDto queryUserDto);
+    Page<UserVo> getAll(QueryUserDto queryUserDto);
 
     boolean updateUserByAdmin(UpdateUserDto updateUserDto);
 

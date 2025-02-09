@@ -96,7 +96,7 @@ public class UserController {
     @Operation(summary = "查询所有用户（管理员）")
     @GetMapping
     public BaseResponse<?> getAll(QueryUserDto queryUserDto) {
-        Page<User> userPages = userService.getAll(queryUserDto);
+        Page<UserVo> userPages = userService.getAll(queryUserDto);
         return ResultUtils.success(Code.SUCCESS, userPages, "查询所有用户成功");
     }
 

@@ -1,5 +1,6 @@
 package com.yannqing.template.domain.vo.user;
 
+import com.yannqing.template.domain.entity.Role;
 import com.yannqing.template.domain.entity.User;
 import com.yannqing.template.enums.ErrorType;
 import com.yannqing.template.exception.BusinessException;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @description: 获取个人信息 vo
@@ -61,6 +63,11 @@ public class MySelfInfoVo implements Serializable {
      * 头像
      */
     private String avatar;
+
+    /**
+     * 角色
+     */
+    private List<Role> roles;
 
     /**
      * 昵称
