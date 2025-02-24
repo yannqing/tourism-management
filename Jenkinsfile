@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
-        GIT_URL = 'git@github.com:yannqing/java-backend-template.git'
-        APP_NAME = 'templatebackend'
+        GIT_URL = 'git@github.com:yannqing/tourism-management.git'
+        APP_NAME = 'tourismmanagement'
         APP_PROFILE = 'prod'
-        APP_IMAGE = 'templatebackend:latest'
+        APP_IMAGE = 'tourismmanagement:latest'
         APP_PORT = '8092:8080'
     }
 
