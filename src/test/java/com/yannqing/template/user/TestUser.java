@@ -1,14 +1,14 @@
-//package com.yannqing.template.user;
+//package com.yangg.tourism.user;
 //
 //import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//import com.yannqing.template.domain.dto.permissions.AddPermissionDto;
-//import com.yannqing.template.domain.dto.permissions.QueryPermissionsDto;
-//import com.yannqing.template.domain.dto.role.QueryRoleDto;
-//import com.yannqing.template.domain.entity.Permissions;
-//import com.yannqing.template.domain.entity.Role;
-//import com.yannqing.template.service.PermissionsService;
-//import com.yannqing.template.service.RoleService;
-//import com.yannqing.template.service.UserService;
+//import com.yangg.tourism.domain.dto.permissions.AddPermissionDto;
+//import com.yangg.tourism.domain.dto.permissions.QueryPermissionsDto;
+//import com.yangg.tourism.domain.dto.role.QueryRoleDto;
+//import com.yangg.tourism.domain.entity.Permissions;
+//import com.yangg.tourism.domain.entity.Role;
+//import com.yangg.tourism.service.PermissionsService;
+//import com.yangg.tourism.service.RoleService;
+//import com.yangg.tourism.service.UserService;
 //import jakarta.annotation.Resource;
 //import lombok.extern.slf4j.Slf4j;
 //import org.junit.jupiter.api.Test;

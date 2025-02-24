@@ -1,7 +1,7 @@
-package com.yannqing.template.role;
+package com.yangg.tourism.role;
 
-import com.yannqing.template.enums.PermissionType;
-import com.yannqing.template.service.RoleService;
+import com.yangg.tourism.enums.PermissionType;
+import com.yangg.tourism.service.RoleService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

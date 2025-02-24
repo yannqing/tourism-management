@@ -5,7 +5,7 @@ pipeline {
         APP_NAME = 'templatebackend'
         APP_PROFILE = 'prod'
         APP_IMAGE = 'templatebackend:latest'
-        APP_PORT = '8080:8080'
+        APP_PORT = '8092:8080'
     }
 
     stages {

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yannqing.template.mapper.PermissionsMapper">
+<mapper namespace="com.yangg.tourism.mapper.PermissionsMapper">
 
-    <resultMap id="BaseResultMap" type="com.yannqing.template.domain.entity.Permissions">
+    <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.Permissions">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="pid" column="pid" jdbcType="INTEGER"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>

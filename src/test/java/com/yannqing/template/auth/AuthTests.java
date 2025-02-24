@@ -1,4 +1,4 @@
-//package com.yannqing.template.auth;
+//package com.yangg.tourism.auth;
 //
 //import jakarta.annotation.Resource;
 //import org.junit.jupiter.api.Test;

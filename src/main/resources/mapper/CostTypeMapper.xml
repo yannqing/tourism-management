@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yannqing.template.mapper.CostTypeMapper">
+<mapper namespace="com.yangg.tourism.mapper.CostTypeMapper">
 
-    <resultMap id="BaseResultMap" type="com.yannqing.template.domain.entity.CostType">
+    <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.CostType">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="pid" column="pid" jdbcType="INTEGER"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
