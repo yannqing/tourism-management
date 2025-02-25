@@ -5,6 +5,7 @@ import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.service.FileService;
 import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+@Tag(name = "文件管理")
 @RestController
 @RequestMapping("/file")
 public class FileController {

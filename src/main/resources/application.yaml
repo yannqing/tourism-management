@@ -7,8 +7,6 @@ spring:
     username: root
     password: wyjh030208..    # mac
 #    password: 123456    # win
-project:
-  upload-url: ./images/
   data:
     # redis
     redis:
@@ -23,6 +21,8 @@ project:
           max-idle: 8
           min-idle: 0
       timeout: 0
+project:
+  upload-url: ./images/
 server:
   port: 8080
 knife4j:

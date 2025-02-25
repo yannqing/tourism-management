@@ -5,6 +5,7 @@ import com.yangg.tourism.domain.dto.ChatRequest;
 import com.yangg.tourism.domain.dto.ChatResponse;
 import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.utils.ResultUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+@Tag(name = "AI 管理")
 @RestController
 public class ChatController {
     
