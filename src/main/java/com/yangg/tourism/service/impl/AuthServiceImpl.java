@@ -1,13 +1,20 @@
 package com.yangg.tourism.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yangg.tourism.common.Constant;
 import com.yangg.tourism.domain.dto.auth.RegisterDto;
+import com.yangg.tourism.domain.dto.message.AddMessageDto;
+import com.yangg.tourism.domain.entity.Message;
 import com.yangg.tourism.domain.entity.User;
 import com.yangg.tourism.enums.ErrorType;
+import com.yangg.tourism.enums.MessageType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.UserMapper;
 import com.yangg.tourism.service.AuthService;
+import com.yangg.tourism.service.MessageService;
 import com.yangg.tourism.service.RoleUserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +38,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     private RoleUserService roleUserService;
+
+    @Resource
+    private MessageService messageService;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -68,18 +78,68 @@ public class AuthServiceImpl implements AuthService {
         User registerUser = RegisterDto.dtoToUser(registerDto);
         registerUser.setPassword(passwordEncoder.encode(password));
 
-        // 插入新注册用户
-        int result = userMapper.insert(registerUser);
-        log.info("用户user{}注册成功", registerUser.getUsername());
+        int result = 0;
+
+        if (!registerDto.getRoleId().equals(RoleType.OTHER.getRoleId())) {
+            // 插入新注册用户
+            result = userMapper.insert(registerUser);
+            log.info("用户user{}注册成功", registerUser.getUsername());
+        }
 
         // 给用户添加角色
         if (registerDto.getRoleId() == null) {
             roleUserService.addRole(username, RoleType.USER);
+        } else if (registerDto.getRoleId().equals(RoleType.OTHER.getRoleId())) {
+            AddMessageDto addMessageDto = new AddMessageDto();
+            addMessageDto.setType(MessageType.REGISTER.getId());
+            addMessageDto.setContent("新的商户请求注册，请处理！");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("registerInfo", JSON.toJSONString(registerDto));
+            addMessageDto.setArgs(jsonObject.toJSONString());
+            addMessageDto.setReceiveUser(Constant.adminUserId);
+
+            messageService.addMessage(addMessageDto);
         } else {
-            roleUserService.addRole(username, RoleType.USER.getRoleId() == registerDto.getRoleId() ? RoleType.USER : RoleType.OTHER);
+            roleUserService.addRole(username, registerDto.getRoleId());
         }
 
-        log.info("用户{}添加角色{}成功", registerUser.getUsername(), RoleType.USER.getRoleId() == registerDto.getRoleId() ? RoleType.USER.getRoleCode() : RoleType.OTHER.getRoleCode());
+        log.info("用户 username: {}添加角色 id: {}成功", registerUser.getUsername(),registerDto.getRoleId() == null ? RoleType.USER : registerDto.getRoleId());
+        return result > 0;
+    }
+
+    @Override
+    public boolean registerPass(Integer messageId) {
+        if (messageId == null) {
+            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+        }
+
+        Message message = messageService.getById(messageId);
+        if (message == null) {
+            throw new BusinessException(ErrorType.MESSAGE_NOT_EXIST);
+        }
+
+        String messageArgs = message.getArgs();
+        JSONObject jsonObject = JSON.parseObject(messageArgs, JSONObject.class);
+        RegisterDto registerDto = (RegisterDto)jsonObject.get("registerInfo");
+
+        User registerUser = RegisterDto.dtoToUser(registerDto);
+        registerUser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+        // 插入新注册用户
+        int result = userMapper.insert(registerUser);
+        log.info("商户 username：{} 注册成功", registerUser.getUsername());
+
+        roleUserService.addRole(registerUser.getUsername(), registerDto.getRoleId());
+
+        // 给新注册的商户发送消息通知
+        User newUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", registerUser.getUsername()));
+
+        AddMessageDto addMessageDto = new AddMessageDto();
+        addMessageDto.setType(MessageType.REGISTER.getId());
+        addMessageDto.setContent("恭喜您通过注册，成为一名旅游商业管理员！");
+        addMessageDto.setReceiveUser(newUser.getUserId());
+
+        messageService.addMessage(addMessageDto);
 
         return result > 0;
     }

@@ -28,6 +28,8 @@ public class Constant {
             "/rsa/**"
     };
 
+    public static final Integer adminUserId = 1;
+
     public static List<String> anonymousConstantList = Arrays.asList(anonymousConstant);
 
     public static Boolean isMatch(String path) {

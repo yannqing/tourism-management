@@ -10,6 +10,7 @@ public enum ErrorType implements BaseExceptionInterface {
     // TODO 类型统一摆放
     // common 一般异常
     ARGS_NOT_NULL(50001, "参数不能为空，请重试！"),
+    SYSTEM_ERROR(50000, "系统错误"),
 
     // 认证异常
     USERNAME_ALREADY_EXIST(60001, "用户名已存在，请重试！"),
@@ -30,6 +31,8 @@ public enum ErrorType implements BaseExceptionInterface {
 
     TOURIST_NOT_EXIST(60014, "旅游资源不存在，请重试"),
     TOURIST_TYPE_NOT_EXIST(60015, "旅游资源类型不存在，请重试"),
+
+    MESSAGE_NOT_EXIST(60016, "消息通知不存在，请重试"),
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 

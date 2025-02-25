@@ -58,7 +58,7 @@ public class TouristResources implements Serializable {
     private BigDecimal price;
 
     /**
-     * 状态
+     * 状态（0草稿，1已发布/可用，2异常/维护中）
      */
     @TableField(value = "status")
     private Integer status;

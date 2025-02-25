@@ -10,4 +10,6 @@ import com.yangg.tourism.domain.dto.auth.RegisterDto;
 public interface AuthService {
 
     boolean register(RegisterDto registerDto);
+
+    boolean registerPass(Integer messageId);
 }

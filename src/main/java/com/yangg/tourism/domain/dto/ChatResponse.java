@@ -1,6 +1,6 @@
 package com.yangg.tourism.domain.dto;
 
-import com.yangg.tourism.domain.entity.Message;
+import com.yangg.tourism.domain.model.Message;
 import lombok.Data;
 
 import java.util.List;

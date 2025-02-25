@@ -11,7 +11,7 @@ import lombok.Getter;
 public enum RoleType {
     USER(1, "user", "普通用户"),
     ADMIN(0, "admin", "管理员"),
-    OTHER(2, "other", "其他")
+    OTHER(2, "other", "商户")
     ;
 
     private final int roleId;
