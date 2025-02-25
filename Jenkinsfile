@@ -9,6 +9,14 @@ pipeline {
     }
 
     stages {
+        stage('替换配置文件') {
+            steps {
+                script {
+                    // 替换 dev.yml 文件
+                    sh 'cp /yannqing/tourismmanagement/application-dev.yml /var/lib/docker/volumes/jenkins_home/_data/workspace/tourism-management-backend/src/main/resources/application-dev.yml'
+                }
+            }
+        }
         stage('拉取代码') {
             steps {
                 git branch: 'master', url: GIT_URL
