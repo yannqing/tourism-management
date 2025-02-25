@@ -33,5 +33,10 @@ mybatis-plus:
       logic-delete-field: isDelete
       logic-delete-value: 1
       logic-not-delete-value: 0
+openai:
+  model: gpt-4o-mini
+  api:
+    url: xxxxxxx
+    key: xxxx
 
 
