@@ -12,7 +12,7 @@ import org.springframework.beans.BeanUtils;
  * @from: <更多资料：yannqing.com>
  **/
 @Data
-@Schema(name = "UpdateTouristResourcesDto", description = "修改旅游资源对象")
+@Schema(name = "UpdateResourcesTypeDto", description = "修改旅游资源类型对象")
 public class UpdateResourcesTypeDto {
 
     /**
