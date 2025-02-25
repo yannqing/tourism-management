@@ -78,13 +78,9 @@ public class AuthServiceImpl implements AuthService {
         User registerUser = RegisterDto.dtoToUser(registerDto);
         registerUser.setPassword(passwordEncoder.encode(password));
 
-        int result = 0;
-
-        if (!registerDto.getRoleId().equals(RoleType.OTHER.getRoleId())) {
-            // 插入新注册用户
-            result = userMapper.insert(registerUser);
-            log.info("用户user{}注册成功", registerUser.getUsername());
-        }
+        // 插入新注册用户
+        int result = userMapper.insert(registerUser);
+        log.info("用户user{}注册成功", registerUser.getUsername());
 
         // 给用户添加角色
         if (registerDto.getRoleId() == null) {

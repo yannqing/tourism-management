@@ -1,11 +1,9 @@
 package com.yangg.tourism.controller;
 
 import com.yangg.tourism.annotation.AuthCheck;
-import com.yangg.tourism.common.Code;
 import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.auth.RegisterDto;
 import com.yangg.tourism.domain.model.BaseResponse;
-import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.service.AuthService;
 import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,10 +34,8 @@ public class AuthController {
     @PostMapping("/register")
     public BaseResponse<?> register(RegisterDto registerDto) {
         boolean result = authService.register(registerDto);
-        if (result && registerDto.getRoleId() != RoleType.OTHER.getRoleId()) {
+        if (result) {
             return ResultUtils.success(String.format("用户%s注册成功", registerDto.getUsername()));
-        } else if (!result && registerDto.getRoleId() == RoleType.OTHER.getRoleId()) {
-            return ResultUtils.success(Code.REGISTER_SUCCESS, null, "商户申请成功，待审批");
         } else {
             return ResultUtils.failure(String.format("用户%s注册失败", registerDto.getUsername()));
         }
