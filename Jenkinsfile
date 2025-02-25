@@ -9,25 +9,25 @@ pipeline {
     }
 
     stages {
-            stage('查看路径') {
-                steps {
-                    script {
-                        // 替换 dev.yml 文件
-                        sh 'pwd'
-                    }
+        stage('拉取代码') {
+            steps {
+                git branch: 'master', url: GIT_URL
+            }
+        }
+        stage('查看路径') {
+            steps {
+                script {
+                    // 替换 dev.yml 文件
+                    sh 'pwd'
                 }
             }
+        }
         stage('替换配置文件') {
             steps {
                 script {
                     // 替换 dev.yml 文件
                     sh 'cp /yannqing/tourismmanagement/application-dev.yml /var/lib/docker/volumes/jenkins_home/_data/workspace/tourism-management-backend/src/main/resources/application-dev.yml'
                 }
-            }
-        }
-        stage('拉取代码') {
-            steps {
-                git branch: 'master', url: GIT_URL
             }
         }
         stage('编译构建') {
