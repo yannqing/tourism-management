@@ -9,6 +9,14 @@ pipeline {
     }
 
     stages {
+            stage('查看路径') {
+                steps {
+                    script {
+                        // 替换 dev.yml 文件
+                        sh 'pwd'
+                    }
+                }
+            }
         stage('替换配置文件') {
             steps {
                 script {
