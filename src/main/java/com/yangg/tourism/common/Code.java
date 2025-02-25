@@ -15,6 +15,4 @@ public class Code {
     public static final Integer TOKEN_EXPIRE = 10000;       //token过期
     public static final Integer TOKEN_AUTHENTICATE_FAILURE = 10001;       //token认证失败
 
-
-
 }

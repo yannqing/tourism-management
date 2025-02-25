@@ -7,6 +7,8 @@ spring:
     username: root
     password: wyjh030208..    # mac
 #    password: 123456    # win
+project:
+  upload-url: ./images/
   data:
     # redis
     redis:
