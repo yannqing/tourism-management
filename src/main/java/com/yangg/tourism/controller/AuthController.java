@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.yangg.tourism.annotation.AuthCheck;
+import com.yangg.tourism.common.Code;
 import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.auth.RegisterDto;
 import com.yangg.tourism.domain.model.BaseResponse;
@@ -38,7 +39,7 @@ public class AuthController {
         if (result && registerDto.getRoleId() != RoleType.OTHER.getRoleId()) {
             return ResultUtils.success(String.format("用户%s注册成功", registerDto.getUsername()));
         } else if (!result && registerDto.getRoleId() == RoleType.OTHER.getRoleId()) {
-            return ResultUtils.success("商户申请成功，待审批");
+            return ResultUtils.success(Code.REGISTER_SUCCESS, null, "商户申请成功，待审批");
         } else {
             return ResultUtils.failure(String.format("用户%s注册失败", registerDto.getUsername()));
         }

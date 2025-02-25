@@ -9,7 +9,7 @@ public class Code {
     public static final Integer LOGIN_FAILURE = 20000;      //登录失败
     public static final Integer LOGOUT_SUCCESS = 20010;     //退出成功
 
-    public static final Integer REGISTER_SUCCESS = 30001;   //注册成功
+    public static final Integer REGISTER_SUCCESS = 30001;   //商户注册成功
     public static final Integer REGISTER_FAILURE = 30000;   //注册失败
 
     public static final Integer TOKEN_EXPIRE = 10000;       //token过期
