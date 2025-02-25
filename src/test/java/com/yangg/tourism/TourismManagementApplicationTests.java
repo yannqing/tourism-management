@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.AntPathMatcher;
 
 @SpringBootTest
-class PropertyManagementApplicationTests {
+class TourismManagementApplicationTests {
 
     @Resource
     private PasswordEncoder passwordEncoder;
