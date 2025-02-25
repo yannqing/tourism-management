@@ -21,6 +21,12 @@ import java.util.Date;
 public class AddTouristResourcesDto implements Serializable {
 
     /**
+     * 父id
+     */
+    @Schema(description = "父id（默认0）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pid;
+
+    /**
      * 类型id
      */
     @Schema(description = "类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

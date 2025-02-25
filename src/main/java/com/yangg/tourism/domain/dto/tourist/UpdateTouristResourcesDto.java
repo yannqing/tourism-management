@@ -24,6 +24,12 @@ public class UpdateTouristResourcesDto {
     private Integer id;
 
     /**
+     * pid
+     */
+    @Schema(description = "父id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pid;
+
+    /**
      * 类型id
      */
     @Schema(description = "类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

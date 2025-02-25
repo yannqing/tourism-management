@@ -27,6 +27,12 @@ public class QueryTouristResourcesDto extends PageRequest implements Serializabl
     private Integer id;
 
     /**
+     * 父id
+     */
+    @Schema(description = "父id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pid;
+
+    /**
      * 类型id
      */
     @Schema(description = "类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

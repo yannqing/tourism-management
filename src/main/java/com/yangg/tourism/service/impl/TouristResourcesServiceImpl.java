@@ -3,17 +3,14 @@ package com.yangg.tourism.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yangg.tourism.domain.dto.cost.AddCostTypeDto;
-import com.yangg.tourism.domain.dto.cost.UpdateCostTypeDto;
 import com.yangg.tourism.domain.dto.tourist.AddTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
-import com.yangg.tourism.domain.entity.CostType;
 import com.yangg.tourism.domain.entity.TouristResources;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
-import com.yangg.tourism.service.TouristResourcesService;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
+import com.yangg.tourism.service.TouristResourcesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +37,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
         Integer id = queryTouristResourcesDto.getId();
+        Integer pid = queryTouristResourcesDto.getPid();
         Integer typeId = queryTouristResourcesDto.getTypeId();
         String name = queryTouristResourcesDto.getName();
         String description = queryTouristResourcesDto.getDescription();
@@ -56,6 +54,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
         QueryWrapper<TouristResources> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(pid!= null, "pid", pid);
         queryWrapper.eq(typeId!= null, "typeId", typeId);
         queryWrapper.like(location!= null, "location", location);
         queryWrapper.eq(rating!= null, "rating", rating);

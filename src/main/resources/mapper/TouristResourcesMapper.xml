@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.TouristResources">
             <id property="id" column="id" />
+            <result property="pid" column="pid" />
             <result property="typeId" column="typeId" />
             <result property="name" column="name" />
             <result property="description" column="description" />
@@ -23,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,typeId,name,description,location,rating,
+        id,pid,typeId,name,description,location,rating,
         price,status,phone,images,beginTime,
         endTime,createTime,updateTime,isDelete
     </sql>

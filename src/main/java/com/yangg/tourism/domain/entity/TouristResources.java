@@ -1,12 +1,12 @@
 package com.yangg.tourism.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
@@ -20,6 +20,12 @@ public class TouristResources implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    /**
+     * 父 id
+     */
+    @TableId(value = "pid", type = IdType.AUTO)
+    private Integer pid;
 
     /**
      * 类型id
@@ -123,6 +129,7 @@ public class TouristResources implements Serializable {
         }
         TouristResources other = (TouristResources) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getPid() == null ? other.getPid() == null : this.getPid().equals(other.getPid()))
             && (this.getTypeId() == null ? other.getTypeId() == null : this.getTypeId().equals(other.getTypeId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
@@ -144,6 +151,7 @@ public class TouristResources implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getPid() == null) ? 0 : getPid().hashCode());
         result = prime * result + ((getTypeId() == null) ? 0 : getTypeId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
@@ -168,6 +176,7 @@ public class TouristResources implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", pid=").append(pid);
         sb.append(", typeId=").append(typeId);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
