@@ -24,7 +24,7 @@ public class TouristResources implements Serializable {
     /**
      * 父 id
      */
-    @TableId(value = "pid", type = IdType.AUTO)
+    @TableField(value = "pid")
     private Integer pid;
 
     /**
