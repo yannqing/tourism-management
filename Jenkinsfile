@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // 替换 dev.yml 文件
-                    sh 'cp /yannqing/tourismmanagement/application-dev.yml /var/lib/docker/volumes/jenkins_home/_data/workspace/tourism-management-backend/src/main/resources/application-dev.yml'
+                    sh 'cp /var/jenkins_home/workspace/tourism-resources/application-dev.yml ./src/main/resources/application-dev.yml'
                 }
             }
         }
