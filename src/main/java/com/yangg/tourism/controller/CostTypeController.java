@@ -38,9 +38,9 @@ public class CostTypeController {
     public BaseResponse<?> updateCostType(UpdateCostTypeDto updateCostTypeDto) {
         boolean result = costTypeService.updateCostType(updateCostTypeDto);
         if (result) {
-            return ResultUtils.success(Code.SUCCESS, null, "修改费用信息成功！");
+            return ResultUtils.success(Code.SUCCESS, null, "修改费用类型成功！");
         } else {
-            return ResultUtils.failure(Code.FAILURE, null, "修改费用信息失败！");
+            return ResultUtils.failure(Code.FAILURE, null, "修改费用类型失败！");
         }
     }
 
@@ -67,7 +67,7 @@ public class CostTypeController {
     }
 
     @DeleteMapping("/batch")
-    @Operation(summary = "批量删除费用信息")
+    @Operation(summary = "批量删除费用类型")
     public BaseResponse<?> deleteBatchCostType(Integer... costTypeIds) {
         boolean result = costTypeService.deleteBatchCostType(costTypeIds);
         if (result) {

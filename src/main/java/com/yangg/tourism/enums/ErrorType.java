@@ -28,6 +28,9 @@ public enum ErrorType implements BaseExceptionInterface {
     COST_NOT_EXIST(60012, "费用不存在，请重试"),
     COST_TYPE_CODE_REPEAT(60013, "费用类型编码重复！"),
 
+    TOURIST_NOT_EXIST(60014, "旅游资源不存在，请重试"),
+    TOURIST_TYPE_NOT_EXIST(60015, "旅游资源类型不存在，请重试"),
+
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 
     //token 异常
