@@ -17,6 +17,7 @@ public class Constant {
     public static String[] anonymousConstant = {
             "/login",
             "/favicon.ico",
+            "/ws/user-status",
     };
 
     public static String[] anonymousMatch = {
