@@ -33,6 +33,8 @@ public enum ErrorType implements BaseExceptionInterface {
     TOURIST_TYPE_NOT_EXIST(60015, "旅游资源类型不存在，请重试"),
 
     MESSAGE_NOT_EXIST(60016, "消息通知不存在，请重试"),
+    USER_TOURIST_NOT_EXIST(60017, "该用户下面不存在旅游资源，请重试"),
+    USER_UPDATE_TOURIST_ERROR(60018, "商户无法非自己所属的资源"),
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 

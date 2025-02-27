@@ -27,6 +27,12 @@ public class AddTouristResourcesDto implements Serializable {
     private Integer pid;
 
     /**
+     * 负责人 id
+     */
+    @Schema(description = "负责人 id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer userId;
+
+    /**
      * 类型id
      */
     @Schema(description = "类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
