@@ -11,6 +11,7 @@ import com.yangg.tourism.domain.dto.user.QueryUserDto;
 import com.yangg.tourism.domain.dto.user.UpdateMyInfoDto;
 import com.yangg.tourism.domain.dto.user.UpdateUserDto;
 import com.yangg.tourism.domain.entity.*;
+import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo;
 import com.yangg.tourism.domain.vo.user.MySelfInfoVo;
 import com.yangg.tourism.domain.vo.user.UserVo;
 import com.yangg.tourism.enums.ErrorType;
@@ -62,6 +63,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Resource
     private UserTouristService userTouristService;
+
+    @Resource
+    private TouristResourcesMapper touristResourcesMapper;
 
     /**
      * 管理员新增用户
@@ -237,6 +241,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         List<UserVo> userVoList = page.getRecords().stream().map(user -> {
             UserVo userVo = UserVo.objToVo(user);
             userVo.setRoles(getRoleByUser(user.getUserId()));
+            UserTourist userTourist = userTouristService.getBaseMapper().selectOne(new QueryWrapper<UserTourist>().eq("uid", user.getUserId()));
+            if (userTourist != null) {
+                TouristResources touristResources = touristResourcesMapper.selectById(userTourist.getTid());
+                TourismResourcesVo tourismResourcesVo = TourismResourcesVo.touristResourcesToVo(touristResources);
+                userVo.setTourismResourcesVo(tourismResourcesVo);
+            }
             return userVo;
         }).toList();
 

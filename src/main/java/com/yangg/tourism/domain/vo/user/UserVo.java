@@ -1,14 +1,13 @@
 package com.yangg.tourism.domain.vo.user;
 
-import com.yangg.tourism.domain.dto.user.AddUserDto;
 import com.yangg.tourism.domain.entity.Role;
 import com.yangg.tourism.domain.entity.User;
+import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +54,11 @@ public class UserVo implements Serializable {
     private String signature;
 
     /**
+     * 旅游资源
+     */
+    private TourismResourcesVo tourismResourcesVo;
+
+    /**
      * 性别
      */
     private Integer sex;
@@ -73,21 +77,6 @@ public class UserVo implements Serializable {
      * 角色
      */
     private List<Role> roles;
-
-//    /**
-//     * 账户是否可用
-//     */
-//    private Integer enabled;
-//
-//    /**
-//     * 创建时间
-//     */
-//    private Date createTime;
-//
-//    /**
-//     * 更新时间
-//     */
-//    private Date updateTime;
 
     /**
      * 备注
