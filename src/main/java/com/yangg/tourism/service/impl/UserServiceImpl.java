@@ -19,6 +19,7 @@ import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.*;
 import com.yangg.tourism.service.RoleUserService;
 import com.yangg.tourism.service.UserService;
+import com.yangg.tourism.service.UserTouristService;
 import com.yangg.tourism.utils.JwtUtils;
 import com.yangg.tourism.utils.RedisCache;
 import jakarta.annotation.Resource;
@@ -59,6 +60,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Resource
     private PermissionsMapper permissionsMapper;
 
+    @Resource
+    private UserTouristService userTouristService;
+
     /**
      * 管理员新增用户
      * @param addUserDto
@@ -90,6 +94,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorType.PASSWORD_LENGTH_ERROR);
         }
 
+        if (addUserDto.getRoleId() != null && addUserDto.getRoleId().equals(RoleType.OTHER.getRoleId())) {
+            if (addUserDto.getTourismId() == null) {
+                throw new BusinessException(ErrorType.TOURIST_TYPE_NOT_EXIST);
+            }
+        }
+
         User addUser = AddUserDto.dtoToUser(addUserDto);
         addUser.setPassword(passwordEncoder.encode(password));
 
@@ -98,7 +108,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         log.info("管理员新增用户{}成功", username);
 
         // 给用户添加角色
-        roleUserService.addRole(username, RoleType.USER);
+        if (addUserDto.getRoleId() == null) {
+            roleUserService.addRole(username, RoleType.USER.getRoleId());
+        }
+        else if (!addUserDto.getRoleId().equals(RoleType.OTHER.getRoleId())) {
+            roleUserService.addRole(username, addUserDto.getRoleId());
+        } else {
+            // 商户
+            roleUserService.addRole(username, RoleType.OTHER.getRoleId());
+            // 指定资源
+            UserTourist addUserTourist = new UserTourist();
+            addUserTourist.setUid(addUser.getUserId());
+            addUserTourist.setTid(addUserDto.getTourismId());
+
+            int insertResult = userTouristService.getBaseMapper().insert(addUserTourist);
+            if (insertResult > 0) {
+                log.info("指定商户 id: {} 的资源 id: {} 成功", addUser.getUserId(), addUserDto.getTourismId());
+            } else {
+                log.error("指定商户 id: {} 的资源 id: {} 失败", addUser.getUserId(), addUserDto.getTourismId());
+            }
+        }
         log.info("用户{}添加角色{}成功", addUser.getUsername(), RoleType.USER.getRoleCode());
         return result > 0;
     }

@@ -54,6 +54,18 @@ public class AddUserDto implements Serializable {
     private Integer age;
 
     /**
+     * 角色 id
+     */
+    @Schema(description = "角色 id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer roleId;
+
+    /**
+     * 旅游资源 id
+     */
+    @Schema(description = "旅游资源 id（如果角色 id为商户，此字段不能为空）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer tourismId;
+
+    /**
      * 签名
      */
     @Schema(description = "签名", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
