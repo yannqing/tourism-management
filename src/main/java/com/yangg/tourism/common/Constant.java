@@ -24,6 +24,7 @@ public class Constant {
             "/auth/**",
        "/doc.html/**",
        "/webjars/**",
+            "/file/download/image/**",
             "/v3/**",
 //            "/test/**",
             "/rsa/**"

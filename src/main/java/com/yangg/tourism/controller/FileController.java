@@ -45,7 +45,7 @@ public class FileController {
      * @return
      */
     @Operation(summary = "下载图片文件")
-    @GetMapping("/download/image/{filename}")
+        @GetMapping("/download/image/{filename}")
     public ResponseEntity<FileSystemResource> downloadImage(@PathVariable("filename") String filename) {
 
         String imagePath = "./images/" + filename; // 图片的本地路径
