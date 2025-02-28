@@ -169,7 +169,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             userTourist.setUid(addTouristResourcesDto.getUserId());
             userTourist.setTid(addTouristResources.getId());
 
-            userTouristService.save(new UserTourist());
+            userTouristService.save(userTourist);
         }
         log.info("给旅游资源 id: {} 添加负责人 id: {} 成功！", addTouristResources.getId(), addTouristResourcesDto.getUserId());
         return saveResult;
