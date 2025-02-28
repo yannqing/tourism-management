@@ -269,7 +269,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     }
 
     private Integer getTouristIdByUser(Integer userId) {
-        UserTourist userTourist = userTouristService.getBaseMapper().selectById(userId);
+        UserTourist userTourist = userTouristService.getBaseMapper().selectById(new QueryWrapper<UserTourist>().eq("uid", userId));
         if (userTourist == null) {
             throw new BusinessException(ErrorType.USER_TOURIST_NOT_EXIST);
         }
