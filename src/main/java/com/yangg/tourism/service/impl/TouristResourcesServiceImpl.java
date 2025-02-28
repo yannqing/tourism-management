@@ -8,8 +8,10 @@ import com.yangg.tourism.domain.dto.tourist.AddTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryMerchantsResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
-import com.yangg.tourism.domain.entity.*;
-import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo;
+import com.yangg.tourism.domain.entity.Role;
+import com.yangg.tourism.domain.entity.TouristResources;
+import com.yangg.tourism.domain.entity.User;
+import com.yangg.tourism.domain.entity.UserTourist;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
@@ -231,7 +233,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     }
 
     @Override
-    public Page<TourismResourcesVo> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
+    public Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
         // 判空
         if (queryMerchantsResourcesDto == null) {
             throw new BusinessException(ErrorType.ARGS_NOT_NULL);
@@ -261,15 +263,9 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.eq("pid", touristResourcesId);
 
         Page<TouristResources> page = this.page(new Page<>(queryMerchantsResourcesDto.getCurrent(), queryMerchantsResourcesDto.getPageSize()), queryWrapper);
+        log.info("商户 id：{} 查询旅游资源", page);
 
-        List<TourismResourcesVo> tourismResourcesVoList = page.getRecords().stream().map(touristResources -> {
-            TourismResourcesVo tourismResourcesVo = TourismResourcesVo.touristResourcesToVo(touristResources);
-            ResourcesType resourcesType = resourcesTypeMapper.selectById(touristResources.getTypeId());
-            tourismResourcesVo.setType(resourcesType);
-            return tourismResourcesVo;
-        }).toList();
-
-        return new Page<TourismResourcesVo>(page.getCurrent(), page.getPages()).setRecords(tourismResourcesVoList);
+        return page;
     }
 
     private Integer getTouristIdByUser(Integer userId) {

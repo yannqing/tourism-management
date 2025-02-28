@@ -1,14 +1,13 @@
 package com.yangg.tourism.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yangg.tourism.domain.dto.tourist.AddTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryMerchantsResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
 import com.yangg.tourism.domain.entity.TouristResources;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -28,5 +27,5 @@ public interface TouristResourcesService extends IService<TouristResources> {
 
     boolean deleteBatchTouristResources(Integer... touristResourcesIds);
 
-    Page<TourismResourcesVo> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
+    Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
 }

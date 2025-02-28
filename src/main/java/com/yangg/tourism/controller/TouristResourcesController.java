@@ -42,7 +42,7 @@ public class TouristResourcesController {
     @Operation(summary = "查询自己的旅游资源（商户）")
     @GetMapping("/merchants")
     public BaseResponse<?> getAllTouristResources(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
-        Page<TourismResourcesVo> costList = touristResourcesService.getAllTouristResourcesByMerchants(queryMerchantsResourcesDto, request);
+        Page<TouristResources> costList = touristResourcesService.getAllTouristResourcesByMerchants(queryMerchantsResourcesDto, request);
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部旅游资源成功！");
     }
 
