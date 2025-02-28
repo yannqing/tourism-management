@@ -481,6 +481,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         MySelfInfoVo mySelfInfoVo = MySelfInfoVo.userToObj(myselfUser);
         List<Role> loginUserRoles = getRoleByUser(loginUser.getUserId());
         mySelfInfoVo.setRoles(loginUserRoles);
+        UserTourist userTourist = userTouristService.getBaseMapper().selectOne(new QueryWrapper<UserTourist>().eq("uid", loginUser.getUserId()));
+        if (userTourist != null) {
+            mySelfInfoVo.setTourismId(userTourist.getTid());
+        }
 
         log.info("获取个人信息成功！");
         return mySelfInfoVo;

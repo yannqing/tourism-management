@@ -50,6 +50,11 @@ public class MySelfInfoVo implements Serializable {
     private Integer age;
 
     /**
+     *  资源id
+     */
+    private Integer tourismId;
+
+    /**
      * 签名
      */
     private String signature;
