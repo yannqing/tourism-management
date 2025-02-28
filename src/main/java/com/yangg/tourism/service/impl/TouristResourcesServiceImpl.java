@@ -115,8 +115,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             // 获取商户可以修改的资源 id，存入 list 集合
             UserTourist userTourist = userTouristService.getBaseMapper().selectOne(new QueryWrapper<UserTourist>().eq("uid", loginUser.getUserId()));
             List<Integer> canUpdate = new ArrayList<>();
-            canUpdate.add(userTourist.getId());
-            List<TouristResources> touristResourcesList = this.getBaseMapper().selectList(new QueryWrapper<TouristResources>().eq("pid", userTourist.getId()));
+            canUpdate.add(userTourist.getTid());
+            List<TouristResources> touristResourcesList = this.getBaseMapper().selectList(new QueryWrapper<TouristResources>().eq("pid", userTourist.getTid()));
             touristResourcesList.forEach(touristResources -> {
                 canUpdate.add(touristResources.getId());
             });
@@ -165,6 +165,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         log.info("新增旅游资源");
 
         if (addTouristResourcesDto.getUserId() != null) {
+            // TODO 缺少对 userId 的校验
             UserTourist userTourist = new UserTourist();
             userTourist.setUid(addTouristResourcesDto.getUserId());
             userTourist.setTid(addTouristResources.getId());
