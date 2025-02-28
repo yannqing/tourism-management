@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
         byte[] avatarBytes = image.getBytes();
         Files.write(path, avatarBytes);
         //下载路径
-        return "/download/image/"+newFilename;
+        return "/file/download/image/"+newFilename;
     }
 
     /**
