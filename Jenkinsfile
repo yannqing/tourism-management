@@ -70,7 +70,7 @@ pipeline {
             steps {
                 // 基于 Dockerfile 进行构建
                 sh "docker build -f Dockerfile.dockerfile -t ${APP_IMAGE} ."
-                sh "docker run -it --name ${APP_NAME} --network mynetwork -v /yannqing/${APP_NAME}:/yannqing/${APP_NAME} -p ${APP_PORT} -d ${APP_IMAGE}"
+                sh "docker run -it --name ${APP_NAME} --network mynetwork -v /yannqing/${APP_NAME}/images:/yannqing/template/tourism-management/java/images -v /yannqing/${APP_NAME}:/yannqing/${APP_NAME} -p ${APP_PORT} -d ${APP_IMAGE}"
             }
         }
     }
