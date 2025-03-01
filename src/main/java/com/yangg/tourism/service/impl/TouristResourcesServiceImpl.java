@@ -256,6 +256,18 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         boolean deleteResult = this.removeById(id);
         log.info("删除旅游资源");
 
+        List<TouristResources> touristResourcesList = this.getBaseMapper().selectList(new QueryWrapper<TouristResources>().eq("pid", id));
+        // 删除次子资源以及关系
+        touristResourcesList.forEach(touristResources -> {
+            // 删除资源
+            this.remove(new QueryWrapper<TouristResources>().eq("pid", touristResources.getId()));
+            // 删除关系
+            userTouristService.remove(new QueryWrapper<UserTourist>().eq("tid", touristResources.getId()));
+        });
+        // 删除子资源以及关系
+        this.remove(new QueryWrapper<TouristResources>().eq("pid", id));
+        userTouristService.remove(new QueryWrapper<UserTourist>().eq("tid", id));
+
         return deleteResult;
     }
 
