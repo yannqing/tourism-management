@@ -193,9 +193,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         TouristResources addTouristResources = AddTouristResourcesDto.objToTouristResources(addTouristResourcesDto);
 
         // 商户新增
-        Integer touristId = -1;
         if (roles.get(0).getId().equals(RoleType.OTHER.getRoleId())) {
-            touristId = getTouristIdByUser(loginUser.getUserId());
+            Integer touristId = getTouristIdByUser(loginUser.getUserId());
             addTouristResources.setPid(touristId);
         }
 
@@ -203,13 +202,21 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         boolean saveResult = this.save(addTouristResources);
         log.info("新增旅游资源");
 
-        if (addTouristResourcesDto.getUserId() != null) {
-            // TODO 缺少对 userId 的校验
-            UserTourist userTourist = new UserTourist();
-            userTourist.setUid(addTouristResourcesDto.getUserId());
-            userTourist.setTid(addTouristResources.getId());
+        // 新增非商品的资源，必须指定 userId
+        if (addTouristResourcesDto.getTypeId() != 5) {
+            if (addTouristResourcesDto.getUserId() != null) {
+                User owner = userService.getById(addTouristResourcesDto.getUserId());
+                if (owner == null) {
+                    throw new BusinessException(ErrorType.SYSTEM_ERROR);
+                }
+                UserTourist userTourist = new UserTourist();
+                userTourist.setUid(owner.getUserId());
+                userTourist.setTid(addTouristResources.getId());
 
-            userTouristService.save(userTourist);
+                userTouristService.save(userTourist);
+            } else {
+                throw new BusinessException(ErrorType.SYSTEM_ERROR);
+            }
         }
         log.info("给旅游资源 id: {} 添加负责人 id: {} 成功！", addTouristResources.getId(), addTouristResourcesDto.getUserId());
         return saveResult;

@@ -26,6 +26,12 @@ public class AddCostDto implements Serializable {
     private String name;
 
     /**
+     * 商品id
+     */
+    @Schema(description = "商品id", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Integer commodityId;
+
+    /**
      * 费用类型id
      */
     @Schema(description = "费用类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

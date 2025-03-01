@@ -1,8 +1,10 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.cost.AddCostDto;
+import com.yangg.tourism.domain.dto.cost.CreateOrderDto;
 import com.yangg.tourism.domain.dto.cost.QueryCostDto;
 import com.yangg.tourism.domain.dto.cost.UpdateCostDto;
 import com.yangg.tourism.domain.entity.Cost;
@@ -12,6 +14,7 @@ import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -79,5 +82,22 @@ public class CostController {
         }
     }
 
+    @Operation(summary = "创建订单")
+    @PostMapping("/create-order")
+    public BaseResponse<?> createOrder(CreateOrderDto createOrderDto, HttpServletRequest request) throws JsonProcessingException {
+        String order = costService.createOrder(createOrderDto, request);
+        return ResultUtils.success(Code.SUCCESS, order, "创建订单成功！");
+    }
+
+    @Operation(summary = "支付订单")
+    @PostMapping("/pay-order")
+    public BaseResponse<?> payOrder(String orderNumber, HttpServletRequest request) throws JsonProcessingException {
+        boolean result = costService.payOrder(orderNumber, request);
+        if (result) {
+            return ResultUtils.success(Code.SUCCESS, null, "支付订单成功！");
+        } else {
+            return ResultUtils.failure(Code.FAILURE, null, "支付订单失败！");
+        }
+    }
 
 }

@@ -7,7 +7,9 @@
     <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.Cost">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="INTEGER"/>
+    <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="commodityId" column="commodityId" jdbcType="INTEGER"/>
+        <result property="orderNumber" column="orderNumber" jdbcType="VARCHAR"/>
             <result property="paymentMethod" column="paymentMethod" jdbcType="TINYINT"/>
             <result property="amount" column="amount" jdbcType="DECIMAL"/>
             <result property="consumer" column="consumer" jdbcType="INTEGER"/>
@@ -21,7 +23,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,type,
+        id,name,type,commodityId,orderNumber,
         paymentMethod,amount,consumer,
         payee,status,expenseTime,
         createTime,updateTime,isDelete,

@@ -1,11 +1,11 @@
 package com.yangg.tourism.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
@@ -31,6 +31,18 @@ public class Cost implements Serializable {
      */
     @TableField(value = "type")
     private Integer type;
+
+    /**
+     * 商品id
+     */
+    @TableField(value = "commodityId")
+    private Integer commodityId;
+
+    /**
+     * 订单号
+     */
+    @TableField(value = "orderNumber")
+    private String orderNumber;
 
     /**
      * 支付方式（0现金，1支付宝，-1微信支付）

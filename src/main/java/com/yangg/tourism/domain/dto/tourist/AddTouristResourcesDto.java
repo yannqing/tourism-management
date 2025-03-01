@@ -29,13 +29,13 @@ public class AddTouristResourcesDto implements Serializable {
     /**
      * 负责人 id
      */
-    @Schema(description = "负责人 id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "负责人 id（新增非商品的资源，必须指定 userId）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer userId;
 
     /**
      * 类型id
      */
-    @Schema(description = "类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "类型id（5是商品，其他为顶级/次顶级资源）", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer typeId;
 
     /**

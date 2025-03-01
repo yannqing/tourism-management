@@ -24,6 +24,18 @@ public class UpdateCostDto {
     private Integer id;
 
     /**
+     * 商品id
+     */
+    @Schema(description = "商品id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer commodityId;
+
+    /**
+     * 订单号
+     */
+    @Schema(description = "订单号", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String orderNumber;
+
+    /**
      * 费用名称
      */
     @Schema(description = "昵称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
