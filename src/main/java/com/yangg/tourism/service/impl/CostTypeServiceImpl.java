@@ -48,8 +48,8 @@ public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
         queryWrapper.eq(id!= null, "id", id);
         queryWrapper.like(name!= null, "name", name);
         queryWrapper.eq(pid!= null, "pid", pid);
-        queryWrapper.eq(code!= null, "code", code);
-        queryWrapper.eq(description!= null, "description", description);
+        queryWrapper.like(code!= null, "code", code);
+        queryWrapper.like(description!= null, "description", description);
         log.info("查询所有费用类型");
 
         return this.page(new Page<>(queryCostTypeDto.getCurrent(), queryCostTypeDto.getPageSize()), queryWrapper);

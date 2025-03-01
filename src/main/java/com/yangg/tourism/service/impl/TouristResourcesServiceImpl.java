@@ -90,6 +90,45 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     }
 
     @Override
+    public Page<TouristResources> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto) {
+        // 判空
+        Optional.ofNullable(queryTouristResourcesDto)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        Integer id = queryTouristResourcesDto.getId();
+        Integer pid = queryTouristResourcesDto.getPid();
+        Integer typeId = queryTouristResourcesDto.getTypeId();
+        String name = queryTouristResourcesDto.getName();
+        String description = queryTouristResourcesDto.getDescription();
+        String location = queryTouristResourcesDto.getLocation();
+        BigDecimal rating = queryTouristResourcesDto.getRating();
+        BigDecimal price = queryTouristResourcesDto.getPrice();
+        Integer status = queryTouristResourcesDto.getStatus();
+        String phone = queryTouristResourcesDto.getPhone();
+        String images = queryTouristResourcesDto.getImages();
+        Date beginTime = queryTouristResourcesDto.getBeginTime();
+        Date endTime = queryTouristResourcesDto.getEndTime();
+
+        QueryWrapper<TouristResources> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(pid!= null, "pid", pid);
+        queryWrapper.eq(typeId!= null, "typeId", typeId);
+        queryWrapper.like(location!= null, "location", location);
+        queryWrapper.eq(rating!= null, "rating", rating);
+        queryWrapper.eq(price!= null, "price", price);
+        queryWrapper.eq(status!= null, "status", status);
+        queryWrapper.like(phone!= null, "phone", phone);
+        queryWrapper.like(images!= null, "images", images);
+        queryWrapper.eq(beginTime!= null, "beginTime", beginTime);
+        queryWrapper.eq(endTime!= null, "endTime", endTime);
+        queryWrapper.like(name!= null, "name", name);
+        queryWrapper.like(description!= null, "description", description);
+        log.info("查询所有旅游资源");
+
+        return this.page(new Page<>(queryTouristResourcesDto.getCurrent(), queryTouristResourcesDto.getPageSize()), queryWrapper);
+    }
+
+    @Override
     public boolean updateTouristResources(UpdateTouristResourcesDto updateTouristResourcesDto, HttpServletRequest request) throws JsonProcessingException {
         // 判空
         Optional.ofNullable(updateTouristResourcesDto.getId())
@@ -231,6 +270,14 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         log.info("批量删除旅游资源");
 
         return deleteResult > 0;
+    }
+
+    @Override
+    public Page<TouristResources> getRecommendTouristResources() {
+        QueryWrapper<TouristResources> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pid", 0);      //只推荐顶级资源
+        queryWrapper.orderBy(true, false, "rating");    //倒序，评分最高的在上面
+        return this.page(new Page<>(1, 10), queryWrapper);
     }
 
     @Override

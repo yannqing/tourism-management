@@ -9,7 +9,6 @@ import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
 import com.yangg.tourism.domain.entity.TouristResources;
 import com.yangg.tourism.domain.model.BaseResponse;
-import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo;
 import com.yangg.tourism.service.TouristResourcesService;
 import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,14 +35,28 @@ public class TouristResourcesController {
     @GetMapping
     public BaseResponse<?> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto) {
         Page<TouristResources> costList = touristResourcesService.getAllTouristResources(queryTouristResourcesDto);
-        return ResultUtils.success(Code.SUCCESS, costList, "查询全部旅游资源成功！");
+        return ResultUtils.success(Code.SUCCESS, costList, "管理员查询全部旅游资源成功！");
+    }
+
+    @Operation(summary = "查询所有旅游资源（游客）")
+    @GetMapping("/user")
+    public BaseResponse<?> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto) {
+        Page<TouristResources> costList = touristResourcesService.getAllTouristResourcesByUser(queryTouristResourcesDto);
+        return ResultUtils.success(Code.SUCCESS, costList, "游客查询全部旅游资源成功！");
     }
 
     @Operation(summary = "查询自己的旅游资源（商户）")
     @GetMapping("/merchants")
     public BaseResponse<?> getAllTouristResources(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
         Page<TouristResources> costList = touristResourcesService.getAllTouristResourcesByMerchants(queryMerchantsResourcesDto, request);
-        return ResultUtils.success(Code.SUCCESS, costList, "查询全部旅游资源成功！");
+        return ResultUtils.success(Code.SUCCESS, costList, "商户查询自己的旅游资源成功！");
+    }
+
+    @Operation(summary = "查询推荐的旅游资源")
+    @GetMapping("/recommend")
+    public BaseResponse<?> getRecommendTouristResources() {
+        Page<TouristResources> costList = touristResourcesService.getRecommendTouristResources();
+        return ResultUtils.success(Code.SUCCESS, costList, "查询推荐旅游资源成功！");
     }
 
     @PutMapping

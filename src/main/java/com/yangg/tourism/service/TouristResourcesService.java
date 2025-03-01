@@ -19,6 +19,10 @@ public interface TouristResourcesService extends IService<TouristResources> {
 
     Page<TouristResources> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto);
 
+    Page<TouristResources> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto);
+
+    Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
+
     boolean updateTouristResources(UpdateTouristResourcesDto updateTouristResourcesDto, HttpServletRequest request) throws JsonProcessingException;
 
     boolean addTouristResources(AddTouristResourcesDto addTouristResourcesDto, HttpServletRequest request) throws JsonProcessingException;
@@ -27,5 +31,5 @@ public interface TouristResourcesService extends IService<TouristResources> {
 
     boolean deleteBatchTouristResources(Integer... touristResourcesIds);
 
-    Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
+    Page<TouristResources> getRecommendTouristResources();
 }
