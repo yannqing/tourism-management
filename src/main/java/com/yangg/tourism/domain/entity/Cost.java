@@ -123,6 +123,8 @@ public class Cost implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+            && (this.getCommodityId() == null ? other.getCommodityId() == null : this.getCommodityId().equals(other.getCommodityId()))
+            && (this.getOrderNumber() == null ? other.getOrderNumber() == null : this.getOrderNumber().equals(other.getOrderNumber()))
             && (this.getPaymentMethod() == null ? other.getPaymentMethod() == null : this.getPaymentMethod().equals(other.getPaymentMethod()))
             && (this.getAmount() == null ? other.getAmount() == null : this.getAmount().equals(other.getAmount()))
             && (this.getConsumer() == null ? other.getConsumer() == null : this.getConsumer().equals(other.getConsumer()))
@@ -142,6 +144,8 @@ public class Cost implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
+        result = prime * result + ((getCommodityId() == null) ? 0 : getCommodityId().hashCode());
+        result = prime * result + ((getOrderNumber() == null) ? 0 : getOrderNumber().hashCode());
         result = prime * result + ((getPaymentMethod() == null) ? 0 : getPaymentMethod().hashCode());
         result = prime * result + ((getAmount() == null) ? 0 : getAmount().hashCode());
         result = prime * result + ((getConsumer() == null) ? 0 : getConsumer().hashCode());
@@ -164,6 +168,8 @@ public class Cost implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
+        sb.append(", commodityId=").append(commodityId);
+        sb.append(", orderNumber=").append(orderNumber);
         sb.append(", paymentMethod=").append(paymentMethod);
         sb.append(", amount=").append(amount);
         sb.append(", consumer=").append(consumer);

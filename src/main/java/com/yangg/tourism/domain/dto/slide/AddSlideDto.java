@@ -31,6 +31,12 @@ public class AddSlideDto implements Serializable {
     private String description;
 
     /**
+     * 旅游资源id
+     */
+    @Schema(description = "旅游资源id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer tourismId;
+
+    /**
      * 图片url
      */
     @Schema(description = "图片url", requiredMode = Schema.RequiredMode.REQUIRED)

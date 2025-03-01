@@ -39,11 +39,13 @@ public class SlideServiceImpl extends ServiceImpl<SlideMapper, Slide>
         String title = querySlideDto.getTitle();
         String description = querySlideDto.getDescription();
         String image = querySlideDto.getImage();
+        Integer tourismId = querySlideDto.getTourismId();
         Integer status = querySlideDto.getStatus();
         Integer type = querySlideDto.getType();
 
         QueryWrapper<Slide> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(tourismId!= null, "tourismId", tourismId);
         queryWrapper.like(title!= null, "title", title);
         queryWrapper.like(image!= null, "image", image);
         queryWrapper.eq(status!= null, "status", status);

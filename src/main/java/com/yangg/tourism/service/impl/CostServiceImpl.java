@@ -66,6 +66,8 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         Integer id = queryCostDto.getId();
         String name = queryCostDto.getName();
         Integer type = queryCostDto.getType();
+        Integer commodityId = queryCostDto.getCommodityId();
+        String orderNumber = queryCostDto.getOrderNumber();
         Integer paymentMethod = queryCostDto.getPaymentMethod();
         BigDecimal amount = queryCostDto.getAmount();
         Integer consumer = queryCostDto.getConsumer();
@@ -75,7 +77,9 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
 
         QueryWrapper<Cost> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(commodityId!= null, "commodityId", commodityId);
         queryWrapper.like(name!= null, "name", name);
+        queryWrapper.like(orderNumber!= null, "orderNumber", orderNumber);
         queryWrapper.eq(type!= null, "type", type);
         queryWrapper.eq(paymentMethod!= null, "paymentMethod", paymentMethod);
         queryWrapper.eq(amount!= null, "amount", amount);

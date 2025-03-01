@@ -33,6 +33,12 @@ public class Slide implements Serializable {
     private String description;
 
     /**
+     * 旅游资源id
+     */
+    @TableField(value = "tourismId")
+    private Integer tourismId;
+
+    /**
      * 图片url
      */
     @TableField(value = "image")
@@ -88,6 +94,7 @@ public class Slide implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getTourismId() == null ? other.getTourismId() == null : this.getTourismId().equals(other.getTourismId()))
             && (this.getImage() == null ? other.getImage() == null : this.getImage().equals(other.getImage()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
@@ -103,6 +110,7 @@ public class Slide implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getTourismId() == null) ? 0 : getTourismId().hashCode());
         result = prime * result + ((getImage() == null) ? 0 : getImage().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
@@ -121,6 +129,7 @@ public class Slide implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", description=").append(description);
+        sb.append(", tourismId=").append(tourismId);
         sb.append(", image=").append(image);
         sb.append(", status=").append(status);
         sb.append(", type=").append(type);

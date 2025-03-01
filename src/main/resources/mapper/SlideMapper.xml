@@ -11,13 +11,14 @@
             <result property="image" column="image" />
             <result property="status" column="status" />
             <result property="type" column="type" />
+            <result property="tourismId" column="tourismId" />
             <result property="createTime" column="createTime" />
             <result property="updateTime" column="updateTime" />
             <result property="isDelete" column="isDelete" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,description,image,status,type,
+        id,title,description,image,status,type,tourismId,
         createTime,updateTime,isDelete
     </sql>
 </mapper>
