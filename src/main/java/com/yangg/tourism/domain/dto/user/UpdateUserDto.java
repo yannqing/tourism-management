@@ -5,7 +5,6 @@ import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -24,6 +23,8 @@ public class UpdateUserDto {
     private Integer userId;
     @Schema(description = "用户名", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String username;
+    @Schema(description = "资源id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer tourismId;
     @Schema(description = "昵称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String nickName;
     @Schema(description = "地址", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

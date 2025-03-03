@@ -124,6 +124,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             UserTourist addUserTourist = new UserTourist();
             addUserTourist.setUid(addUser.getUserId());
             addUserTourist.setTid(addUserDto.getTourismId());
+            // 做出限制
+            UserTourist userTourist = userTouristService.getOne(new QueryWrapper<UserTourist>().eq("tid", addUserDto.getTourismId()));
+            if (userTourist != null) {
+                throw new BusinessException(ErrorType.TOURIST_ALREADY_EXIST);
+            }
 
             int insertResult = userTouristService.getBaseMapper().insert(addUserTourist);
             if (insertResult > 0) {
@@ -285,6 +290,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 roleUserService.addRole(userId, roleId);
             });
             log.info("更新用户（id：{}）的角色信息{}", userId, roleIds.stream().map(String::valueOf));
+        }
+
+        // 修改用户所获取的资源
+        if (updateUserDto.getTourismId() != null) {
+            Integer tourismId = updateUserDto.getTourismId();
+            TouristResources touristResources = touristResourcesMapper.selectById(tourismId);
+            if (touristResources == null) {
+                throw new BusinessException(ErrorType.TOURIST_NOT_EXIST);
+            } else {
+                UserTourist userTourist = new UserTourist();
+                userTourist.setUid(updateUserDto.getUserId());
+                userTourist.setTid(tourismId);
+
+                userTouristService.save(userTourist);
+                log.info("管理员修改用户 id: {} 的旅游资源信息 id: {} 成功", updateUserDto.getUserId(), tourismId);
+            }
         }
 
         return updateResult;

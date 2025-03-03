@@ -38,6 +38,8 @@ public enum ErrorType implements BaseExceptionInterface {
     SLIDE_NOT_EXIST(60019, "轮播图不存在，请重试"),
     ORDER_NOT_EXIST(60020, "订单不存在，请重试"),
     ORDER_INVALID(60021, "订单已过期"),
+    TOURIST_ALREADY_EXIST(60022, "旅游资源已存在，无法添加"),
+
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 
