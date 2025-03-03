@@ -161,6 +161,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 删除此用户所有的角色
         roleUserService.remove(new QueryWrapper<RoleUser>().eq("uid", id));
         log.info("删除用户{}的所有角色", username);
+
+        //删除用户的资源
+        userTouristService.remove(new QueryWrapper<UserTourist>().eq("uid", id));
         return result > 0;
     }
 
@@ -190,6 +193,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 删除此用户所有的角色，并记录日志
         roleUserService.remove(new QueryWrapper<RoleUser>().in("uid", userIdList));
         log.info("批量删除用户的角色");
+
+        // 删除用户的资源关系
+        userIdList.forEach(userId -> {
+            userTouristService.remove(new QueryWrapper<UserTourist>().eq("uid", userId));
+        });
 
         return result;
     }
