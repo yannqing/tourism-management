@@ -299,6 +299,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             if (touristResources == null) {
                 throw new BusinessException(ErrorType.TOURIST_NOT_EXIST);
             } else {
+                userTouristService.remove(new QueryWrapper<UserTourist>().eq("uid", updateUserDto.getUserId()));
                 UserTourist userTourist = new UserTourist();
                 userTourist.setUid(updateUserDto.getUserId());
                 userTourist.setTid(tourismId);
