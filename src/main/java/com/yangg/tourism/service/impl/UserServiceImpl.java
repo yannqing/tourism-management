@@ -119,6 +119,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             roleUserService.addRole(username, addUserDto.getRoleId());
         } else {
             // 商户
+            if (addUserDto.getTourismId() == null) {
+                throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+            }
             roleUserService.addRole(username, RoleType.OTHER.getRoleId());
             // 指定资源
             UserTourist addUserTourist = new UserTourist();
@@ -299,6 +302,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             if (touristResources == null) {
                 throw new BusinessException(ErrorType.TOURIST_NOT_EXIST);
             } else {
+                UserTourist userTouristServiceOne = userTouristService.getOne(new QueryWrapper<UserTourist>().eq("tid", tourismId));
+                if (userTouristServiceOne != null) {
+                    throw new BusinessException(ErrorType.TOURIST_ALREADY_EXIST);
+                }
                 userTouristService.remove(new QueryWrapper<UserTourist>().eq("uid", updateUserDto.getUserId()));
                 UserTourist userTourist = new UserTourist();
                 userTourist.setUid(updateUserDto.getUserId());
