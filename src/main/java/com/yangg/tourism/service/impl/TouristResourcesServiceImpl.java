@@ -196,12 +196,13 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         if (roles.get(0).getId().equals(RoleType.OTHER.getRoleId())) {
             Integer touristId = getTouristIdByUser(loginUser.getUserId());
             addTouristResources.setPid(touristId);
+        } else {
+            // 添加旅游资源(管理员）
+            if (addTouristResourcesDto.getPid() == null || addTouristResourcesDto.getTypeId() == 5) {
+                throw new BusinessException(ErrorType.TOURIST_COMMODITY_ADD_ERROR_NO_PID);
+            }
         }
 
-        // 添加旅游资源
-        if (addTouristResourcesDto.getPid() == null || addTouristResourcesDto.getTypeId() == 5) {
-            throw new BusinessException(ErrorType.TOURIST_COMMODITY_ADD_ERROR_NO_PID);
-        }
         boolean saveResult = this.save(addTouristResources);
         log.info("新增旅游资源");
 
