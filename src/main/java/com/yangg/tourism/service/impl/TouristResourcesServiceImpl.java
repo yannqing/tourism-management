@@ -199,6 +199,9 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         }
 
         // 添加旅游资源
+        if (addTouristResourcesDto.getPid() == null || addTouristResourcesDto.getTypeId() == 5) {
+            throw new BusinessException(ErrorType.TOURIST_COMMODITY_ADD_ERROR_NO_PID);
+        }
         boolean saveResult = this.save(addTouristResources);
         log.info("新增旅游资源");
 
