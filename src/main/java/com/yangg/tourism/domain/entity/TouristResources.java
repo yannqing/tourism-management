@@ -6,6 +6,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -84,6 +85,12 @@ public class TouristResources implements Serializable {
     /**
      * 开放时间
      */
+    @TableField(value = "openingTime")
+    private LocalTime openingTime;
+
+    /**
+     * 开放时间
+     */
     @TableField(value = "beginTime")
     private Date beginTime;
 
@@ -140,6 +147,7 @@ public class TouristResources implements Serializable {
             && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
             && (this.getImages() == null ? other.getImages() == null : this.getImages().equals(other.getImages()))
             && (this.getBeginTime() == null ? other.getBeginTime() == null : this.getBeginTime().equals(other.getBeginTime()))
+            && (this.getOpeningTime() == null ? other.getOpeningTime() == null : this.getOpeningTime().equals(other.getOpeningTime()))
             && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
@@ -161,6 +169,7 @@ public class TouristResources implements Serializable {
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
         result = prime * result + ((getImages() == null) ? 0 : getImages().hashCode());
+        result = prime * result + ((getOpeningTime() == null) ? 0 : getOpeningTime().hashCode());
         result = prime * result + ((getBeginTime() == null) ? 0 : getBeginTime().hashCode());
         result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -186,6 +195,7 @@ public class TouristResources implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", phone=").append(phone);
         sb.append(", images=").append(images);
+        sb.append(", openingTime=").append(openingTime);
         sb.append(", beginTime=").append(beginTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", createTime=").append(createTime);

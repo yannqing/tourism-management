@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -85,6 +86,12 @@ public class AddTouristResourcesDto implements Serializable {
      */
     @Schema(description = "宣传图片", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String images;
+
+    /**
+     * 营业时间
+     */
+    @Schema(description = "营业时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private LocalTime openingTime;
 
     /**
      * 开放时间
