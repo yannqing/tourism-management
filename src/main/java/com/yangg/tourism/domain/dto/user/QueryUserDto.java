@@ -37,6 +37,12 @@ public class QueryUserDto extends PageRequest implements Serializable {
     private String address;
 
     /**
+     * 角色id
+     */
+    @Schema(description = "roleId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String roleId;
+
+    /**
      * 电话
      */
     @Schema(description = "电话", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
