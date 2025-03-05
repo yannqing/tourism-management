@@ -1,12 +1,13 @@
 package com.yangg.tourism.schedule;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yangg.tourism.domain.entity.DatabaseMonitor;
 import com.yangg.tourism.service.DatabaseMonitorService;
 import com.yangg.tourism.utils.RedisCache;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,9 @@ public class DataSourceSchedule {
 
     @Resource
     private RedisCache redisCache;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
 
     @Resource
     private DatabaseMonitorService databaseMonitorService;
@@ -47,9 +51,10 @@ public class DataSourceSchedule {
             dateStr = formatter.format(new Date());
         }
 
-        QueryWrapper<DatabaseMonitor> queryWrapper = new QueryWrapper<>();
-        queryWrapper.gt("LAST_SEEN", formatter.parse(dateStr));
-        List<DatabaseMonitor> databaseMonitors = databaseMonitorService.getBaseMapper().selectList(queryWrapper);
+        String sql = "SELECT * FROM performance_schema.events_statements_summary_by_digest where LAST_SEEN > ?;";
+
+
+        List<DatabaseMonitor> databaseMonitors = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(DatabaseMonitor.class), formatter.format(dateStr));
         log.info("数据库监控同步数据条目：{}", databaseMonitors.size());
         // 更新时间
         redisCache.setCacheObject("async:database-monitor", formatter.format(new Date()));
