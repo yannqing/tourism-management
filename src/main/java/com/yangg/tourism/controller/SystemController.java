@@ -4,6 +4,7 @@ import com.yangg.tourism.utils.RedisCache;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,9 @@ public class SystemController {
 
     @Resource
     private RedisCache redisCache;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 连接 redis

@@ -34,6 +34,8 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers(Constant.anonymousMatch)
                 .permitAll()
+                // 添加这一行，直接允许定时任务的请求
+                .requestMatchers("/scheduled/**").permitAll()
                 .anyRequest()
                 .authenticated()
         );
