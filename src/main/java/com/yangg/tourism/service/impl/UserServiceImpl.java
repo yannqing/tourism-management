@@ -246,7 +246,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             roleUserQueryWrapper.eq("rid", queryUserDto.getRoleId());
             List<RoleUser> roleUsers = roleUserService.list(roleUserQueryWrapper);
             List<Integer> userIds = roleUsers.stream().map(RoleUser::getUid).toList();
-            queryWrapper.in(!userIds.isEmpty(), "uid", userIds);
+            queryWrapper.in(!userIds.isEmpty(), "userId", userIds);
         }
         queryWrapper.eq(userId != null, "userId", userId);
         queryWrapper.like(StringUtils.isNotBlank(username), "username", username);
