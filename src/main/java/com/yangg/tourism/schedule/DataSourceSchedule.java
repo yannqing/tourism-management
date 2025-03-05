@@ -44,14 +44,15 @@ public class DataSourceSchedule {
 
         String dateStr = redisCache.getCacheObject("async:database-monitor");
         if (dateStr == null) {
-            redisCache.setCacheObject("async:database-monitor", formatter.format(new Date()));
-            dateStr = redisCache.getCacheObject("async:database-monitor");
+            dateStr = formatter.format(new Date());
         }
 
         QueryWrapper<DatabaseMonitor> queryWrapper = new QueryWrapper<>();
         queryWrapper.gt("LAST_SEEN", formatter.parse(dateStr));
         List<DatabaseMonitor> databaseMonitors = databaseMonitorService.getBaseMapper().selectList(queryWrapper);
         log.info("数据库监控同步数据条目：{}", databaseMonitors.size());
+        // 更新时间
+        redisCache.setCacheObject("async:database-monitor", formatter.format(new Date()));
         databaseMonitorService.saveBatch(databaseMonitors);
     }
 }
