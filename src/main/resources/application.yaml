@@ -21,6 +21,12 @@ spring:
           max-idle: 8
           min-idle: 0
       timeout: 0
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    virtual-host: /
+    username: yannqing
+    password: wyjh030208..
 project:
   upload-url: ./images/
 server:
@@ -36,9 +42,14 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 openai:
-  model: gpt-4o-mini
+  model: xxxxx
   api:
-    url: xxxxxxx
-    key: xxxx
-
+    url: xxxxx
+    key: xxxxx
+ipInfo:
+  token: xxxxx
+#logging:
+#  level:
+#    root: INFO
+#    com.yangg.tourism: DEBUG  # 替换成你的包名
 

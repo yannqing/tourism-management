@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangg.tourism.mapper.IpApiStatisticMapper">
+
+    <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.IpApiStatistic">
+            <id property="id" column="id" />
+            <result property="requestId" column="requestId" />
+            <result property="ip" column="ip" />
+            <result property="accessTime" column="accessTime" />
+            <result property="api" column="api" />
+            <result property="method" column="method" />
+            <result property="consumptionTime" column="consumptionTime" />
+            <result property="createTime" column="createTime" />
+            <result property="updateTime" column="updateTime" />
+            <result property="isDelete" column="isDelete" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,requestId,ip,accessTime,api,method,consumptionTime,
+        createTime,updateTime,isDelete
+    </sql>
+</mapper>

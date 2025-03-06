@@ -1,5 +1,6 @@
 package com.yangg.tourism.schedule;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yangg.tourism.domain.entity.DatabaseMonitor;
 import com.yangg.tourism.service.DatabaseMonitorService;
 import com.yangg.tourism.utils.RedisCache;
@@ -44,7 +45,7 @@ public class DataSourceSchedule {
      */
     public void saveSystemToDatabase() throws ParseException {
         // 定义日期时间格式
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
         String dateStr = redisCache.getCacheObject("async:database-monitor");
         if (dateStr == null) {
@@ -54,10 +55,18 @@ public class DataSourceSchedule {
         String sql = "SELECT * FROM performance_schema.events_statements_summary_by_digest where LAST_SEEN > ?;";
 
 
-        List<DatabaseMonitor> databaseMonitors = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(DatabaseMonitor.class), formatter.format(dateStr));
-        log.info("数据库监控同步数据条目：{}", databaseMonitors.size());
+        List<DatabaseMonitor> databaseMonitors = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(DatabaseMonitor.class), formatter.parse(dateStr));
+        log.info("=====数据库监控同步数据条目：{}=====", databaseMonitors.size());
         // 更新时间
+        databaseMonitors.forEach(databaseMonitor -> {
+            DatabaseMonitor monitor = databaseMonitorService.getOne(new QueryWrapper<DatabaseMonitor>().eq("SCHEMA_NAME", databaseMonitor.getSchemaName()).eq("DIGEST", databaseMonitor.getDigest()));
+            if (monitor != null) {
+                databaseMonitorService.update(monitor, new QueryWrapper<DatabaseMonitor>().eq("SCHEMA_NAME", databaseMonitor.getSchemaName()).eq("DIGEST", databaseMonitor.getDigest()));
+            } else {
+                databaseMonitorService.save(databaseMonitor);
+            }
+        });
         redisCache.setCacheObject("async:database-monitor", formatter.format(new Date()));
-        databaseMonitorService.saveBatch(databaseMonitors);
+        log.info("=====数据库同步数据: 完成=====");
     }
 }
