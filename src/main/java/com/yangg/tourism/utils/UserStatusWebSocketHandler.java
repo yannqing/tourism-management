@@ -1,8 +1,16 @@
 package com.yangg.tourism.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yangg.tourism.domain.entity.UserActions;
+import com.yangg.tourism.domain.model.QueueMessage;
+import com.yangg.tourism.domain.model.websocket.ClientMessage;
+import com.yangg.tourism.domain.model.websocket.ClientMessageType;
+import com.yangg.tourism.domain.model.websocket.ServerMessage;
+import com.yangg.tourism.domain.model.websocket.ServerMessageType;
+import com.yangg.tourism.service.RabbitMQService;
 import jakarta.annotation.Resource;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,9 +19,13 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.yangg.tourism.domain.model.QueueMessageType.QUEUE_INSERT_TYPE;
 
 @Slf4j
 @Component
@@ -26,25 +38,66 @@ public class UserStatusWebSocketHandler extends TextWebSocketHandler {
     @Resource
     private ObjectMapper objectMapper;
 
+    @Resource
+    private RedisCache redisCache;
+
+    @Resource
+    private RabbitMQService rabbitMQService;
+
     /**
      * 处理客户端发送的消息
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         // 解析客户端消息
-        ClientMessage clientMessage = objectMapper.readValue(message.getPayload(), ClientMessage.class);
+        ClientMessage clientMessage = objectMapper.readValue(message.getPayload(), new TypeReference<>() {});
 
         // 处理心跳消息
-        if ("HEARTBEAT".equals(clientMessage.getType())) {
-            String userId = clientMessage.getUserId();
+        if (ClientMessageType.HEARTBEAT.equals(clientMessage.getType())) {
+            String userId = extractUserIdFromSession(session);
             onlineUsers.put(userId, session); // 更新用户状态
-            sendMessage(session, new ServerMessage<>("HEARTBEAT_ACK", "心跳已接收"));
+            sendMessage(session, new ServerMessage<>(ServerMessageType.HEARTBEAT_ACK, "心跳已接收"));
         }
 
-        if ("IS_ONLINE".equals(clientMessage.getType())) {
+        // 判断是否在线
+        if (ClientMessageType.IS_ONLINE.equals(clientMessage.getType())) {
             String userId = clientMessage.getUserId();
             boolean userOnline = isUserOnline(userId);
-            sendMessage(session, new ServerMessage<>("IS_ONLINE_ACK", userOnline));
+            sendMessage(session, new ServerMessage<>(ServerMessageType.IS_ONLINE_ACK, userOnline));
+        }
+
+        // 进入页面
+        if (ClientMessageType.INTO_PAGE.equals(clientMessage.getType())) {
+            // 将前端传入参数转为 UserActions 类型的数据
+            String content = objectMapper.writeValueAsString(clientMessage.getContent());
+            UserActions userActions = objectMapper.readValue(content, UserActions.class);
+            // 获取到 userId
+            String userId = extractUserIdFromSession(session);
+            // 构造数据（前端参数转化）
+            userActions.setUniqueIndex(UUID.randomUUID().toString());
+            userActions.setAccessTime(new Date());
+            // 序列化后存入 redis
+            redisCache.setCacheObject(userId + ":" + userActions.getUniqueIndex(), objectMapper.writeValueAsString(userActions));
+            // 返回给前端一个唯一 id
+            sendMessage(session, new ServerMessage<>(ServerMessageType.INTO_PAGE_ACK, userActions.getUniqueIndex()));
+        }
+
+        // 退出页面
+        if (ClientMessageType.DEPARTURE_PAGE.equals(clientMessage.getType())) {
+            // 将前端传入参数转为 UserActions 类型的数据
+            String content = objectMapper.writeValueAsString(clientMessage.getContent());
+            UserActions userActions = objectMapper.readValue(content, UserActions.class);
+            // 获取到 userId
+            String userId = extractUserIdFromSession(session);
+            // 从 redis 中获取到进入页面的数据，并反序列化
+            String intoPage = redisCache.getCacheObject(userId + ":" + userActions.getUniqueIndex());
+            UserActions userActionsOld = objectMapper.readValue(intoPage, userActions.getClass());
+            // 构造新数据
+            userActionsOld.setDepartureTime(new Date());
+            userActionsOld.setStayTime(String.valueOf(userActionsOld.getDepartureTime().getTime() - userActionsOld.getAccessTime().getTime()));
+            // 发送给消息队列，通知插入数据
+            QueueMessage<UserActions> objectQueueMessage = new QueueMessage<>(userActionsOld, QUEUE_INSERT_TYPE);
+            rabbitMQService.sendMessageToUserActionsQueue(JSON.toJSONString(objectQueueMessage));
         }
     }
 
@@ -99,26 +152,5 @@ public class UserStatusWebSocketHandler extends TextWebSocketHandler {
         return onlineUsers.containsKey(userId);
     }
 
-    /**
-     * 客户端消息格式
-     */
-    @Data
-    private static class ClientMessage {
-        private String type; // 消息类型（如 HEARTBEAT）
-        private String userId; // 用户 ID
-    }
 
-    /**
-     * 服务端消息格式
-     */
-    @Data
-    private static class ServerMessage<T> {
-        private String type; // 消息类型（如 HEARTBEAT_ACK）
-        private T content; // 消息内容
-
-        public ServerMessage(String type, T content) {
-            this.type = type;
-            this.content = content;
-        }
-    }
 }

@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yangg.tourism.config.RabbitMQConfig;
 import com.yangg.tourism.domain.entity.IpApiStatistic;
+import com.yangg.tourism.domain.entity.UserActions;
 import com.yangg.tourism.domain.model.QueueMessage;
 import com.yangg.tourism.domain.model.QueueMessageType;
 import com.yangg.tourism.mapper.IpApiStatisticMapper;
+import com.yangg.tourism.mapper.UserActionsMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -20,6 +22,9 @@ public class RabbitMQListener {
 
     @Resource
     private IpApiStatisticMapper ipApiStatisticMapper;
+
+    @Resource
+    private UserActionsMapper userActionsMapper;
 
     @RabbitListener(queues = RabbitMQConfig.DATABASE_QUEUE_NAME)
     public void listenDatabaseQueue(String msg) {
@@ -42,6 +47,16 @@ public class RabbitMQListener {
             } else {
                 ipApiStatisticMapper.delete(new QueryWrapper<IpApiStatistic>().eq("requestId", queueMessage.getMessage().getRequestId()));
                 log.info("delete request：{}", queueMessage.getMessage());
+            }
+        }
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.USER_ACTIONS_QUEUE_NAME)
+    public void listenUserActionsQueue(String msg) {
+        QueueMessage<UserActions> queueMessage = JSON.parseObject(msg, new TypeReference<>() {});
+        if (queueMessage != null) {
+            if (queueMessage.getType().equals(QueueMessageType.QUEUE_INSERT_TYPE)) {
+                userActionsMapper.insert(queueMessage.getMessage());
             }
         }
     }

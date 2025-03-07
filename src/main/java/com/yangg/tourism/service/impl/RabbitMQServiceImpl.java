@@ -23,4 +23,9 @@ public class RabbitMQServiceImpl implements RabbitMQService {
     public void sendMessageToDatabaseQueue(String message) {
         rabbitTemplate.convertAndSend(RabbitMQConfig.DATABASE_QUEUE_NAME, message);
     }
+
+    @Override
+    public void sendMessageToUserActionsQueue(String message) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.USER_ACTIONS_QUEUE_NAME, message);
+    }
 }

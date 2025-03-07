@@ -13,4 +13,10 @@ public interface RabbitMQService {
      */
     void sendMessageToDatabaseQueue(String message);
 
+    /**
+     * 发送消息到 user.actions.queue 队列
+     * @param message 发送的消息内容
+     */
+    void sendMessageToUserActionsQueue(String message);
+
 }

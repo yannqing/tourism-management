@@ -10,6 +10,7 @@ public class RabbitMQConfig {
 
     public static final String DATABASE_QUEUE_NAME = "database.queue";
     public static final String IP_API_QUEUE_NAME = "ip.api.queue";
+    public static final String USER_ACTIONS_QUEUE_NAME = "user.actions.queue";
 
     public static final String DATABASE_EXCHANGE_NAME = "database.exchange";
 
@@ -32,6 +33,11 @@ public class RabbitMQConfig {
     @Bean
     public Queue queue2() {
         return new Queue(IP_API_QUEUE_NAME, true);
+    }
+
+    @Bean
+    public Queue queue3() {
+        return new Queue(USER_ACTIONS_QUEUE_NAME, true);
     }
 
     // 声明交换机

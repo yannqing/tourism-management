@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yangg.tourism.mapper.UserActionsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yangg.tourism.domain.entity.UserActions">
+            <id property="id" column="id" />
+            <result property="uniqueIndex" column="uniqueIndex" />
+            <result property="name" column="name" />
+            <result property="route" column="route" />
+            <result property="accessTime" column="accessTime" />
+            <result property="departureTime" column="departureTime" />
+            <result property="stayTime" column="stayTime" />
+            <result property="userId" column="userId" />
+            <result property="createTime" column="createTime" />
+            <result property="updateTime" column="updateTime" />
+            <result property="isDelete" column="isDelete" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uniqueIndex,name,route,accessTime,departureTime,stayTime,
+        userId,createTime,updateTime,isDelete
+    </sql>
+</mapper>
