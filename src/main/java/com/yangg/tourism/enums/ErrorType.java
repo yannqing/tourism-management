@@ -40,6 +40,9 @@ public enum ErrorType implements BaseExceptionInterface {
     ORDER_INVALID(60021, "订单已过期"),
     TOURIST_ALREADY_EXIST(60022, "旅游资源已存在，无法添加"),
     TOURIST_COMMODITY_ADD_ERROR_NO_PID(60023, "无法新增没有 pid 的商品"),
+    PRODUCT_NOT_EXIST(60024, "产品不存在，请重试"),
+    PRODUCT_TYPE_NOT_EXIST(60025, "产品类型不存在，请重试"),
+    PRODUCT_TYPE_CODE_REPEAT(60026, "产品类型重复，请重试"),
 
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),

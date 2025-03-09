@@ -40,6 +40,12 @@ public class AddTouristResourcesDto implements Serializable {
     private Integer typeId;
 
     /**
+     * 商品类型id
+     */
+    @Schema(description = "商品类型id（如果是商品，则必须指定类型）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer productTypeId;
+
+    /**
      * 资源名称
      */
     @Schema(description = "资源名称", requiredMode = Schema.RequiredMode.REQUIRED)

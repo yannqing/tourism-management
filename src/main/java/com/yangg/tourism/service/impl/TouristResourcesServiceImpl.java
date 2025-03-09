@@ -8,15 +8,14 @@ import com.yangg.tourism.domain.dto.tourist.AddTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryMerchantsResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
-import com.yangg.tourism.domain.entity.Role;
-import com.yangg.tourism.domain.entity.TouristResources;
-import com.yangg.tourism.domain.entity.User;
-import com.yangg.tourism.domain.entity.UserTourist;
+import com.yangg.tourism.domain.entity.*;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
+import com.yangg.tourism.mapper.ProductTypeMapper;
 import com.yangg.tourism.mapper.ResourcesTypeMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
+import com.yangg.tourism.service.TouristProductRelService;
 import com.yangg.tourism.service.TouristResourcesService;
 import com.yangg.tourism.service.UserService;
 import com.yangg.tourism.service.UserTouristService;
@@ -44,6 +43,12 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
     @Resource
     private ResourcesTypeMapper resourcesTypeMapper;
+
+    @Resource
+    private ProductTypeMapper productTypeMapper;
+
+    @Resource
+    private TouristProductRelService touristProductRelService;
 
     @Resource
     private UserService userService;
@@ -203,26 +208,47 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             }
         }
 
-        boolean saveResult = this.save(addTouristResources);
-        log.info("新增旅游资源");
+        boolean saveResult;
 
-        // 新增非商品的资源，必须指定 userId
+
+        // 新增非商品的资源
         if (addTouristResourcesDto.getTypeId() != 5) {
+            // 必须指定 userId
             if (addTouristResourcesDto.getUserId() != null) {
+                // 指定的 userId 必须有效
                 User owner = userService.getById(addTouristResourcesDto.getUserId());
                 if (owner == null) {
                     throw new BusinessException(ErrorType.SYSTEM_ERROR);
                 }
+                // 新增资源
+                saveResult = this.save(addTouristResources);
+                // 给资源指定管理者（即 userId）
                 UserTourist userTourist = new UserTourist();
                 userTourist.setUid(owner.getUserId());
                 userTourist.setTid(addTouristResources.getId());
 
                 userTouristService.save(userTourist);
+                log.info("新增旅游资源（非商品） id: {}，负责人 id：{}", addTouristResources.getId(), addTouristResourcesDto.getUserId());
             } else {
                 throw new BusinessException(ErrorType.SYSTEM_ERROR);
             }
+        } else {
+            // 新增商品的资源，则必须指定类型
+            if (addTouristResourcesDto.getProductTypeId() == null) {
+                throw new BusinessException(ErrorType.SYSTEM_ERROR);
+            }
+            // 产品类型 id 有效性判断
+            ProductType productType = productTypeMapper.selectById(addTouristResourcesDto.getProductTypeId());
+            if (productType == null) {
+                throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_EXIST);
+            }
+            // 新增资源
+            saveResult = this.save(addTouristResources);
+            // 新增商品的类型
+            touristProductRelService.add(addTouristResources.getId(), productType.getId());
+            log.info("新增旅游资源（商品） id: {}, 商品类型 id：{}", addTouristResources.getId(), productType.getId());
+
         }
-        log.info("给旅游资源 id: {} 添加负责人 id: {} 成功！", addTouristResources.getId(), addTouristResourcesDto.getUserId());
         return saveResult;
     }
 
@@ -231,8 +257,10 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         Optional.ofNullable(id)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
 
-        Optional.ofNullable(this.getById(id))
-                .orElseThrow(() -> new BusinessException(ErrorType.TOURIST_NOT_EXIST));
+        TouristResources deleteTourist = this.getById(id);
+        if (deleteTourist == null) {
+            throw new BusinessException(ErrorType.TOURIST_NOT_EXIST);
+        }
 
         User loginUser = JwtUtils.getUserFromToken(request.getHeader("token"));
         if (loginUser == null) {
@@ -259,6 +287,11 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
         boolean deleteResult = this.removeById(id);
         log.info("删除旅游资源");
+
+        // 如果删除的是商品，则需要删除商品类型
+        if (deleteTourist.getTypeId().equals(5)) {
+            touristProductRelService.deleteByTid(deleteTourist.getId());
+        }
 
         List<TouristResources> touristResourcesList = this.getBaseMapper().selectList(new QueryWrapper<TouristResources>().eq("pid", id));
         // 删除次子资源以及关系
@@ -305,6 +338,12 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             // 删除子资源以及关系
             this.remove(new QueryWrapper<TouristResources>().eq("pid", id));
             userTouristService.remove(new QueryWrapper<UserTourist>().eq("tid", id));
+
+            // 如果要删除的是商品，则需要删除对应的商品类型关系
+            TouristResources touristResources = this.getById(id);
+            if (touristResources.getTypeId().equals(5)) {
+                touristProductRelService.deleteByTid(touristResources.getId());
+            }
         });
 
         return deleteResult > 0;
