@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -73,6 +74,16 @@ public class TourismResourcesVo {
      * 宣传图片
      */
     private String images;
+
+    /**
+     * 营业开启时间
+     */
+    private LocalTime openingTime;
+
+    /**
+     * 营业关闭时间
+     */
+    private LocalTime closingTime;
 
     /**
      * 开放时间

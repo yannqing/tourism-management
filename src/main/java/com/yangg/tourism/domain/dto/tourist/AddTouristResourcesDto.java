@@ -94,10 +94,16 @@ public class AddTouristResourcesDto implements Serializable {
     private String images;
 
     /**
-     * 营业时间
+     * 营业开启时间
      */
     @Schema(description = "营业时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private LocalTime openingTime;
+
+    /**
+     * 营业时间
+     */
+    @Schema(description = "营业关闭时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private LocalTime closingTime;
 
     /**
      * 开放时间

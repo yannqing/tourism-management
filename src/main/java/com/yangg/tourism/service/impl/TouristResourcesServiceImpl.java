@@ -13,7 +13,6 @@ import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.ProductTypeMapper;
-import com.yangg.tourism.mapper.ResourcesTypeMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
 import com.yangg.tourism.service.TouristProductRelService;
 import com.yangg.tourism.service.TouristResourcesService;
@@ -26,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -40,9 +40,6 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
     @Resource
     private UserTouristService userTouristService;
-
-    @Resource
-    private ResourcesTypeMapper resourcesTypeMapper;
 
     @Resource
     private ProductTypeMapper productTypeMapper;
@@ -70,6 +67,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         Integer status = queryTouristResourcesDto.getStatus();
         String phone = queryTouristResourcesDto.getPhone();
         String images = queryTouristResourcesDto.getImages();
+        LocalTime openingTime = queryTouristResourcesDto.getOpeningTime();
+        LocalTime closingTime = queryTouristResourcesDto.getClosingTime();
         Date beginTime = queryTouristResourcesDto.getBeginTime();
         Date endTime = queryTouristResourcesDto.getEndTime();
 
@@ -85,6 +84,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.eq(status!= null, "status", status);
         queryWrapper.like(phone!= null, "phone", phone);
         queryWrapper.like(images!= null, "images", images);
+        queryWrapper.eq(openingTime!= null, "openingTime", openingTime);
+        queryWrapper.eq(closingTime!= null, "closingTime", closingTime);
         queryWrapper.eq(beginTime!= null, "beginTime", beginTime);
         queryWrapper.eq(endTime!= null, "endTime", endTime);
         queryWrapper.like(name!= null, "name", name);
@@ -111,6 +112,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         Integer status = queryTouristResourcesDto.getStatus();
         String phone = queryTouristResourcesDto.getPhone();
         String images = queryTouristResourcesDto.getImages();
+        LocalTime openingTime = queryTouristResourcesDto.getOpeningTime();
+        LocalTime closingTime = queryTouristResourcesDto.getClosingTime();
         Date beginTime = queryTouristResourcesDto.getBeginTime();
         Date endTime = queryTouristResourcesDto.getEndTime();
 
@@ -124,6 +127,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.eq(status!= null, "status", status);
         queryWrapper.like(phone!= null, "phone", phone);
         queryWrapper.like(images!= null, "images", images);
+        queryWrapper.eq(openingTime!= null, "openingTime", openingTime);
+        queryWrapper.eq(closingTime!= null, "closingTime", closingTime);
         queryWrapper.eq(beginTime!= null, "beginTime", beginTime);
         queryWrapper.eq(endTime!= null, "endTime", endTime);
         queryWrapper.like(name!= null, "name", name);

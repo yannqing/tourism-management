@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -85,6 +86,18 @@ public class QueryTouristResourcesDto extends PageRequest implements Serializabl
      */
     @Schema(description = "宣传图片", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String images;
+
+    /**
+     * 营业开启时间
+     */
+    @Schema(description = "营业时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private LocalTime openingTime;
+
+    /**
+     * 营业时间
+     */
+    @Schema(description = "营业关闭时间", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private LocalTime closingTime;
 
     /**
      * 开放时间

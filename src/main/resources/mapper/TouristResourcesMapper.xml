@@ -17,6 +17,7 @@
             <result property="phone" column="phone" />
             <result property="images" column="images" />
             <result property="openingTime" column="openingTime" />
+            <result property="closingTime" column="closingTime" />
             <result property="beginTime" column="beginTime" />
             <result property="endTime" column="endTime" />
             <result property="createTime" column="createTime" />
@@ -26,7 +27,7 @@
 
     <sql id="Base_Column_List">
         id,pid,typeId,name,description,location,rating,
-        price,status,phone,images,openingTime,beginTime,
+        price,status,phone,images,openingTime,closingTime,beginTime,
         endTime,createTime,updateTime,isDelete
     </sql>
 </mapper>
