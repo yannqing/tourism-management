@@ -9,10 +9,12 @@ import com.yangg.tourism.domain.dto.tourist.QueryMerchantsResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
 import com.yangg.tourism.domain.entity.*;
+import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo2;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.ProductTypeMapper;
+import com.yangg.tourism.mapper.TouristProductRelMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
 import com.yangg.tourism.service.TouristProductRelService;
 import com.yangg.tourism.service.TouristResourcesService;
@@ -48,10 +50,13 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     private TouristProductRelService touristProductRelService;
 
     @Resource
+    private TouristProductRelMapper touristProductRelMapper;
+
+    @Resource
     private UserService userService;
 
     @Override
-    public Page<TouristResources> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto) {
+    public Page<TourismResourcesVo2> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto) {
         // 判空
         Optional.ofNullable(queryTouristResourcesDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
@@ -92,11 +97,13 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.like(description!= null, "description", description);
         log.info("查询所有旅游资源");
 
-        return this.page(new Page<>(queryTouristResourcesDto.getCurrent(), queryTouristResourcesDto.getPageSize()), queryWrapper);
+        Page<TouristResources> page = this.page(new Page<>(queryTouristResourcesDto.getCurrent(), queryTouristResourcesDto.getPageSize()), queryWrapper);
+
+        return tourismResourcesToTourismResourcesVo2(page);
     }
 
     @Override
-    public Page<TouristResources> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto) {
+    public Page<TourismResourcesVo2> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto) {
         // 判空
         Optional.ofNullable(queryTouristResourcesDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
@@ -134,8 +141,9 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.like(name!= null, "name", name);
         queryWrapper.like(description!= null, "description", description);
         log.info("查询所有旅游资源");
+        Page<TouristResources> page = this.page(new Page<>(queryTouristResourcesDto.getCurrent(), queryTouristResourcesDto.getPageSize()), queryWrapper);
 
-        return this.page(new Page<>(queryTouristResourcesDto.getCurrent(), queryTouristResourcesDto.getPageSize()), queryWrapper);
+        return tourismResourcesToTourismResourcesVo2(page);
     }
 
     @Override
@@ -355,15 +363,16 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     }
 
     @Override
-    public Page<TouristResources> getRecommendTouristResources() {
+    public Page<TourismResourcesVo2> getRecommendTouristResources() {
         QueryWrapper<TouristResources> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pid", 0);      //只推荐顶级资源
         queryWrapper.orderBy(true, false, "rating");    //倒序，评分最高的在上面
-        return this.page(new Page<>(1, 10), queryWrapper);
+        Page<TouristResources> page = this.page(new Page<>(1, 10), queryWrapper);
+        return tourismResourcesToTourismResourcesVo2(page);
     }
 
     @Override
-    public Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
+    public Page<TourismResourcesVo2> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException {
         // 判空
         if (queryMerchantsResourcesDto == null) {
             throw new BusinessException(ErrorType.ARGS_NOT_NULL);
@@ -393,9 +402,8 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         queryWrapper.eq("pid", touristResourcesId);
 
         Page<TouristResources> page = this.page(new Page<>(queryMerchantsResourcesDto.getCurrent(), queryMerchantsResourcesDto.getPageSize()), queryWrapper);
-        log.info("商户 id：{} 查询旅游资源", page);
-
-        return page;
+        log.info("商户 id：{} 查询旅游资源", loginUser.getUserId());
+        return tourismResourcesToTourismResourcesVo2(page);
     }
 
     private Integer getTouristIdByUser(Integer userId) {
@@ -404,6 +412,19 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             throw new BusinessException(ErrorType.USER_TOURIST_NOT_EXIST);
         }
         return userTourist.getTid();
+    }
+
+    private Page<TourismResourcesVo2> tourismResourcesToTourismResourcesVo2(Page<TouristResources> page) {
+
+        List<TourismResourcesVo2> tourismResourcesVo2List = page.getRecords().stream().map(touristResources -> {
+            TourismResourcesVo2 tourismResourcesVo2 = TourismResourcesVo2.touristResourcesToVo2(touristResources);
+            if (tourismResourcesVo2.getTypeId().equals(5)) {
+                TouristProductRel touristProductRel = touristProductRelMapper.selectOne(new QueryWrapper<TouristProductRel>().eq("tid", touristResources.getId()));
+                tourismResourcesVo2.setProductTypeId(touristProductRel.getPid());
+            }
+            return tourismResourcesVo2;
+        }).toList();
+        return new Page<TourismResourcesVo2>(page.getCurrent(), page.getSize(), page.getTotal()).setRecords(tourismResourcesVo2List);
     }
 }
 

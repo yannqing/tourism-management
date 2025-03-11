@@ -8,6 +8,7 @@ import com.yangg.tourism.domain.dto.tourist.QueryMerchantsResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.QueryTouristResourcesDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateTouristResourcesDto;
 import com.yangg.tourism.domain.entity.TouristResources;
+import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo2;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -17,11 +18,11 @@ import jakarta.servlet.http.HttpServletRequest;
 */
 public interface TouristResourcesService extends IService<TouristResources> {
 
-    Page<TouristResources> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto);
+    Page<TourismResourcesVo2> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto);
 
-    Page<TouristResources> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto);
+    Page<TourismResourcesVo2> getAllTouristResourcesByUser(QueryTouristResourcesDto queryTouristResourcesDto);
 
-    Page<TouristResources> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
+    Page<TourismResourcesVo2> getAllTouristResourcesByMerchants(QueryMerchantsResourcesDto queryMerchantsResourcesDto, HttpServletRequest request) throws JsonProcessingException;
 
     boolean updateTouristResources(UpdateTouristResourcesDto updateTouristResourcesDto, HttpServletRequest request) throws JsonProcessingException;
 
@@ -31,5 +32,5 @@ public interface TouristResourcesService extends IService<TouristResources> {
 
     boolean deleteBatchTouristResources(Integer... touristResourcesIds);
 
-    Page<TouristResources> getRecommendTouristResources();
+    Page<TourismResourcesVo2> getRecommendTouristResources();
 }

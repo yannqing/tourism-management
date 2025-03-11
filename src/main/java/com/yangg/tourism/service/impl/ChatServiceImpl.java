@@ -2,8 +2,8 @@ package com.yangg.tourism.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.yangg.tourism.domain.dto.ChatRequest;
-import com.yangg.tourism.domain.dto.ChatResponse;
+import com.yangg.tourism.domain.dto.chat.ChatRequest;
+import com.yangg.tourism.domain.dto.chat.ChatResponse;
 import com.yangg.tourism.domain.entity.User;
 import com.yangg.tourism.domain.model.Message;
 import com.yangg.tourism.enums.ErrorType;

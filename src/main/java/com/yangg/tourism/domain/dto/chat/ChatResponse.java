@@ -1,4 +1,4 @@
-package com.yangg.tourism.domain.dto;
+package com.yangg.tourism.domain.dto.chat;
 
 import com.yangg.tourism.domain.model.Message;
 import lombok.Data;
