@@ -14,7 +14,6 @@ import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.ProductTypeMapper;
-import com.yangg.tourism.mapper.TouristProductRelMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
 import com.yangg.tourism.service.TouristProductRelService;
 import com.yangg.tourism.service.TouristResourcesService;
@@ -48,9 +47,6 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
     @Resource
     private TouristProductRelService touristProductRelService;
-
-    @Resource
-    private TouristProductRelMapper touristProductRelMapper;
 
     @Resource
     private UserService userService;
@@ -154,10 +150,11 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
 
         // 有效性判断
         Integer updateTouristResourcesDtoId = updateTouristResourcesDto.getId();
-        Optional.ofNullable(this.getById(updateTouristResourcesDtoId))
+        TouristResources updateTouristResource = this.getById(updateTouristResourcesDtoId);
+        Optional.ofNullable(updateTouristResource)
                 .orElseThrow(() -> new BusinessException(ErrorType.TOURIST_NOT_EXIST));
 
-        // 判断商户
+        // 如果登录者是商户，查看此资源是否是商户可修改的资源
         User loginUser = JwtUtils.getUserFromToken(request.getHeader("token"));
         if (loginUser == null) {
             throw new BusinessException(ErrorType.TOKEN_INVALID);
@@ -167,19 +164,32 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             throw new BusinessException(ErrorType.SYSTEM_ERROR);
         }
         if (roles.get(0).getId().equals(RoleType.OTHER.getRoleId())) {
-            // 获取要修改的资源 id
-            Integer resourcesDtoId = updateTouristResourcesDto.getId();
             // 获取商户可以修改的资源 id，存入 list 集合
             UserTourist userTourist = userTouristService.getBaseMapper().selectOne(new QueryWrapper<UserTourist>().eq("uid", loginUser.getUserId()));
             List<Integer> canUpdate = new ArrayList<>();
             canUpdate.add(userTourist.getTid());
             List<TouristResources> touristResourcesList = this.getBaseMapper().selectList(new QueryWrapper<TouristResources>().eq("pid", userTourist.getTid()));
-            touristResourcesList.forEach(touristResources -> {
-                canUpdate.add(touristResources.getId());
-            });
+            touristResourcesList.forEach(touristResources -> canUpdate.add(touristResources.getId()));
             // 查看 list 集合中是否包含要修改的资源 id
-            if (!canUpdate.contains(resourcesDtoId)) {
-                throw new BusinessException(ErrorType.SYSTEM_ERROR);
+            if (!canUpdate.contains(updateTouristResourcesDtoId)) {
+                throw new BusinessException(ErrorType.TOURIST_NOT_IN_UPDATE_BY_MERCHANTS);
+            }
+        }
+
+        // 修改商品类型
+        if (updateTouristResourcesDto.getProductTypeId() != null) {
+            if (updateTouristResource.getTypeId() != 5) {
+                throw new BusinessException(ErrorType.TOURIST_NOT_BELONG_PRODUCT_NOT_UPDATE);
+            }
+            // 修改
+            TouristProductRel touristProductRel = touristProductRelService.getOne(new QueryWrapper<TouristProductRel>().eq("tid", updateTouristResourcesDtoId));
+            if (touristProductRel == null) {
+                // 不存在就给商品新增类型
+                touristProductRelService.add(updateTouristResourcesDtoId, updateTouristResourcesDto.getProductTypeId());
+            } else {
+                // 存在则修改
+                touristProductRel.setPid(updateTouristResourcesDto.getProductTypeId());
+                touristProductRelService.updateById(touristProductRel);
             }
         }
 
@@ -419,7 +429,7 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         List<TourismResourcesVo2> tourismResourcesVo2List = page.getRecords().stream().map(touristResources -> {
             TourismResourcesVo2 tourismResourcesVo2 = TourismResourcesVo2.touristResourcesToVo2(touristResources);
             if (tourismResourcesVo2.getTypeId().equals(5)) {
-                TouristProductRel touristProductRel = touristProductRelMapper.selectOne(new QueryWrapper<TouristProductRel>().eq("tid", touristResources.getId()));
+                TouristProductRel touristProductRel = touristProductRelService.getOne(new QueryWrapper<TouristProductRel>().eq("tid", touristResources.getId()));
                 tourismResourcesVo2.setProductTypeId(touristProductRel.getPid());
             }
             return tourismResourcesVo2;

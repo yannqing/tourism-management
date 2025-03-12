@@ -44,6 +44,9 @@ public enum ErrorType implements BaseExceptionInterface {
     PRODUCT_TYPE_NOT_EXIST(60025, "产品类型不存在，请重试"),
     PRODUCT_TYPE_CODE_REPEAT(60026, "产品类型重复，请重试"),
 
+    TOURIST_NOT_BELONG_PRODUCT_NOT_UPDATE(60027, "此资源非商品，不能修改其商品类型"),
+    TOURIST_NOT_IN_UPDATE_BY_MERCHANTS(60028, "此资源不在您的修改范围内，请重试"),
+
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 

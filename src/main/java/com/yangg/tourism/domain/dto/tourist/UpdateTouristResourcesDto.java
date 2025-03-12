@@ -37,6 +37,12 @@ public class UpdateTouristResourcesDto {
     private Integer typeId;
 
     /**
+     * 商品类型id
+     */
+    @Schema(description = "商品类型id（必须是商品才能传这个）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer productTypeId;
+
+    /**
      * 资源名称
      */
     @Schema(description = "资源名称", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
