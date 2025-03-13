@@ -13,6 +13,8 @@ import com.yangg.tourism.domain.vo.tourist.TourismResourcesVo2;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
+import com.yangg.tourism.mapper.CostTypeMapper;
+import com.yangg.tourism.mapper.ProductCostTypeRelMapper;
 import com.yangg.tourism.mapper.ProductTypeMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
 import com.yangg.tourism.service.TouristProductRelService;
@@ -49,7 +51,13 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
     private TouristProductRelService touristProductRelService;
 
     @Resource
+    private ProductCostTypeRelMapper productCostTypeRelMapper;
+
+    @Resource
     private UserService userService;
+
+    @Resource
+    private CostTypeMapper costTypeMapper;
 
     @Override
     public Page<TourismResourcesVo2> getAllTouristResources(QueryTouristResourcesDto queryTouristResourcesDto) {
@@ -258,13 +266,28 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
         } else {
             // 新增商品的资源，则必须指定类型
             if (addTouristResourcesDto.getProductTypeId() == null) {
-                throw new BusinessException(ErrorType.SYSTEM_ERROR);
+                throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_NULL);
+            }
+            if (addTouristResourcesDto.getCostTypeId() == null) {
+                throw new BusinessException(ErrorType.COST_TYPE_NOT_NULL);
             }
             // 产品类型 id 有效性判断
             ProductType productType = productTypeMapper.selectById(addTouristResourcesDto.getProductTypeId());
             if (productType == null) {
                 throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_EXIST);
             }
+            // 费用类型 id 有效性判断
+            CostType costType = costTypeMapper.selectById(addTouristResourcesDto.getCostTypeId());
+            if (costType == null) {
+                throw new BusinessException(ErrorType.COST_TYPE_NOT_EXIST);
+            }
+
+            // 新增与订单类型的关系
+            ProductCostTypeRel productCostTypeRel = new ProductCostTypeRel();
+            productCostTypeRel.setPid(addTouristResourcesDto.getProductTypeId());
+            productCostTypeRel.setCid(addTouristResourcesDto.getCostTypeId());
+            productCostTypeRelMapper.insert(productCostTypeRel);
+
             // 新增资源
             saveResult = this.save(addTouristResources);
             // 新增商品的类型

@@ -50,6 +50,9 @@ public enum ErrorType implements BaseExceptionInterface {
     PRODUCT_COST_TYPE_REL_NOT_EXIST(60029, "商品类型与订单类型关系不存在，请重试"),
     PRODUCT_COST_TYPE_REL_ALREADY_EXIST(60030, "商品类型与订单类型关系已存在存在，请重试"),
     PRODUCT_HAVE_NOT_USER(60031, "此商品的父资源没有负责人，系统错误！"),
+    COST_TYPE_NOT_EXIST(60032, "费用类型不存在，请重试"),
+    COST_TYPE_NOT_NULL(60033, "费用类型不能为空，请重试"),
+    PRODUCT_TYPE_NOT_NULL(60034, "商品类型不能为空，请重试"),
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 
