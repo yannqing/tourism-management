@@ -14,13 +14,38 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ProductTypeService extends IService<ProductType> {
 
+    /**
+     * 查询所有的商品类型
+     * @param queryProductTypeDto 查询 dto
+     * @return 返回查询结果
+     */
     Page<ProductType> getAllProductTypes(QueryProductTypeDto queryProductTypeDto);
 
+    /**
+     * 更新商品类型
+     * @param updateProductTypeDto 更新 dto
+     * @return 返回更新结果
+     */
     boolean updateProductType(UpdateProductTypeDto updateProductTypeDto);
 
+    /**
+     * 新增商品类型
+     * @param addProductTypeDto 新增 dto
+     * @return 新增结果
+     */
     boolean addProductType(AddProductTypeDto addProductTypeDto);
 
+    /**
+     * 删除商品类型
+     * @param id 要删除的 id
+     * @return 返回删除结果
+     */
     boolean deleteProductType(Integer id);
 
+    /**
+     * 批量删除商品类型
+     * @param productTypeIds 要删除的 id 数组
+     * @return 返回删除结果
+     */
     boolean deleteBatchProductType(Integer... productTypeIds);
 }

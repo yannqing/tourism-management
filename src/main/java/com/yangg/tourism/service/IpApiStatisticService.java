@@ -11,5 +11,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface IpApiStatisticService extends IService<IpApiStatistic> {
 
+    /**
+     * id 和 api 的监控
+     * @param current 当前页码
+     * @param pageSize 一页的数量大小
+     * @return 返回结果
+     */
     Page<IpApiStatistic> ipApiMonitor(Integer current, Integer pageSize);
 }

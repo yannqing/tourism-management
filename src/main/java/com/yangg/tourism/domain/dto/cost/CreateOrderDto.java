@@ -33,7 +33,7 @@ public class CreateOrderDto implements Serializable {
     /**
      * 费用类型id
      */
-    @Schema(description = "费用类型id", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "费用类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer type;
 
     /**

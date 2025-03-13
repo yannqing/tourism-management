@@ -26,11 +26,6 @@ import java.util.Optional;
 public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
     implements CostTypeService{
 
-    /**
-     * 查询全部费用类型
-     * @param queryCostTypeDto 要查询的请求参数 dto
-     * @return 返回查询的结果
-     */
     @Override
     public Page<CostType> getAllCostTypes(QueryCostTypeDto queryCostTypeDto) {
         // 判空
@@ -55,11 +50,6 @@ public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
         return this.page(new Page<>(queryCostTypeDto.getCurrent(), queryCostTypeDto.getPageSize()), queryWrapper);
     }
 
-    /**
-     * 更新费用类型
-     * @param updateCostTypeDto 要更新的费用类型 dto
-     * @return 返回更新结果
-     */
     @Override
     public boolean updateCostType(UpdateCostTypeDto updateCostTypeDto) {
         // 判空
@@ -79,11 +69,6 @@ public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
         return updateResult;
     }
 
-    /**
-     * 新增费用类型
-     * @param addCostTypeDto 新增费用类型 dto
-     * @return 新增结果
-     */
     @Override
     public boolean addCostType(AddCostTypeDto addCostTypeDto) {
         // 判空
@@ -104,11 +89,6 @@ public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
         return saveResult;
     }
 
-    /**
-     * 删除单个费用类型
-     * @param id 要删除的 id
-     * @return 返回删除结果
-     */
     @Override
     public boolean deleteCostType(Integer id) {
         Optional.ofNullable(id)
@@ -123,11 +103,6 @@ public class CostTypeServiceImpl extends ServiceImpl<CostTypeMapper, CostType>
         return deleteResult;
     }
 
-    /**
-     * 批量删除费用类型
-     * @param costTypeIds 删除的 id 数组
-     * @return 返回删除结果
-     */
     @Override
     public boolean deleteBatchCostType(Integer... costTypeIds) {
         // 判空

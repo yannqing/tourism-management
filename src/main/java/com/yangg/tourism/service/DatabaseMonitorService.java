@@ -11,5 +11,11 @@ import com.yangg.tourism.domain.entity.DatabaseMonitor;
 */
 public interface DatabaseMonitorService extends IService<DatabaseMonitor> {
 
+    /**
+     * 数据库监控信息查询
+     * @param current 当前页码
+     * @param pageSize 一页数量大小
+     * @return 返回查询结果
+     */
     Page<DatabaseMonitor> databaseMonitor(Integer current, Integer pageSize);
 }

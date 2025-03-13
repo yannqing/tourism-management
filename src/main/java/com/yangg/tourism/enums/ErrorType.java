@@ -47,6 +47,9 @@ public enum ErrorType implements BaseExceptionInterface {
     TOURIST_NOT_BELONG_PRODUCT_NOT_UPDATE(60027, "此资源非商品，不能修改其商品类型"),
     TOURIST_NOT_IN_UPDATE_BY_MERCHANTS(60028, "此资源不在您的修改范围内，请重试"),
 
+    PRODUCT_COST_TYPE_REL_NOT_EXIST(60029, "商品类型与订单类型关系不存在，请重试"),
+    PRODUCT_COST_TYPE_REL_ALREADY_EXIST(60030, "商品类型与订单类型关系已存在存在，请重试"),
+    PRODUCT_HAVE_NOT_USER(60031, "此商品的父资源没有负责人，系统错误！"),
 
     NO_AUTH_ERROR(60201, "没有权限，请重试"),
 

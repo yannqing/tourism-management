@@ -15,13 +15,38 @@ import com.yangg.tourism.domain.vo.announcement.AnnouncementVo;
 */
 public interface AnnouncementService extends IService<Announcement> {
 
+    /**
+     * 查询全部公告内容
+     * @param queryAnnouncementDto 查询的请求参数 dto
+     * @return 返回查询结果
+     */
     Page<AnnouncementVo> getAllAnnouncements(QueryAnnouncementDto queryAnnouncementDto);
 
+    /**
+     * 更新公告内容
+     * @param updateAnnouncementDto 更新的请求参数 dto
+     * @return 返回更新的结果
+     */
     boolean updateAnnouncement(UpdateAnnouncementDto updateAnnouncementDto);
 
+    /**
+     * 新增公告内容
+     * @param addAnnouncementDto 新增的请求参数 dto
+     * @return 返回新增的结果
+     */
     boolean addAnnouncement(AddAnnouncementDto addAnnouncementDto);
 
+    /**
+     * 删除单个公告
+     * @param id 要删除的 id
+     * @return 返回删除的结果
+     */
     boolean deleteAnnouncement(Integer id);
 
+    /**
+     * 批量删除公告
+     * @param announcementIds 要删除的 id 数组
+     * @return 返回删除的结果
+     */
     boolean deleteBatchAnnouncement(Integer... announcementIds);
 }

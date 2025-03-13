@@ -35,11 +35,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
     @Resource
     private UserMapper userMapper;
 
-    /**
-     * 查询全部公告内容
-     * @param queryAnnouncementDto 查询的请求参数 dto
-     * @return 返回查询结果
-     */
     @Override
     public Page<AnnouncementVo> getAllAnnouncements(QueryAnnouncementDto queryAnnouncementDto) {
         // 判空
@@ -87,11 +82,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
         return new Page<AnnouncementVo>(page.getCurrent(), page.getSize(), page.getTotal()).setRecords(announcementVos);
     }
 
-    /**
-     * 更新公告内容
-     * @param updateAnnouncementDto 更新的请求参数 dto
-     * @return 返回更新的结果
-     */
     @Override
     public boolean updateAnnouncement(UpdateAnnouncementDto updateAnnouncementDto) {
         // 判空
@@ -111,11 +101,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
         return updateResult;
     }
 
-    /**
-     * 新增公告内容
-     * @param addAnnouncementDto 新增的请求参数 dto
-     * @return 返回新增的结果
-     */
     @Override
     public boolean addAnnouncement(AddAnnouncementDto addAnnouncementDto) {
         // 判空
@@ -130,11 +115,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
         return saveResult;
     }
 
-    /**
-     * 删除单个公告
-     * @param id 要删除的 id
-     * @return 返回删除的结果
-     */
     @Override
     public boolean deleteAnnouncement(Integer id) {
         // 判空
@@ -151,11 +131,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
         return deleteResult;
     }
 
-    /**
-     * 批量删除公告
-     * @param announcementIds 要删除的 id 数组
-     * @return 返回删除的结果
-     */
     @Override
     public boolean deleteBatchAnnouncement(Integer... announcementIds) {
         // 判空

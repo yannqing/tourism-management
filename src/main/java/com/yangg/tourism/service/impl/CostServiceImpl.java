@@ -8,13 +8,11 @@ import com.yangg.tourism.domain.dto.cost.AddCostDto;
 import com.yangg.tourism.domain.dto.cost.CreateOrderDto;
 import com.yangg.tourism.domain.dto.cost.QueryCostDto;
 import com.yangg.tourism.domain.dto.cost.UpdateCostDto;
-import com.yangg.tourism.domain.entity.Cost;
-import com.yangg.tourism.domain.entity.TouristResources;
-import com.yangg.tourism.domain.entity.User;
-import com.yangg.tourism.domain.entity.UserTourist;
+import com.yangg.tourism.domain.entity.*;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.CostMapper;
+import com.yangg.tourism.mapper.ProductCostTypeRelMapper;
 import com.yangg.tourism.mapper.TouristResourcesMapper;
 import com.yangg.tourism.mapper.UserTouristMapper;
 import com.yangg.tourism.service.CostService;
@@ -52,11 +50,9 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
     @Resource
     private RedisCache redisCache;
 
-    /**
-     * 查询所有费用
-     * @param queryCostDto 查询所有费用的 dto
-     * @return 返回分页查询结果
-     */
+    @Resource
+    private ProductCostTypeRelMapper productCostTypeRelMapper;
+
     @Override
     public Page<Cost> getAllCosts(QueryCostDto queryCostDto) {
         // 判空
@@ -92,11 +88,6 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
     }
 
-    /**
-     * 更新费用信息
-     * @param updateCostDto 更新费用信息的 dto
-     * @return 返回更新的结果
-     */
     @Override
     public boolean updateCost(UpdateCostDto updateCostDto) {
         // 判空
@@ -116,11 +107,6 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         return updateResult;
     }
 
-    /**
-     * 新增费用
-     * @param addCostDto 新增费用
-     * @return
-     */
     @Override
     public boolean addCost(AddCostDto addCostDto) {
         // 判空
@@ -135,11 +121,6 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         return saveResult;
     }
 
-    /**
-     * 删除费用信息
-     * @param costId 删除费用信息的id
-     * @return 返回删除结果
-     */
     @Override
     public boolean deleteCost(Integer costId) {
         Optional.ofNullable(costId)
@@ -196,12 +177,19 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
 
         UserTourist userTourist = userTouristMapper.selectOne(new QueryWrapper<UserTourist>().eq("tid", touristResources.getPid()));
         if (userTourist == null) {
+            throw new BusinessException(ErrorType.PRODUCT_HAVE_NOT_USER);
+        }
+
+        // 根据商品的类型来判断订单类型
+        ProductCostTypeRel productCostTypeRel = productCostTypeRelMapper.selectOne(new QueryWrapper<ProductCostTypeRel>().eq("pid", touristResources.getTypeId()));
+        if (productCostTypeRel == null) {
             throw new BusinessException(ErrorType.SYSTEM_ERROR);
         }
 
         Cost addCost = CreateOrderDto.objToCost(createOrderDto);
         addCost.setConsumer(loginUser.getUserId());
         addCost.setPayee(userTourist.getUid());
+        addCost.setType(productCostTypeRel.getCid());
         String orderNumber = Tools.generateOrderNumber();
         addCost.setOrderNumber(orderNumber);
         addCost.setStatus(0);

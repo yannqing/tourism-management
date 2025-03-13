@@ -14,13 +14,38 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ResourcesTypeService extends IService<ResourcesType> {
 
+    /**
+     * 查询所有的资源类型（商品除外）
+     * @param queryResourcesTypeDto 查询 dto
+     * @return 返回查询结果
+     */
     Page<ResourcesType> getAllResourcesTypes(QueryResourcesTypeDto queryResourcesTypeDto);
 
+    /**
+     * 更新资源类型
+     * @param updateResourcesTypeDto 更新 dto
+     * @return 返回更新结果
+     */
     boolean updateResourcesType(UpdateResourcesTypeDto updateResourcesTypeDto);
 
+    /**
+     * 新增资源类型
+     * @param addResourcesTypeDto 新增 dto
+     * @return 返回新增结果
+     */
     boolean addResourcesType(AddResourcesTypeDto addResourcesTypeDto);
 
+    /**
+     * 删除资源类型
+     * @param id 要删除的 id
+     * @return 返回删除结果
+     */
     boolean deleteResourcesType(Integer id);
 
+    /**
+     * 批量删除资源类型
+     * @param resourcesTypeIds 要删除的 id 数组
+     * @return 返回删除结果
+     */
     boolean deleteBatchResourcesType(Integer... resourcesTypeIds);
 }

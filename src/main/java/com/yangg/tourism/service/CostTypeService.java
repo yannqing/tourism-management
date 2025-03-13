@@ -14,13 +14,39 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CostTypeService extends IService<CostType> {
 
+
+    /**
+     * 查询全部费用类型
+     * @param queryCostTypeDto 要查询的请求参数 dto
+     * @return 返回查询的结果
+     */
     Page<CostType> getAllCostTypes(QueryCostTypeDto queryCostTypeDto);
 
+    /**
+     * 更新费用类型
+     * @param updateCostTypeDto 要更新的费用类型 dto
+     * @return 返回更新结果
+     */
     boolean updateCostType(UpdateCostTypeDto updateCostTypeDto);
 
+    /**
+     * 新增费用类型
+     * @param addCostTypeDto 新增费用类型 dto
+     * @return 新增结果
+     */
     boolean addCostType(AddCostTypeDto addCostTypeDto);
 
+    /**
+     * 删除单个费用类型
+     * @param id 要删除的 id
+     * @return 返回删除结果
+     */
     boolean deleteCostType(Integer id);
 
+    /**
+     * 批量删除费用类型
+     * @param costTypeIds 删除的 id 数组
+     * @return 返回删除结果
+     */
     boolean deleteBatchCostType(Integer... costTypeIds);
 }
