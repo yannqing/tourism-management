@@ -6,11 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yangg.tourism.domain.dto.tourist.AddProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.QueryProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateProductTypeDto;
+import com.yangg.tourism.domain.entity.CostType;
+import com.yangg.tourism.domain.entity.ProductCostTypeRel;
 import com.yangg.tourism.domain.entity.ProductType;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
+import com.yangg.tourism.mapper.CostTypeMapper;
+import com.yangg.tourism.mapper.ProductCostTypeRelMapper;
 import com.yangg.tourism.mapper.ProductTypeMapper;
 import com.yangg.tourism.service.ProductTypeService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,12 @@ import java.util.Optional;
 @Service
 public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, ProductType>
     implements ProductTypeService{
+
+    @Resource
+    private CostTypeMapper costTypeMapper;
+
+    @Resource
+    private ProductCostTypeRelMapper productCostTypeRelMapper;
 
     @Override
     public Page<ProductType> getAllProductTypes(QueryProductTypeDto queryProductTypeDto) {
@@ -83,10 +94,28 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
             throw new BusinessException(ErrorType.PRODUCT_TYPE_CODE_REPEAT);
         }
 
+        // 费用类型不能为空
+        if (addProductTypeDto.getCostTypeId() == null) {
+            throw new BusinessException(ErrorType.COST_TYPE_NOT_NULL);
+        }
+
+        // 费用类型 id 有效性判断
+        CostType costType = costTypeMapper.selectById(addProductTypeDto.getCostTypeId());
+        if (costType == null) {
+            throw new BusinessException(ErrorType.COST_TYPE_NOT_EXIST);
+        }
+
         // 添加产品类型
         ProductType addProductType = AddProductTypeDto.objToProductType(addProductTypeDto);
         boolean saveResult = this.save(addProductType);
         log.info("新增产品类型");
+
+        // 新增与订单类型的关系
+        ProductCostTypeRel productCostTypeRel = new ProductCostTypeRel();
+        productCostTypeRel.setPid(addProductType.getId());
+        productCostTypeRel.setCid(addProductTypeDto.getCostTypeId());
+        productCostTypeRelMapper.insert(productCostTypeRel);
+        log.info("新增产品类型与订单类型的关系");
 
         return saveResult;
     }

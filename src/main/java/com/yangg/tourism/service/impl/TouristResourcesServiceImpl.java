@@ -268,25 +268,11 @@ public class TouristResourcesServiceImpl extends ServiceImpl<TouristResourcesMap
             if (addTouristResourcesDto.getProductTypeId() == null) {
                 throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_NULL);
             }
-            if (addTouristResourcesDto.getCostTypeId() == null) {
-                throw new BusinessException(ErrorType.COST_TYPE_NOT_NULL);
-            }
             // 产品类型 id 有效性判断
             ProductType productType = productTypeMapper.selectById(addTouristResourcesDto.getProductTypeId());
             if (productType == null) {
                 throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_EXIST);
             }
-            // 费用类型 id 有效性判断
-            CostType costType = costTypeMapper.selectById(addTouristResourcesDto.getCostTypeId());
-            if (costType == null) {
-                throw new BusinessException(ErrorType.COST_TYPE_NOT_EXIST);
-            }
-
-            // 新增与订单类型的关系
-            ProductCostTypeRel productCostTypeRel = new ProductCostTypeRel();
-            productCostTypeRel.setPid(addTouristResourcesDto.getProductTypeId());
-            productCostTypeRel.setCid(addTouristResourcesDto.getCostTypeId());
-            productCostTypeRelMapper.insert(productCostTypeRel);
 
             // 新增资源
             saveResult = this.save(addTouristResources);

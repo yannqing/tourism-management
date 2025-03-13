@@ -31,6 +31,12 @@ public class AddProductTypeDto implements Serializable {
     private String code;
 
     /**
+     * 对应费用类型id
+     */
+    @Schema(description = "对应费用类型id", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Integer costTypeId;
+
+    /**
      * 单位
      */
     @Schema(description = "单位", requiredMode = Schema.RequiredMode.REQUIRED)

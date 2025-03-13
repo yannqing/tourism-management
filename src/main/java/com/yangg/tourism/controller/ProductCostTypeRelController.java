@@ -5,7 +5,6 @@ import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.cost.AddProductCostTypeRelDto;
 import com.yangg.tourism.domain.dto.cost.QueryProductCostTypeRelDto;
 import com.yangg.tourism.domain.dto.cost.UpdateProductCostTypeRelDto;
-import com.yangg.tourism.domain.entity.ProductCostTypeRel;
 import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.domain.vo.tourist.ProductCostTypeRelVo;
 import com.yangg.tourism.service.ProductCostTypeRelService;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @create: 2025-02-09 10:03
  * @from: <更多资料：yannqing.com>
  **/
+@Deprecated
 @Tag(name = "订单类型与商品类型关系管理")
 @RestController
 @RequestMapping("/productCostTypeRel")
