@@ -5,8 +5,8 @@ import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.tourist.AddProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.QueryProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateProductTypeDto;
-import com.yangg.tourism.domain.entity.ProductType;
 import com.yangg.tourism.domain.model.BaseResponse;
+import com.yangg.tourism.domain.vo.tourist.ProductTypeVo;
 import com.yangg.tourism.service.ProductTypeService;
 import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ public class ProductTypeController {
     @Operation(summary = "查询所有产品类型")
     @GetMapping
     public BaseResponse<?> getAllProductTypes(QueryProductTypeDto queryProductTypeDto) {
-        Page<ProductType> costList = productTypeService.getAllProductTypes(queryProductTypeDto);
+        Page<ProductTypeVo> costList = productTypeService.getAllProductTypes(queryProductTypeDto);
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部产品类型成功！");
     }
 

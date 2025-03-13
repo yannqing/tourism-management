@@ -1,6 +1,7 @@
 package com.yangg.tourism.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yangg.tourism.domain.dto.tourist.AddProductTypeDto;
@@ -9,6 +10,7 @@ import com.yangg.tourism.domain.dto.tourist.UpdateProductTypeDto;
 import com.yangg.tourism.domain.entity.CostType;
 import com.yangg.tourism.domain.entity.ProductCostTypeRel;
 import com.yangg.tourism.domain.entity.ProductType;
+import com.yangg.tourism.domain.vo.tourist.ProductTypeVo;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.CostTypeMapper;
@@ -40,7 +42,7 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
     private ProductCostTypeRelMapper productCostTypeRelMapper;
 
     @Override
-    public Page<ProductType> getAllProductTypes(QueryProductTypeDto queryProductTypeDto) {
+    public Page<ProductTypeVo> getAllProductTypes(QueryProductTypeDto queryProductTypeDto) {
         // 判空
         Optional.ofNullable(queryProductTypeDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
@@ -59,8 +61,15 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
         queryWrapper.like(code!= null, "code", code);
         queryWrapper.like(description!= null, "description", description);
         log.info("查询所有产品类型");
+        Page<ProductType> page = this.page(new Page<>(queryProductTypeDto.getCurrent(), queryProductTypeDto.getPageSize()), queryWrapper);
+        List<ProductTypeVo> productTypeVoList = page.getRecords().stream().map(productType -> {
+            ProductTypeVo productTypeVo = ProductTypeVo.productTypeToVo(productType);
+            ProductCostTypeRel productCostTypeRel = productCostTypeRelMapper.selectOne(new QueryWrapper<ProductCostTypeRel>().eq("pid", productType.getId()));
+            productTypeVo.setCostType(costTypeMapper.selectById(productCostTypeRel.getCid()));
+            return productTypeVo;
+        }).toList();
 
-        return this.page(new Page<>(queryProductTypeDto.getCurrent(), queryProductTypeDto.getPageSize()), queryWrapper);
+        return new Page<ProductTypeVo>(page.getCurrent(), page.getSize(), page.getTotal()).setRecords(productTypeVoList);
     }
 
     @Override
@@ -73,6 +82,14 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
         Integer updateProductTypeDtoId = updateProductTypeDto.getId();
         Optional.ofNullable(this.getById(updateProductTypeDtoId))
                 .orElseThrow(() -> new BusinessException(ErrorType.PRODUCT_NOT_EXIST));
+
+        if (updateProductTypeDto.getCostTypeId() != null) {
+            CostType costType = costTypeMapper.selectById(updateProductTypeDto.getCostTypeId());
+            if (costType == null) {
+                throw new BusinessException(ErrorType.COST_TYPE_NOT_EXIST);
+            }
+            productCostTypeRelMapper.update(new UpdateWrapper<ProductCostTypeRel>().eq("pid", updateProductTypeDtoId).eq("cid", costType.getId()));
+        }
 
         ProductType updateProductType = UpdateProductTypeDto.objToProductType(updateProductTypeDto);
 

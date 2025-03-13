@@ -6,6 +6,7 @@ import com.yangg.tourism.domain.dto.tourist.QueryProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.UpdateProductTypeDto;
 import com.yangg.tourism.domain.entity.ProductType;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yangg.tourism.domain.vo.tourist.ProductTypeVo;
 
 /**
 * @author yanqing
@@ -19,7 +20,7 @@ public interface ProductTypeService extends IService<ProductType> {
      * @param queryProductTypeDto 查询 dto
      * @return 返回查询结果
      */
-    Page<ProductType> getAllProductTypes(QueryProductTypeDto queryProductTypeDto);
+    Page<ProductTypeVo> getAllProductTypes(QueryProductTypeDto queryProductTypeDto);
 
     /**
      * 更新商品类型

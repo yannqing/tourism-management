@@ -34,6 +34,12 @@ public class UpdateProductTypeDto {
     private String code;
 
     /**
+     * 订单类型id
+     */
+    @Schema(description = "订单类型id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String costTypeId;
+
+    /**
      * 单位
      */
     @Schema(description = "单位", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
