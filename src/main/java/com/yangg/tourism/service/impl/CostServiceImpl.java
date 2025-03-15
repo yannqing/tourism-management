@@ -11,10 +11,7 @@ import com.yangg.tourism.domain.dto.cost.UpdateCostDto;
 import com.yangg.tourism.domain.entity.*;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
-import com.yangg.tourism.mapper.CostMapper;
-import com.yangg.tourism.mapper.ProductCostTypeRelMapper;
-import com.yangg.tourism.mapper.TouristResourcesMapper;
-import com.yangg.tourism.mapper.UserTouristMapper;
+import com.yangg.tourism.mapper.*;
 import com.yangg.tourism.service.CostService;
 import com.yangg.tourism.utils.JwtUtils;
 import com.yangg.tourism.utils.RedisCache;
@@ -49,6 +46,9 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
 
     @Resource
     private RedisCache redisCache;
+
+    @Resource
+    private TouristProductRelMapper touristProductRelMapper;
 
     @Resource
     private ProductCostTypeRelMapper productCostTypeRelMapper;
@@ -181,9 +181,13 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         }
 
         // 根据商品的类型来判断订单类型
-        ProductCostTypeRel productCostTypeRel = productCostTypeRelMapper.selectOne(new QueryWrapper<ProductCostTypeRel>().eq("pid", touristResources.getTypeId()));
+        TouristProductRel touristProductRel = touristProductRelMapper.selectOne(new QueryWrapper<TouristProductRel>().eq("tid", touristResources.getId()));
+        if (touristProductRel == null) {
+            throw new BusinessException(ErrorType.PRODUCT_TYPE_NOT_EXIST);
+        }
+        ProductCostTypeRel productCostTypeRel = productCostTypeRelMapper.selectOne(new QueryWrapper<ProductCostTypeRel>().eq("pid", touristProductRel.getPid()));
         if (productCostTypeRel == null) {
-            throw new BusinessException(ErrorType.SYSTEM_ERROR);
+            throw new BusinessException(ErrorType.COST_TYPE_NOT_EXIST);
         }
 
         Cost addCost = CreateOrderDto.objToCost(createOrderDto);
