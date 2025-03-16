@@ -1,7 +1,10 @@
 package com.yangg.tourism.service;
 
-import com.yangg.tourism.domain.entity.UserActions;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yangg.tourism.domain.entity.UserActions;
+import com.yangg.tourism.domain.vo.user.UserActionsVo;
+
+import java.util.List;
 
 /**
 * @author yanqing
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserActionsService extends IService<UserActions> {
 
+    List<UserActionsVo> getUserActions();
 }
