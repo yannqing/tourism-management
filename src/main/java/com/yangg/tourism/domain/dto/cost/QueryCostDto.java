@@ -65,13 +65,13 @@ public class QueryCostDto extends PageRequest implements Serializable {
     /**
      * 消费者id
      */
-    @Schema(description = "消费者id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "消费者id（用户查询不包含这个）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer consumer;
 
     /**
      * 收款者id
      */
-    @Schema(description = "收款者id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "收款者id（用户查询不包含这个）", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer payee;
 
     /**

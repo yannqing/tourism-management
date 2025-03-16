@@ -31,10 +31,17 @@ public class CostController {
     @Resource
     private CostService costService;
 
-    @Operation(summary = "查询所有费用信息")
+    @Operation(summary = "查询所有费用信息（管理员）")
     @GetMapping
     public BaseResponse<?> getAllCosts(QueryCostDto queryCostDto) {
         Page<Cost> costList = costService.getAllCosts(queryCostDto);
+        return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
+    }
+
+    @Operation(summary = "查询所有费用信息（游客）")
+    @GetMapping("/user")
+    public BaseResponse<?> getAllCostsByUser(QueryCostDto queryCostDto, Integer userId) {
+        Page<Cost> costList = costService.getAllCostsByUser(queryCostDto, userId);
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
     }
 

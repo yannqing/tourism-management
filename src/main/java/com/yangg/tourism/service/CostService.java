@@ -18,11 +18,19 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface CostService extends IService<Cost> {
 
     /**
-     * 查询所有费用
+     * 查询所有费用（管理员）
      * @param queryCostDto 查询所有费用的 dto
      * @return 返回分页查询结果
      */
     Page<Cost> getAllCosts(QueryCostDto queryCostDto);
+
+    /**
+     * 普通用户查询自己的订单列表
+     * @param queryCostDto 查询 dto
+     * @param userId 用户 id
+     * @return 返回查询结果
+     */
+    Page<Cost> getAllCostsByUser(QueryCostDto queryCostDto, Integer userId);
 
     /**
      * 更新费用信息

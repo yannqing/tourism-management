@@ -48,6 +48,9 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
     private RedisCache redisCache;
 
     @Resource
+    private UserMapper userMapper;
+
+    @Resource
     private TouristProductRelMapper touristProductRelMapper;
 
     @Resource
@@ -85,6 +88,49 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
         log.info("查询所有费用");
 
+        return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
+    }
+
+    @Override
+    public Page<Cost> getAllCostsByUser(QueryCostDto queryCostDto, Integer userId) {
+        // 判空
+        Optional.ofNullable(queryCostDto)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        if (userId == null) {
+            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+        }
+
+        User loginUser = userMapper.selectById(userId);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorType.USER_NOT_EXIST);
+        }
+
+        // 构建查询条件
+        Integer id = queryCostDto.getId();
+        String name = queryCostDto.getName();
+        Integer type = queryCostDto.getType();
+        Integer commodityId = queryCostDto.getCommodityId();
+        String orderNumber = queryCostDto.getOrderNumber();
+        Integer paymentMethod = queryCostDto.getPaymentMethod();
+        BigDecimal amount = queryCostDto.getAmount();
+        Integer status = queryCostDto.getStatus();
+        Date expenseTime = queryCostDto.getExpenseTime();
+
+        QueryWrapper<Cost> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(commodityId!= null, "commodityId", commodityId);
+        queryWrapper.like(name!= null, "name", name);
+        queryWrapper.like(orderNumber!= null, "orderNumber", orderNumber);
+        queryWrapper.eq(type!= null, "type", type);
+        queryWrapper.eq(paymentMethod!= null, "paymentMethod", paymentMethod);
+        queryWrapper.eq(amount!= null, "amount", amount);
+        // 只能查询自己的订单
+        queryWrapper.eq("consumer", userId);
+        queryWrapper.eq(status!= null, "status", status);
+        queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
+
+        log.info("查询所有费用");
         return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
     }
 
@@ -206,6 +252,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         return orderNumber;
     }
 
+    @Override
     public boolean payOrder(String orderNumber, HttpServletRequest request) throws JsonProcessingException {
         User loginUser = JwtUtils.getUserFromToken(request.getHeader("token"));
         if (loginUser == null) {
