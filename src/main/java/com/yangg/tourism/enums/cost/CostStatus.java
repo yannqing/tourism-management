@@ -14,7 +14,7 @@ import lombok.Getter;
 public enum CostStatus {
     NOT_PAY(0, "未支付"),
     ALREADY_PAY(1, "已支付"),
-    WAIT_APPROVAL(-1, "待审批")
+    WAIT_APPROVAL(-1, "已过期")
     ;
 
 

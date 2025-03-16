@@ -129,6 +129,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         queryWrapper.eq("consumer", userId);
         queryWrapper.eq(status!= null, "status", status);
         queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
+        queryWrapper.orderByDesc("createTime");
 
         log.info("查询所有费用");
         return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
