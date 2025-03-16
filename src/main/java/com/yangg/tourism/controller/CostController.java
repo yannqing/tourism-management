@@ -45,6 +45,13 @@ public class CostController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
     }
 
+    @Operation(summary = "查询所有费用信息（商户）")
+    @GetMapping("/merchant")
+    public BaseResponse<?> getAllCostsByMerchants(QueryCostDto queryCostDto, Integer userId) {
+        Page<Cost> costList = costService.getAllCostsByMerchants(queryCostDto, userId);
+        return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
+    }
+
     @PutMapping
     @Operation(summary = "更新费用信息")
     public BaseResponse<?> updateCost(UpdateCostDto updateCostDto) {

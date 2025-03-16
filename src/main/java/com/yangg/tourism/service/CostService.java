@@ -77,4 +77,6 @@ public interface CostService extends IService<Cost> {
      * @throws JsonProcessingException json 解析异常
      */
     boolean payOrder(String orderNumber, HttpServletRequest request) throws JsonProcessingException;
+
+    Page<Cost> getAllCostsByMerchants(QueryCostDto queryCostDto, Integer userId);
 }

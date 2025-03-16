@@ -10,9 +10,11 @@ import com.yangg.tourism.domain.dto.cost.QueryCostDto;
 import com.yangg.tourism.domain.dto.cost.UpdateCostDto;
 import com.yangg.tourism.domain.entity.*;
 import com.yangg.tourism.enums.ErrorType;
+import com.yangg.tourism.enums.RoleType;
 import com.yangg.tourism.exception.BusinessException;
 import com.yangg.tourism.mapper.*;
 import com.yangg.tourism.service.CostService;
+import com.yangg.tourism.service.UserService;
 import com.yangg.tourism.utils.JwtUtils;
 import com.yangg.tourism.utils.RedisCache;
 import com.yangg.tourism.utils.Tools;
@@ -48,7 +50,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
     private RedisCache redisCache;
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Resource
     private TouristProductRelMapper touristProductRelMapper;
@@ -86,7 +88,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         queryWrapper.eq(payee!= null, "payee", payee);
         queryWrapper.eq(status!= null, "status", status);
         queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
-        log.info("查询所有费用");
+        log.info("查询所有费用（管理员）");
 
         return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
     }
@@ -101,7 +103,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
             throw new BusinessException(ErrorType.ARGS_NOT_NULL);
         }
 
-        User loginUser = userMapper.selectById(userId);
+        User loginUser = userService.getBaseMapper().selectById(userId);
         if (loginUser == null) {
             throw new BusinessException(ErrorType.USER_NOT_EXIST);
         }
@@ -131,7 +133,7 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
         queryWrapper.orderByDesc("createTime");
 
-        log.info("查询所有费用");
+        log.info("查询所有费用（普通用户）");
         return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
     }
 
@@ -284,6 +286,56 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost>
         log.info("用户 id：{} 支付订单 id：{} ", loginUser.getUserId(), orderNumber);
 
         return payResult;
+    }
+
+    @Override
+    public Page<Cost> getAllCostsByMerchants(QueryCostDto queryCostDto, Integer userId) {
+        // 判空
+        Optional.ofNullable(queryCostDto)
+                .orElseThrow(() -> new BusinessException(ErrorType.ARGS_NOT_NULL));
+
+        if (userId == null) {
+            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+        }
+
+        User loginUser = userService.getBaseMapper().selectById(userId);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorType.USER_NOT_EXIST);
+        }
+
+        List<Role> roles = userService.getRoleByUser(userId);
+        Role role = roles.get(0);
+        if (role == null || role.getId() != RoleType.OTHER.getRoleId()) {
+            throw new BusinessException(ErrorType.PERMISSION_NOT);
+        }
+
+        // 构建查询条件
+        Integer id = queryCostDto.getId();
+        String name = queryCostDto.getName();
+        Integer type = queryCostDto.getType();
+        Integer commodityId = queryCostDto.getCommodityId();
+        String orderNumber = queryCostDto.getOrderNumber();
+        Integer paymentMethod = queryCostDto.getPaymentMethod();
+        BigDecimal amount = queryCostDto.getAmount();
+        Integer status = queryCostDto.getStatus();
+        Date expenseTime = queryCostDto.getExpenseTime();
+
+        QueryWrapper<Cost> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(id!= null, "id", id);
+        queryWrapper.eq(commodityId!= null, "commodityId", commodityId);
+        queryWrapper.like(name!= null, "name", name);
+        queryWrapper.like(orderNumber!= null, "orderNumber", orderNumber);
+        queryWrapper.eq(type!= null, "type", type);
+        queryWrapper.eq(paymentMethod!= null, "paymentMethod", paymentMethod);
+        queryWrapper.eq(amount!= null, "amount", amount);
+        // 只能查询自己的订单
+        queryWrapper.eq("payee", userId);
+        queryWrapper.eq(status!= null, "status", status);
+        queryWrapper.eq(expenseTime!= null, "expenseTime", expenseTime);
+        queryWrapper.orderByDesc("createTime");
+
+        log.info("查询所有费用（商户）");
+        return this.page(new Page<>(queryCostDto.getCurrent(), queryCostDto.getPageSize()), queryWrapper);
     }
 }
 
