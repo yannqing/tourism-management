@@ -35,10 +35,10 @@ public class ChatServiceImpl implements ChatService {
     @Resource
     private RedisCache redisCache;
 
-    @Value("${openai.model}")
+    @Value("${spring.ai.openai.chat.options.model}")
     private String model;
 
-    @Value("${openai.api.url}")
+    @Value("${spring.ai.openai.base-url}")
     private String apiUrl;
 
     @Override

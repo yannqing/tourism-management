@@ -27,10 +27,24 @@ spring:
     virtual-host: /
     username: yannqing
     password: wyjh030208..
+  ai:
+    openai:
+      api-key: xxxxx
+      base-url: xxxxx
+      chat:
+        options:
+          model: xxxxx
 project:
   upload-url: ./images/
 server:
   port: 8080
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: -1
+  servlet:
+    context-path: /
+    async:
+      timeout: -1
 knife4j:
   enable: true
   setting:
@@ -41,11 +55,6 @@ mybatis-plus:
       logic-delete-field: isDelete
       logic-delete-value: 1
       logic-not-delete-value: 0
-openai:
-  model: xxxxx
-  api:
-    url: xxxxx
-    key: xxxxx
 ipInfo:
   token: xxxxx
 #logging:

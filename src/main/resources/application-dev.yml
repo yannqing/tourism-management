@@ -2,22 +2,17 @@ spring:
   application:
     name: tourism-management
   datasource:
-    # mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.22.0.11:3306/tourism_management
+    url: jdbc:mysql://localhost:3306/tourism_management
     username: root
-    password: wyjh030208..
-  # 文件上传
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+    password: wyjh030208..    # mac
+  #    password: 123456    # win
   data:
     # redis
     redis:
-      host: redis
-      port: 6379
-      password: wyjh030208..
+      host: redis    # redis 主机
+      port: 6379        # redis 端口号
+      password:
       database: 0
       lettuce:
         pool:
@@ -26,19 +21,44 @@ spring:
           max-idle: 8
           min-idle: 0
       timeout: 0
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    virtual-host: /
+    username: yannqing
+    password: wyjh030208..
+  ai:
+    openai:
+      api-key: xxxxx
+      base-url: xxxxx
+      chat:
+        options:
+          model: xxxxx
+project:
+  upload-url: ./images/
 server:
   port: 8080
-# knife4j 接口文档
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: -1
+  servlet:
+    context-path: /
+    async:
+      timeout: -1
 knife4j:
   enable: true
   setting:
     language: zh_cn
-# mybatis-plus 配置
 mybatis-plus:
   global-config:
     db-config:
-      logic-delete-field: isDelete  # 逻辑删除字段
-      logic-delete-value: 1       # 1 删除
-      logic-not-delete-value: 0   # 0 未删除
-
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+ipInfo:
+  token: xxxxx
+#logging:
+#  level:
+#    root: INFO
+#    com.yangg.tourism: DEBUG  # 替换成你的包名
 
