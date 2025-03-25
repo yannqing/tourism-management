@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.slide.AddSlideDto;
 import com.yangg.tourism.domain.dto.slide.QuerySlideDto;
@@ -28,6 +29,7 @@ public class SlideController {
     @Resource
     private SlideService slideService;
 
+    @AuthCheck(code = "SLIDE_GET")
     @Operation(summary = "查询所有轮播图")
     @GetMapping
     public BaseResponse<?> getAllSlides(QuerySlideDto querySlideDto) {
@@ -35,6 +37,7 @@ public class SlideController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部轮播图成功！");
     }
 
+    @AuthCheck(code = "SLIDE_UPDATE")
     @PutMapping
     @Operation(summary = "更新轮播图")
     public BaseResponse<?> updateSlide(UpdateSlideDto updateSlideDto) {
@@ -46,6 +49,7 @@ public class SlideController {
         }
     }
 
+    @AuthCheck(code = "SLIDE_ADD")
     @Operation(summary = "添加新轮播图")
     @PostMapping
     public BaseResponse<?> addSlide(AddSlideDto addSlideDto) {
@@ -57,6 +61,7 @@ public class SlideController {
         }
     }
 
+    @AuthCheck(code = "SLIDE_DELETE_ONE")
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单个轮播图")
     public BaseResponse<?> deleteSlide(@PathVariable Integer id) {
@@ -68,6 +73,7 @@ public class SlideController {
         }
     }
 
+    @AuthCheck(code = "SLIDE_DELETE_BATCH")
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除轮播图")
     public BaseResponse<?> deleteBatchSlide(Integer... slideIds) {

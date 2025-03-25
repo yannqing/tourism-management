@@ -6,15 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yangg.tourism.domain.dto.permissions.AddPermissionDto;
 import com.yangg.tourism.domain.dto.permissions.QueryPermissionsDto;
 import com.yangg.tourism.domain.dto.permissions.UpdatePermissionsDto;
-import com.yangg.tourism.domain.dto.role.UpdateRoleDto;
 import com.yangg.tourism.domain.entity.Permissions;
-import com.yangg.tourism.domain.entity.Role;
 import com.yangg.tourism.domain.entity.RolePermissions;
 import com.yangg.tourism.enums.ErrorType;
 import com.yangg.tourism.exception.BusinessException;
+import com.yangg.tourism.mapper.PermissionsMapper;
 import com.yangg.tourism.mapper.RolePermissionsMapper;
 import com.yangg.tourism.service.PermissionsService;
-import com.yangg.tourism.mapper.PermissionsMapper;
 import com.yangg.tourism.service.RoleService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
 * @author yannqing
@@ -173,6 +170,16 @@ public class PermissionsServiceImpl extends ServiceImpl<PermissionsMapper, Permi
         log.info("管理员更新权限（id：{}）信息", updatePermissionsDto.getId());
 
         return updateResult;
+    }
+
+    @Override
+    public Permissions getPermissionByCode(String permissionCode) {
+        if (StringUtils.isBlank(permissionCode)) {
+            throw new BusinessException(ErrorType.ARGS_NOT_NULL);
+        }
+
+        // TODO 此处可以做 redis 缓存处理
+        return this.getOne(new QueryWrapper<Permissions>().eq("code", permissionCode));
     }
 
     /**

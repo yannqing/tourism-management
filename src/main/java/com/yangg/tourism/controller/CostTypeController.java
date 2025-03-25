@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.cost.*;
 import com.yangg.tourism.domain.entity.CostType;
@@ -26,6 +27,7 @@ public class CostTypeController {
     @Resource
     private CostTypeService costTypeService;
 
+    @AuthCheck(code = "COST_TYPE_GET_ALL")
     @Operation(summary = "查询所有费用类型")
     @GetMapping
     public BaseResponse<?> getAllCostTypes(QueryCostTypeDto queryCostTypeDto) {
@@ -33,6 +35,7 @@ public class CostTypeController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用类型成功！");
     }
 
+    @AuthCheck(code = "COST_TYPE_GET_ALL")
     @PutMapping
     @Operation(summary = "更新费用类型")
     public BaseResponse<?> updateCostType(UpdateCostTypeDto updateCostTypeDto) {
@@ -44,6 +47,7 @@ public class CostTypeController {
         }
     }
 
+    @AuthCheck(code = "COST_TYPE_ADD")
     @Operation(summary = "添加新费用类型")
     @PostMapping
     public BaseResponse<?> addCostType(AddCostTypeDto addCostTypeDto) {
@@ -55,6 +59,7 @@ public class CostTypeController {
         }
     }
 
+    @AuthCheck(code = "COST_TYPE_DELETE_ONE")
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单个费用类型")
     public BaseResponse<?> deleteCostType(@PathVariable Integer id) {
@@ -66,6 +71,7 @@ public class CostTypeController {
         }
     }
 
+    @AuthCheck(code = "COST_TYPE_DELETE_BATCH")
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除费用类型")
     public BaseResponse<?> deleteBatchCostType(Integer... costTypeIds) {

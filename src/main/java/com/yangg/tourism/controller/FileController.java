@@ -1,5 +1,6 @@
 package com.yangg.tourism.controller;
 
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.service.FileService;
@@ -33,6 +34,7 @@ public class FileController {
      * @return
      * @throws IOException
      */
+    @AuthCheck(code = "FILE_UPLOAD")
     @Operation(summary = "上传图片")
     @PostMapping("/upload/images")
     public BaseResponse<String> uploadAvatar(@RequestParam("image") MultipartFile image) throws IOException {
@@ -46,8 +48,9 @@ public class FileController {
      * @param filename
      * @return
      */
+    @AuthCheck(code = "FILE_DOWNLOAD")
     @Operation(summary = "下载图片文件")
-        @GetMapping("/download/image/{filename}")
+    @GetMapping("/download/image/{filename}")
     public ResponseEntity<FileSystemResource> downloadImage(@PathVariable("filename") String filename) {
 
         String imagePath = "./images/" + filename; // 图片的本地路径

@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.tourist.AddProductTypeDto;
 import com.yangg.tourism.domain.dto.tourist.QueryProductTypeDto;
@@ -28,6 +29,7 @@ public class ProductTypeController {
     @Resource
     private ProductTypeService productTypeService;
 
+    @AuthCheck(code = "PRODUCT_TYPE_GET_ALL")
     @Operation(summary = "查询所有产品类型")
     @GetMapping
     public BaseResponse<?> getAllProductTypes(QueryProductTypeDto queryProductTypeDto) {
@@ -35,6 +37,7 @@ public class ProductTypeController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部产品类型成功！");
     }
 
+    @AuthCheck(code = "PRODUCT_TYPE_UPDATE")
     @PutMapping
     @Operation(summary = "更新产品类型")
     public BaseResponse<?> updateProductType(UpdateProductTypeDto updateProductTypeDto) {
@@ -46,6 +49,7 @@ public class ProductTypeController {
         }
     }
 
+    @AuthCheck(code = "PRODUCT_TYPE_ADD")
     @Operation(summary = "添加新产品类型")
     @PostMapping
     public BaseResponse<?> addProductType(AddProductTypeDto addProductTypeDto) {
@@ -57,6 +61,7 @@ public class ProductTypeController {
         }
     }
 
+    @AuthCheck(code = "PRODUCT_TYPE_DELETE_ONE")
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单个产品类型")
     public BaseResponse<?> deleteProductType(@PathVariable Integer id) {
@@ -68,6 +73,7 @@ public class ProductTypeController {
         }
     }
 
+    @AuthCheck(code = "PRODUCT_TYPE_DELETE_BATCH")
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除产品类型")
     public BaseResponse<?> deleteBatchProductType(Integer... productTypeIds) {

@@ -413,7 +413,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         List<Integer> roleList = getRoleUserList.stream().map(RoleUser::getRid).toList();
         List<Role> roles = roleMapper.selectBatchIds(roleList);
-        log.info("查询用户（id：{}）的角色（{}）", userId, roles);
 
         return roles;
     }

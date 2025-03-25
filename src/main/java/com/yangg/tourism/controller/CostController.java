@@ -2,6 +2,7 @@ package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.cost.AddCostDto;
 import com.yangg.tourism.domain.dto.cost.CreateOrderDto;
@@ -31,6 +32,7 @@ public class CostController {
     @Resource
     private CostService costService;
 
+    @AuthCheck(code = "COST_GET_ALL_BY_ADMIN")
     @Operation(summary = "查询所有费用信息（管理员）")
     @GetMapping
     public BaseResponse<?> getAllCosts(QueryCostDto queryCostDto) {
@@ -38,6 +40,7 @@ public class CostController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
     }
 
+    @AuthCheck(code = "COST_GET_ALL_BY_USER")
     @Operation(summary = "查询所有费用信息（游客）")
     @GetMapping("/user")
     public BaseResponse<?> getAllCostsByUser(QueryCostDto queryCostDto, Integer userId) {
@@ -45,6 +48,7 @@ public class CostController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
     }
 
+    @AuthCheck(code = "COST_GET_ALL_BY_MERCHANTS")
     @Operation(summary = "查询所有费用信息（商户）")
     @GetMapping("/merchant")
     public BaseResponse<?> getAllCostsByMerchants(QueryCostDto queryCostDto, Integer userId) {
@@ -52,6 +56,7 @@ public class CostController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部费用成功！");
     }
 
+    @AuthCheck(code = "COST_UPDATE")
     @PutMapping
     @Operation(summary = "更新费用信息")
     public BaseResponse<?> updateCost(UpdateCostDto updateCostDto) {
@@ -63,6 +68,7 @@ public class CostController {
         }
     }
 
+    @AuthCheck(code = "COST_ADD")
     @Operation(summary = "添加新费用")
     @PostMapping
     public BaseResponse<?> addCost(AddCostDto addCostDto) {
@@ -74,6 +80,7 @@ public class CostController {
         }
     }
 
+    @AuthCheck(code = "COST_DELETE_ONE")
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单个费用信息")
     public BaseResponse<?> deleteCost(@PathVariable Integer id) {
@@ -85,6 +92,7 @@ public class CostController {
         }
     }
 
+    @AuthCheck(code = "COST_DELETE_BATCH")
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除费用信息")
     public BaseResponse<?> deleteBatchCost(Integer... costIds) {
@@ -96,6 +104,7 @@ public class CostController {
         }
     }
 
+    @AuthCheck(code = "COST_CREATE_ORDER")
     @Operation(summary = "创建订单")
     @PostMapping("/create-order")
     public BaseResponse<?> createOrder(CreateOrderDto createOrderDto, HttpServletRequest request) throws JsonProcessingException {
@@ -103,6 +112,7 @@ public class CostController {
         return ResultUtils.success(Code.SUCCESS, order, "创建订单成功！");
     }
 
+    @AuthCheck(code = "COST_PAY_ORDER")
     @Operation(summary = "支付订单")
     @PostMapping("/pay-order")
     public BaseResponse<?> payOrder(String orderNumber, HttpServletRequest request) throws JsonProcessingException {

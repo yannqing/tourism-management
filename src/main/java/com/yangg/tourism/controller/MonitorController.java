@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.entity.DatabaseMonitor;
 import com.yangg.tourism.domain.entity.IpApiStatistic;
@@ -35,6 +36,7 @@ public class MonitorController {
     @Resource
     private UserActionsService userActionsService;
 
+    @AuthCheck(code = "SYSTEM_MONITOR_DATABASE")
     @Operation(summary = "数据库监控")
     @GetMapping("/database")
     public BaseResponse<?> databaseMonitor(Integer current, Integer pageSize) {
@@ -42,6 +44,7 @@ public class MonitorController {
         return ResultUtils.success(Code.SUCCESS, data);
     }
 
+    @AuthCheck(code = "SYSTEM_MONITOR_IP_API")
     @Operation(summary = "ip 和 后端 api 监控")
     @GetMapping("/ip-api")
     public BaseResponse<?> ipMonitor(Integer current, Integer pageSize) {
@@ -49,6 +52,7 @@ public class MonitorController {
         return ResultUtils.success(Code.SUCCESS, data);
     }
 
+    @AuthCheck(code = "SYSTEM_USER_ACTIONS")
     @Operation(summary = "用户行为分析")
     @GetMapping("/user-actions")
     public BaseResponse<?> userActions() {

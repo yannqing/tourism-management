@@ -1,7 +1,6 @@
 package com.yangg.tourism.controller;
 
 import com.yangg.tourism.annotation.AuthCheck;
-import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.auth.RegisterDto;
 import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.service.AuthService;
@@ -29,7 +28,7 @@ public class AuthController {
     @Resource
     private AuthService authService;
 
-    @AuthCheck(code = PermissionConstant.AUTH_REGISTER)
+    @AuthCheck(code = "AUTH_REGISTER")
     @Operation(summary = "注册")
     @PostMapping("/register")
     public BaseResponse<?> register(RegisterDto registerDto) {

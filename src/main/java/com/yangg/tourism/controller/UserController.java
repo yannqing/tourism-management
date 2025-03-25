@@ -4,15 +4,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
-import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.user.AddUserDto;
 import com.yangg.tourism.domain.dto.user.QueryUserDto;
 import com.yangg.tourism.domain.dto.user.UpdateMyInfoDto;
+import com.yangg.tourism.domain.dto.user.UpdateUserDto;
 import com.yangg.tourism.domain.entity.Permissions;
 import com.yangg.tourism.domain.entity.Role;
-import com.yangg.tourism.domain.entity.User;
 import com.yangg.tourism.domain.model.BaseResponse;
-import com.yangg.tourism.domain.dto.user.UpdateUserDto;
 import com.yangg.tourism.domain.vo.user.MySelfInfoVo;
 import com.yangg.tourism.domain.vo.user.UserVo;
 import com.yangg.tourism.service.UserService;
@@ -40,7 +38,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @AuthCheck(code = PermissionConstant.USER_ADD)
+    @AuthCheck(code = "USER_ADD")
     @Operation(summary = "新增用户（管理员）")
     @PostMapping
     public BaseResponse<?> addUser(AddUserDto addUserDto) {
@@ -52,7 +50,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_DELETE_ONE)
+    @AuthCheck(code = "USER_DELETE_ONE")
     @Operation(summary = "删除用户（管理员）")
     @DeleteMapping("/{id}")
     public BaseResponse<?> deleteUserById(@PathVariable Integer id) {
@@ -64,7 +62,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_DELETE_BATCH)
+    @AuthCheck(code = "USER_DELETE_BATCH")
     @Operation(summary = "批量删除用户（管理员）")
     @DeleteMapping("/batch")
     public BaseResponse<?> deleteBatchUser(Integer... userIds) {
@@ -84,7 +82,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_GET_ONE)
+    @AuthCheck(code = "USER_GET_ONE")
     @Operation(summary = "查询单个用户")
     @GetMapping("/{id}")
     public BaseResponse<?> getUserById(@PathVariable Integer id) {
@@ -92,7 +90,7 @@ public class UserController {
         return ResultUtils.success(Code.SUCCESS, userVo, "查询单个用户成功");
     }
 
-    @AuthCheck(code = PermissionConstant.USER_GET_ALL)
+    @AuthCheck(code = "USER_GET_ALL")
     @Operation(summary = "查询所有用户（管理员）")
     @GetMapping
     public BaseResponse<?> getAll(QueryUserDto queryUserDto) {
@@ -100,7 +98,7 @@ public class UserController {
         return ResultUtils.success(Code.SUCCESS, userPages, "查询所有用户成功");
     }
 
-    @AuthCheck(code = PermissionConstant.USER_UPDATE_USER_INFO)
+    @AuthCheck(code = "USER_UPDATE_USER_INFO")
     @Operation(summary = "修改用户信息（管理员）")
     @PutMapping("/update")
     public BaseResponse<?> updateUserByAdmin(UpdateUserDto updateUserDto) {
@@ -112,7 +110,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_UPDATE_MYSELF)
+    @AuthCheck(code = "USER_UPDATE_MYSELF")
     @Operation(summary = "修改个人信息")
     @PutMapping
     public BaseResponse<?> updateUserById(UpdateMyInfoDto updateMyInfoDto, HttpServletRequest request) throws JsonProcessingException {
@@ -124,7 +122,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_UPDATE_MYSELF_PASSWORD)
+    @AuthCheck(code = "USER_UPDATE_MYSELF_PASSWORD")
     @Operation(summary = "修改个人密码")
     @PutMapping("/changePassword")
     public BaseResponse<?> changePassword(String originPassword, String newPassword, String againPassword, HttpServletRequest request) throws JsonProcessingException {
@@ -136,7 +134,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_RESET_PASSWORD)
+    @AuthCheck(code = "USER_RESET_PASSWORD")
     @Operation(summary = "重置用户密码（管理员）")
     @PostMapping("/resetPassword/{id}")
     public BaseResponse<?> resetUserPassword(@PathVariable Integer id) {
@@ -148,14 +146,14 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_EXPORT)
+    @AuthCheck(code = "USER_EXPORT")
     @Operation(summary = "导出所有用户信息（管理员）")
     @PostMapping("/export")
     public BaseResponse<?> exportUser() {
         return ResultUtils.failure("接口正在完善，请尝试其他接口");
     }
 
-    @AuthCheck(code = PermissionConstant.USER_ADD_ROLE_TO_USER)
+    @AuthCheck(code = "USER_ADD_ROLE_TO_USER")
     @Operation(summary = "给用户添加角色")
     @PostMapping("/addRoleToUser")
     public BaseResponse<?> addRoleToUser(Integer userId,Integer... roleIds) {
@@ -167,7 +165,7 @@ public class UserController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.USER_GET_ROLE_BY_USER)
+    @AuthCheck(code = "USER_GET_ROLE_BY_USER")
     @Operation(summary = "查询用户的角色")
     @GetMapping("/getRoleByUser")
     public BaseResponse<?> getRoleByUser(Integer userId) {
@@ -175,7 +173,7 @@ public class UserController {
         return ResultUtils.success(Code.SUCCESS, result, "查询用户角色成功");
     }
 
-    @AuthCheck(code = PermissionConstant.USER_GET_PERMISSION_BY_USER)
+    @AuthCheck(code = "USER_GET_PERMISSION_BY_USER")
     @Operation(summary = "查询用户的权限")
     @GetMapping("/getPermissionByUser")
     public BaseResponse<?> getPermissionByUser(Integer userId) {
@@ -183,7 +181,7 @@ public class UserController {
         return ResultUtils.success(Code.SUCCESS, result, "查询用户权限成功");
     }
 
-    @AuthCheck(code = PermissionConstant.USER_GET_MYSELF_INFO)
+    @AuthCheck(code = "USER_GET_MYSELF_INFO")
     @Operation(summary = "获取个人信息")
     @GetMapping("/getMyselfInfo")
     public BaseResponse<?> getMyselfInfo(HttpServletRequest request) throws JsonProcessingException {

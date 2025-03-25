@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * @create: 2025-02-09 10:03
  * @from: <更多资料：yannqing.com>
  **/
+@Deprecated
 @Tag(name = "消息通知管理")
 @RestController
 @RequestMapping("/message")

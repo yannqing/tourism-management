@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.chat.AiMessageDTO;
 import com.yangg.tourism.domain.model.BaseResponse;
@@ -27,7 +28,8 @@ public class ChatController {
 
     @Resource
     private AiChatService aiChatService;
-    
+
+    @Deprecated
     @PostMapping("/chat")
     public BaseResponse<String> chat(String prompt, HttpServletRequest request) throws JsonProcessingException {
         String result = chatService.sendMessage(prompt, request);
@@ -36,6 +38,7 @@ public class ChatController {
         return ResultUtils.success(Code.SUCCESS, result);
     }
 
+    @AuthCheck(code = "AI_CHAT_AGENT")
     @PostMapping(value = "/chatAgent", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @Operation(summary = "智能客服聊天接口" )
     public Flux<ServerSentEvent<String>> chatStreamWithHistory(@RequestBody AiMessageDTO aiMessageDTO) {

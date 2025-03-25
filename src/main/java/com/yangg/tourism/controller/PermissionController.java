@@ -3,12 +3,10 @@ package com.yangg.tourism.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
-import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.permissions.AddPermissionDto;
 import com.yangg.tourism.domain.dto.permissions.QueryPermissionsDto;
 import com.yangg.tourism.domain.dto.permissions.UpdatePermissionsDto;
 import com.yangg.tourism.domain.entity.Permissions;
-import com.yangg.tourism.enums.PermissionType;
 import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.service.PermissionsService;
 import com.yangg.tourism.utils.ResultUtils;
@@ -18,7 +16,6 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @description: 权限管理
@@ -34,7 +31,7 @@ public class PermissionController {
     @Resource
     private PermissionsService permissionsService;
 
-    @AuthCheck(code = PermissionConstant.PERMISSION_ADD)
+    @AuthCheck(code = "PERMISSION_ADD")
     @Operation(summary = "新增权限")
     @PostMapping
     public BaseResponse<?> addPermission(AddPermissionDto addPermissionDto) {
@@ -46,7 +43,7 @@ public class PermissionController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.PERMISSION_DELETE_ONE)
+    @AuthCheck(code = "PERMISSION_DELETE_ONE")
     @Operation(summary = "根据id删除权限")
     @DeleteMapping("/{id}")
     public BaseResponse<?> delete(@PathVariable Integer id) {
@@ -58,7 +55,7 @@ public class PermissionController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.PERMISSION_DELETE_BATCH)
+    @AuthCheck(code = "PERMISSION_DELETE_BATCH")
     @Operation(summary = "批量删除权限")
     @DeleteMapping("/batch")
     public BaseResponse<?> deleteBatch(Integer... permissionIds) {
@@ -78,7 +75,7 @@ public class PermissionController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.PERMISSION_GET_ALL)
+    @AuthCheck(code = "PERMISSION_GET_ALL")
     @Operation(summary = "查询所有权限")
     @GetMapping
     public BaseResponse<?> getAll(QueryPermissionsDto queryPermissionsDto) {
@@ -86,7 +83,7 @@ public class PermissionController {
         return ResultUtils.success(Code.SUCCESS, result, "查询所有权限成功");
     }
 
-    @AuthCheck(code = PermissionConstant.PERMISSION_UPDATE)
+    @AuthCheck(code = "PERMISSION_UPDATE")
     @Operation(summary = "编辑权限")
     @PutMapping
     public BaseResponse<?> edit(UpdatePermissionsDto updatePermissionsDto) {

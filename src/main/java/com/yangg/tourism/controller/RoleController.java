@@ -3,13 +3,12 @@ package com.yangg.tourism.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
-import com.yangg.tourism.common.PermissionConstant;
 import com.yangg.tourism.domain.dto.role.AddRoleDto;
 import com.yangg.tourism.domain.dto.role.QueryRoleDto;
 import com.yangg.tourism.domain.dto.role.UpdateRoleDto;
 import com.yangg.tourism.domain.entity.Permissions;
-import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.domain.entity.Role;
+import com.yangg.tourism.domain.model.BaseResponse;
 import com.yangg.tourism.service.RoleService;
 import com.yangg.tourism.utils.ResultUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +33,7 @@ public class RoleController {
     @Resource
     private RoleService roleService;
 
-    @AuthCheck(code = PermissionConstant.ROLE_ADD)
+    @AuthCheck(code = "ROLE_ADD")
     @Operation(summary = "新增角色")
     @PostMapping
     public BaseResponse<?> addRole(AddRoleDto addRoleDto) {
@@ -46,7 +45,7 @@ public class RoleController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_DELETE_ONE)
+    @AuthCheck(code = "ROLE_DELETE_ONE")
     @Operation(summary = "根据id删除角色")
     @DeleteMapping("/{id}")
     public BaseResponse<?> deleteRole(@PathVariable Integer id) {
@@ -58,7 +57,7 @@ public class RoleController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_DELETE_BATCH)
+    @AuthCheck(code = "ROLE_DELETE_BATCH")
     @Operation(summary = "批量删除角色")
     @DeleteMapping("/batch")
     public BaseResponse<?> deleteRoles(Integer... roleIds) {
@@ -78,7 +77,7 @@ public class RoleController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_GET_ALL)
+    @AuthCheck(code = "ROLE_GET_ALL")
     @Operation(summary = "获取所有角色")
     @GetMapping
     public BaseResponse<?> getAllRoles(QueryRoleDto queryRoleDto) {
@@ -86,7 +85,7 @@ public class RoleController {
         return ResultUtils.success(Code.SUCCESS, result, "查询所有角色成功");
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_UPDATE)
+    @AuthCheck(code = "ROLE_UPDATE")
     @Operation(summary = "更新角色")
     @PutMapping
     public BaseResponse<?> updateRole(UpdateRoleDto updateRoleDto) {
@@ -98,7 +97,7 @@ public class RoleController {
         }
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_GET_PERMISSION)
+    @AuthCheck(code = "ROLE_GET_PERMISSION")
     @Operation(summary = "根据角色id查询所有权限")
     @GetMapping("/getByRole/{id}")
     public BaseResponse<?> getAllPermissionsByRoleId(@PathVariable Integer id) {
@@ -106,7 +105,7 @@ public class RoleController {
         return ResultUtils.success(Code.SUCCESS, permissionsList, String.format("查询角色（id：%s）下的所有权限成功", id));
     }
 
-    @AuthCheck(code = PermissionConstant.ROLE_ADD_PERMISSION_TO_ROLE)
+    @AuthCheck(code = "ROLE_ADD_PERMISSION_TO_ROLE")
     @Operation(summary = "给角色新增权限")
     @PostMapping("/addPermissionToRole")
     public BaseResponse<?> addPermissionToRole(Integer roleId, Integer... permissionIds) {

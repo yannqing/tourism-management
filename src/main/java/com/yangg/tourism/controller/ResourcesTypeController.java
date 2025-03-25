@@ -1,6 +1,7 @@
 package com.yangg.tourism.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yangg.tourism.annotation.AuthCheck;
 import com.yangg.tourism.common.Code;
 import com.yangg.tourism.domain.dto.tourist.AddResourcesTypeDto;
 import com.yangg.tourism.domain.dto.tourist.QueryResourcesTypeDto;
@@ -28,6 +29,7 @@ public class ResourcesTypeController {
     @Resource
     private ResourcesTypeService resourcesTypeService;
 
+    @AuthCheck(code = "TOURIST_TYPE_GET_ALL")
     @Operation(summary = "查询所有旅游资源类型")
     @GetMapping
     public BaseResponse<?> getAllResourcesTypes(QueryResourcesTypeDto queryResourcesTypeDto) {
@@ -35,6 +37,7 @@ public class ResourcesTypeController {
         return ResultUtils.success(Code.SUCCESS, costList, "查询全部旅游资源类型成功！");
     }
 
+    @AuthCheck(code = "TOURIST_TYPE_UPDATE")
     @PutMapping
     @Operation(summary = "更新旅游资源类型")
     public BaseResponse<?> updateResourcesType(UpdateResourcesTypeDto updateResourcesTypeDto) {
@@ -46,6 +49,7 @@ public class ResourcesTypeController {
         }
     }
 
+    @AuthCheck(code = "TOURIST_TYPE_ADD")
     @Operation(summary = "添加新旅游资源类型")
     @PostMapping
     public BaseResponse<?> addResourcesType(AddResourcesTypeDto addResourcesTypeDto) {
@@ -57,6 +61,7 @@ public class ResourcesTypeController {
         }
     }
 
+    @AuthCheck(code = "TOURIST_TYPE_DELETE_ONE")
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单个旅游资源类型")
     public BaseResponse<?> deleteResourcesType(@PathVariable Integer id) {
@@ -68,6 +73,7 @@ public class ResourcesTypeController {
         }
     }
 
+    @AuthCheck(code = "TOURIST_TYPE_DELETE_BATCH")
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除旅游资源类型")
     public BaseResponse<?> deleteBatchResourcesType(Integer... resourcesTypeIds) {
