@@ -1,6 +1,5 @@
 package com.yangg.tourism.role;
 
-import com.yangg.tourism.enums.PermissionType;
 import com.yangg.tourism.service.RoleService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -31,8 +30,6 @@ public class TestRole {
 
     @Test
     void tesEnumGet() {
-        PermissionType userAdd = PermissionType.getEnumByValue("USER_ADD");
-        System.out.println(userAdd);
     }
 
     @Test
